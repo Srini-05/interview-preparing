@@ -1,5 +1,287 @@
 # Backend - Java Basics
 
+## Basic Java Interview Questions
+
+### 1. What is Java?
+Java is a high-level, object-oriented programming language developed by Sun Microsystems (now Oracle). It is platform-independent due to the JVM (Java Virtual Machine), which allows "Write Once, Run Anywhere" (WORA).
+
+**Key Features:**
+- Object-Oriented
+- Platform-Independent
+- Secure
+- Robust
+- Multithreaded
+- Interpreted and Compiled
+
+**Interview Tip:** Emphasize platform-independence via bytecode and JVM.
+
+### 2. What are the data types in Java?
+Java has two types of data types: Primitive and Non-Primitive (Reference).
+
+**Primitive Data Types:**
+- byte (8-bit, -128 to 127)
+- short (16-bit, -32,768 to 32,767)
+- int (32-bit, -2^31 to 2^31-1)
+- long (64-bit, -2^63 to 2^63-1)
+- float (32-bit, IEEE 754)
+- double (64-bit, IEEE 754)
+- char (16-bit, Unicode)
+- boolean (true/false)
+
+**Non-Primitive (Reference):**
+- Classes, Interfaces, Arrays, Strings
+
+Example:
+```java
+int age = 25;
+String name = "John";
+```
+
+**Interview Tip:** Know the size and range of primitives. Strings are immutable objects.
+
+### 3. What are the access modifiers in Java?
+Access modifiers control the visibility of classes, methods, and variables.
+
+- **public:** Accessible from anywhere.
+- **protected:** Accessible within the same package and subclasses.
+- **default (no modifier):** Accessible within the same package.
+- **private:** Accessible only within the same class.
+
+Example:
+```java
+public class Car {
+    private String model;
+    protected int year;
+    public void drive() { }
+}
+```
+
+**Interview Tip:** private for encapsulation, public for APIs.
+
+### 4. What is the difference between == and equals()?
+- **==** compares reference equality (memory addresses) for objects, value equality for primitives.
+- **equals()** compares content/value equality for objects.
+
+Example:
+```java
+String s1 = new String("Hello");
+String s2 = new String("Hello");
+System.out.println(s1 == s2); // false (different objects)
+System.out.println(s1.equals(s2)); // true (same content)
+```
+
+**Interview Tip:** Override equals() and hashCode() together in custom classes.
+
+### 5. What is the static keyword?
+Static members belong to the class rather than instances.
+
+- Static variables: Shared among all instances.
+- Static methods: Can be called without creating an object.
+- Static blocks: Executed when the class is loaded.
+
+Example:
+```java
+class Counter {
+    static int count = 0;
+    Counter() { count++; }
+    static void showCount() { System.out.println(count); }
+}
+```
+
+**Interview Tip:** Static methods cannot access instance variables. Used for utility methods.
+
+### 6. What is the final keyword?
+Final makes variables, methods, or classes unchangeable.
+
+- Final variable: Cannot be reassigned.
+- Final method: Cannot be overridden.
+- Final class: Cannot be subclassed.
+
+Example:
+```java
+final int MAX = 100;
+final class MathUtils { }
+```
+
+**Interview Tip:** Final for constants, security, and performance.
+
+### 7. What is the difference between String, StringBuffer, and StringBuilder?
+- **String:** Immutable, thread-safe, slow for modifications.
+- **StringBuffer:** Mutable, thread-safe, synchronized.
+- **StringBuilder:** Mutable, not thread-safe, faster.
+
+Example:
+```java
+String s = "Hello";
+s += " World"; // Creates new string
+
+StringBuilder sb = new StringBuilder("Hello");
+sb.append(" World"); // Modifies same object
+```
+
+**Interview Tip:** Use StringBuilder for single-threaded string manipulations, StringBuffer for multi-threaded.
+
+### 8. What are arrays in Java?
+Arrays are fixed-size, homogeneous data structures.
+
+Declaration: `int[] arr = new int[5];`
+Initialization: `int[] arr = {1, 2, 3, 4, 5};`
+
+**Interview Tip:** Arrays have fixed size; use ArrayList for dynamic size.
+
+### 9. What is inheritance in Java?
+Inheritance allows a class to inherit properties and methods from another class using `extends`.
+
+Example:
+```java
+class Animal {
+    void eat() { System.out.println("Eating"); }
+}
+
+class Dog extends Animal {
+    void bark() { System.out.println("Barking"); }
+}
+```
+
+**Interview Tip:** Java supports single inheritance. Use interfaces for multiple inheritance.
+
+### 10. What are interfaces in Java?
+Interfaces define a contract with abstract methods. Classes implement interfaces using `implements`.
+
+Example:
+```java
+interface Animal {
+    void sound();
+}
+
+class Dog implements Animal {
+    public void sound() { System.out.println("Bark"); }
+}
+```
+
+**Interview Tip:** All methods are public abstract by default. From Java 8, can have default and static methods.
+
+### 11. What are abstract classes?
+Abstract classes cannot be instantiated and may contain abstract methods.
+
+Example:
+```java
+abstract class Shape {
+    abstract void draw();
+}
+
+class Circle extends Shape {
+    void draw() { System.out.println("Drawing circle"); }
+}
+```
+
+**Interview Tip:** Use abstract classes when sharing code, interfaces when defining contracts.
+
+### 12. What is method overloading and overriding?
+- **Overloading:** Same method name, different parameters in the same class (compile-time polymorphism).
+- **Overriding:** Same method signature in subclass (runtime polymorphism).
+
+Example Overloading:
+```java
+void print(int i) { }
+void print(String s) { }
+```
+
+Example Overriding:
+```java
+class Parent {
+    void show() { }
+}
+
+class Child extends Parent {
+    @Override
+    void show() { }
+}
+```
+
+**Interview Tip:** Overloading changes behavior, overriding replaces behavior.
+
+### 13. What is a constructor?
+Constructors initialize objects. Same name as class, no return type.
+
+Types: Default, Parameterized, Copy.
+
+Example:
+```java
+class Person {
+    String name;
+    Person(String name) { this.name = name; }
+}
+```
+
+**Interview Tip:** If no constructor, Java provides default. Cannot be inherited.
+
+### 14. What is the this keyword?
+`this` refers to the current object instance.
+
+Uses: Differentiate instance variables, call other constructors, pass current object.
+
+Example:
+```java
+class Person {
+    String name;
+    Person(String name) { this.name = name; }
+}
+```
+
+**Interview Tip:** Used to avoid name conflicts.
+
+### 15. What is the super keyword?
+`super` refers to the parent class.
+
+Uses: Call parent constructor, access parent methods/variables.
+
+Example:
+```java
+class Dog extends Animal {
+    Dog() { super(); } // calls parent constructor
+}
+```
+
+**Interview Tip:** Must be first statement in constructor.
+
+### 16. What are packages in Java?
+Packages organize classes and avoid name conflicts.
+
+Example: `import java.util.*;`
+
+**Interview Tip:** Use reverse domain naming convention.
+
+### 17. What is the difference between ArrayList and LinkedList?
+- **ArrayList:** Dynamic array, fast random access, slow insertions/deletions.
+- **LinkedList:** Doubly linked list, fast insertions/deletions, slow random access.
+
+**Interview Tip:** Choose based on use case: ArrayList for reads, LinkedList for modifications.
+
+### 18. What is the difference between HashSet and TreeSet?
+- **HashSet:** Unordered, uses hash, faster.
+- **TreeSet:** Ordered, uses red-black tree, slower.
+
+**Interview Tip:** HashSet for uniqueness, TreeSet for sorted order.
+
+### 19. What is the difference between HashMap and HashTable?
+- **HashMap:** Not synchronized, allows null keys/values, faster.
+- **HashTable:** Synchronized, doesn't allow null, thread-safe but slower.
+
+**Interview Tip:** Use HashMap for single-threaded, ConcurrentHashMap for multi-threaded.
+
+### 20. What is the try-with-resources statement?
+Automatically closes resources that implement AutoCloseable.
+
+Example:
+```java
+try (FileReader fr = new FileReader("file.txt")) {
+    // use fr
+} // automatically closed
+```
+
+**Interview Tip:** Prevents resource leaks.
+
 ## 1. What is the difference between RestTemplate and WebClient?
 
 In Spring Framework / Spring Boot, both RestTemplate and WebClient are used to call external REST APIs, but they differ mainly in programming model and performance.
