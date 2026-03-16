@@ -1069,4 +1069,164 @@ void method() throws IOException {
 
 </details>
 
+## Advanced Java Concepts - Multi-threading
+
+<details><summary style="font-size: 1.3em; font-weight: bold;">🚀 Multi-threading Made Simple</summary>
+
+Multi-threading is a core Java concept that allows concurrent execution of multiple threads within a single process. Understanding threads is crucial for building scalable, responsive applications.
+
+### 🍳 Real-world Analogy
+Imagine a **restaurant kitchen** as your program (process). Each **chef** is a **thread** — they share the same kitchen space (memory) but work on different dishes simultaneously. One chef grills, another chops, another plates. That's multi-threading!
+
+### Key Concepts:
+- **Process**: A running program with its own memory space (heavyweight)
+- **Thread**: Smallest unit of execution inside a process (lightweight)
+- **Concurrency**: Multiple tasks appear to run simultaneously (single CPU core)
+- **Parallelism**: Multiple tasks actually run simultaneously (multiple CPU cores)
+
+**Interview Tip:** Threads share memory but processes have separate memory spaces. Threads are faster to create and communicate with.
+</details>
+
+<details><summary style="font-size: 1.3em; font-weight: bold;">1. Thread Lifecycle</summary>
+
+A thread goes through several states during its lifetime:
+
+### Thread States:
+1. **NEW**: Thread created but not started
+2. **RUNNABLE**: Thread is ready to run (start() called)
+3. **RUNNING**: Thread is actively executing
+4. **WAITING/BLOCKED**: Thread waiting for resource or I/O
+5. **TERMINATED**: Thread completed execution
+
+### State Transitions:
+```
+NEW → RUNNABLE (start())
+RUNNABLE → RUNNING (CPU allocated)
+RUNNING → WAITING (wait()/sleep())
+RUNNING → BLOCKED (waiting for lock)
+WAITING/BLOCKED → RUNNABLE (condition met)
+RUNNABLE → TERMINATED (run() completes)
+```
+
+**Interview Tip:** A thread can move between RUNNABLE ↔ WAITING ↔ BLOCKED multiple times before terminating. Use `Thread.getState()` to check current state.
+</details>
+
+<details><summary style="font-size: 1.3em; font-weight: bold;">2. Creating Threads in Java</summary>
+
+There are 3 ways to create threads in Java:
+
+### Way 1: Extend Thread Class
+```java
+class MyThread extends Thread {
+    public void run() {
+        System.out.println("Thread running: " + getName());
+    }
+}
+
+// Usage
+Thread t1 = new MyThread();
+t1.start(); // Don't call run() directly!
+```
+
+### Way 2: Implement Runnable Interface
+```java
+class MyRunnable implements Runnable {
+    public void run() {
+        System.out.println("Runnable running!");
+    }
+}
+
+// Usage
+Thread t2 = new Thread(new MyRunnable());
+t2.start();
+```
+
+### Way 3: Lambda Expression (Java 8+) - Recommended ✅
+```java
+Thread t3 = new Thread(() -> {
+    System.out.println("Lambda thread running! 🚀");
+});
+t3.start();
+```
+
+### Production-Ready: ExecutorService
+```java
+ExecutorService pool = Executors.newFixedThreadPool(4);
+pool.submit(() -> System.out.println("Pool thread running!"));
+pool.shutdown();
+```
+
+**Interview Tip:** Prefer Runnable over extending Thread (composition over inheritance). Use ExecutorService for production as it manages thread lifecycle automatically.
+</details>
+
+<details><summary style="font-size: 1.3em; font-weight: bold;">3. Thread vs Process</summary>
+
+| Aspect | Thread | Process |
+|--------|--------|---------|
+| Memory | Shares with other threads | Separate memory space |
+| Creation | Lightweight, fast | Heavyweight, slow |
+| Communication | Easy (shared memory) | Needs IPC (pipes, sockets) |
+| Crash Impact | Affects other threads | Isolated |
+| Examples | HTTP request handlers | Chrome browser tabs |
+
+**Interview Tip:** Threads are lightweight and share memory, making them ideal for concurrent tasks within the same application. Processes provide isolation but are expensive to create.
+</details>
+
+<details><summary style="font-size: 1.3em; font-weight: bold;">4. Synchronization & Thread Safety</summary>
+
+### Race Condition
+When two threads modify shared data simultaneously, the final result depends on timing.
+
+**Example:**
+```java
+class Counter {
+    private int count = 0;
+
+    public void increment() {
+        count++; // Not thread-safe!
+    }
+}
+```
+
+### Synchronization Solution
+```java
+class Counter {
+    private int count = 0;
+
+    public synchronized void increment() {
+        count++; // Now thread-safe
+    }
+}
+```
+
+### Key Concepts:
+- **Mutex/Lock**: Only one thread can hold the lock at a time
+- **Deadlock**: Thread A waits for B's lock, B waits for A's lock
+- **Volatile**: Ensures variable visibility across threads
+- **Thread Pool**: Pre-created threads for better performance
+
+**Interview Tip:** Use `synchronized` for mutual exclusion, `volatile` for visibility. Avoid nested locks to prevent deadlocks. Prefer concurrent collections over synchronized collections.
+</details>
+
+<details><summary style="font-size: 1.3em; font-weight: bold;">5. Common Multi-threading Interview Questions</summary>
+
+**Q: What is the difference between sleep() and wait()?**
+- `sleep()` pauses execution for specified time
+- `wait()` releases lock and waits for notify()
+
+**Q: What is a daemon thread?**
+- Background threads that don't prevent JVM shutdown
+- Example: Garbage collector
+
+**Q: How to stop a thread?**
+- Don't use `stop()` (deprecated)
+- Use boolean flag or interrupt()
+
+**Q: What is ThreadLocal?**
+- Variables local to each thread
+- Each thread gets its own copy
+
+**Interview Tip:** Know the difference between `synchronized` methods vs blocks. Understand when to use `ReentrantLock` over `synchronized`. Be familiar with concurrent collections like `ConcurrentHashMap`.
+</details>
+
 </details>
