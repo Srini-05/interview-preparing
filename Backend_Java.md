@@ -927,7 +927,7 @@ void method() throws IOException {
 
 ## Interview Questions
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">What is the difference between JDK, JRE, and JVM?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Q: What is the difference between JDK, JRE, and JVM?</summary>
 
 **Explanation:** JDK (Java Development Kit) is for development with compilers and tools, JRE (Java Runtime Environment) provides the runtime environment, and JVM (Java Virtual Machine) executes bytecode.
 
@@ -937,7 +937,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">Explain the main principles of OOP in Java.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Q: Explain the main principles of OOP in Java.</summary>
 
 **Explanation:** OOP principles are Encapsulation (data hiding), Inheritance (code reuse), Polymorphism (many forms), and Abstraction (hiding complexity).
 
@@ -947,7 +947,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">What is the difference between ArrayList and LinkedList?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Q: What is the difference between ArrayList and LinkedList?</summary>
 
 **Explanation:** ArrayList uses dynamic arrays for fast random access but slow insertions, LinkedList uses nodes for fast insertions but slow random access.
 
@@ -957,7 +957,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">How does exception handling work in Java?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Q: How does exception handling work in Java?</summary>
 
 **Explanation:** Exceptions are handled using try-catch-finally blocks. Checked exceptions must be caught or declared, unchecked are runtime exceptions.
 
@@ -967,7 +967,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">What are the different types of memory areas in Java?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Q: What are the different types of memory areas in Java?</summary>
 
 **Explanation:** Heap stores objects, Stack stores method calls and local variables, Metaspace stores class metadata.
 
@@ -977,7 +977,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">Explain method overloading vs method overriding.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Q: Explain method overloading vs method overriding.</summary>
 
 **Explanation:** Overloading is same method name different parameters in same class (compile-time), overriding is same signature in subclass (runtime).
 
@@ -987,7 +987,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">What is the purpose of the static keyword?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Q: What is the purpose of the static keyword?</summary>
 
 **Explanation:** Static members belong to the class, not instances. Used for constants, utility methods, and shared state.
 
@@ -997,7 +997,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">How does garbage collection work in Java?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Q: How does garbage collection work in Java?</summary>
 
 **Explanation:** GC automatically frees memory by removing unreachable objects. Different algorithms like G1, ZGC optimize for different needs.
 
@@ -1007,7 +1007,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">What are the differences between String, StringBuffer, and StringBuilder?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Q: What are the differences between String, StringBuffer, and StringBuilder?</summary>
 
 **Explanation:** String is immutable, StringBuffer is thread-safe mutable, StringBuilder is non-thread-safe mutable.
 
@@ -1017,7 +1017,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">Explain the concept of inheritance in Java.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Q: Explain the concept of inheritance in Java.</summary>
 
 **Explanation:** Inheritance allows a class to inherit properties and methods from another class using extends keyword.
 
@@ -1027,7 +1027,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">What are the different types of garbage collectors in Java?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Q: What are the different types of garbage collectors in Java?</summary>
 
 **Explanation:** Java has several GC algorithms: Serial (single-threaded), Parallel (multi-threaded throughput), CMS (concurrent low-pause), G1 (region-based), ZGC (ultra-low pause).
 
@@ -1037,7 +1037,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">Explain the difference between abstract classes and interfaces.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Q: Explain the difference between abstract classes and interfaces.</summary>
 
 **Explanation:** Abstract classes can have concrete methods and state, interfaces define contracts with default methods. Classes extend one abstract class but implement multiple interfaces.
 
@@ -1047,7 +1047,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">What is the Java Memory Model and why is it important?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Q: What is the Java Memory Model and why is it important?</summary>
 
 **Explanation:** JMM defines how threads interact through memory, ensuring visibility and ordering of operations across threads.
 
@@ -1059,7 +1059,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">How does Java handle memory management?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Q: How does Java handle memory management?</summary>
 
 **Explanation:** Java uses automatic garbage collection to manage heap memory, while stack memory is managed automatically with method calls.
 
@@ -1227,6 +1227,143 @@ class Counter {
 - Each thread gets its own copy
 
 **Interview Tip:** Know the difference between `synchronized` methods vs blocks. Understand when to use `ReentrantLock` over `synchronized`. Be familiar with concurrent collections like `ConcurrentHashMap`.
+</details>
+
+<details><summary style="font-size: 1.3em; font-weight: bold;">🚀 Advanced Java Concepts - CompletableFuture</summary>
+
+CompletableFuture is a class in Java (introduced in Java 8) used for asynchronous programming. It allows you to run tasks in the background and handle their results without blocking the main thread.
+
+It is part of the java.util.concurrent package.
+
+### 1️⃣ What is CompletableFuture?
+
+CompletableFuture is used to:
+
+- Run tasks asynchronously
+- Combine multiple asynchronous operations
+- Handle results when tasks complete
+- Avoid blocking threads
+
+It is an improved version of Future.
+
+### 2️⃣ Why CompletableFuture is Needed
+
+The older Future interface had limitations:
+
+| Future Problems | CompletableFuture Solution |
+|-----------------|---------------------------|
+| Cannot manually complete result | Can complete manually |
+| No chaining of tasks | Supports chaining |
+| Blocking get() | Non-blocking callbacks |
+| No combining multiple futures | Supports combining |
+
+### 3️⃣ Simple Example
+```java
+import java.util.concurrent.CompletableFuture;
+
+public class Example {
+    public static void main(String[] args) {
+        CompletableFuture<String> future =
+                CompletableFuture.supplyAsync(() -> "Hello World");
+
+        System.out.println(future.join());
+    }
+}
+```
+
+**Output:**
+```
+Hello World
+```
+
+`supplyAsync()` runs the task in another thread.
+
+### 4️⃣ Creating CompletableFuture
+#### 1. runAsync (no return value)
+```java
+CompletableFuture.runAsync(() -> {
+    System.out.println("Running async task");
+});
+```
+
+#### 2. supplyAsync (returns value)
+```java
+CompletableFuture<String> future =
+        CompletableFuture.supplyAsync(() -> "Java");
+```
+
+### 5️⃣ Chaining Tasks
+
+You can perform multiple asynchronous operations.
+
+```java
+CompletableFuture.supplyAsync(() -> "Hello")
+        .thenApply(result -> result + " Java")
+        .thenAccept(System.out::println);
+```
+
+**Output:**
+```
+Hello Java
+```
+
+### 6️⃣ Combining Multiple Futures
+
+**Example:**
+```java
+CompletableFuture<Integer> future1 =
+        CompletableFuture.supplyAsync(() -> 10);
+
+CompletableFuture<Integer> future2 =
+        CompletableFuture.supplyAsync(() -> 20);
+
+CompletableFuture<Integer> result =
+        future1.thenCombine(future2, (a, b) -> a + b);
+
+System.out.println(result.join());
+```
+
+**Output:**
+```
+30
+```
+
+### 7️⃣ Handling Exceptions
+```java
+CompletableFuture.supplyAsync(() -> 10 / 0)
+        .exceptionally(ex -> {
+            System.out.println("Error occurred");
+            return 0;
+        });
+```
+
+### 8️⃣ Important Methods
+| Method | Purpose |
+|--------|---------|
+| runAsync() | Run task without return |
+| supplyAsync() | Run task with return |
+| thenApply() | Transform result |
+| thenAccept() | Consume result |
+| thenCombine() | Combine two futures |
+| exceptionally() | Handle errors |
+| join() | Get result |
+
+### 9️⃣ Real Example (API Calls)
+
+In backend systems (like Spring Boot services), CompletableFuture can fetch multiple APIs simultaneously.
+
+**Example:**
+- Fetch user details
+- Fetch orders
+- Fetch payments
+
+All in parallel, making the API much faster.
+
+### 🔟 Interview One-Line Answer
+
+CompletableFuture is a Java class used for asynchronous programming that allows tasks to run in parallel, supports chaining, combining futures, and handling results without blocking threads.
+
+**Interview Tip:** If you want, I can also explain a very common Java interview question: Difference between Future vs CompletableFuture vs ExecutorService (asked in many backend interviews).
 </details>
 
 </details>
