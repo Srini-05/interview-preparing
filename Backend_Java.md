@@ -3,10 +3,11 @@
 > **Note:** Interview Tips are highlighted in <span style="color: #007acc;">blue</span> for easy identification.
 > **Accordion Feature:** Each question can be made collapsible by wrapping in `<details><summary>Question Title</summary> content </details>` (demonstrated for first few questions).
 
+<details><summary>📚 Java Interview Preparation Guide</summary>
+
 ## Basic Java Interview Questions
 
-<details>
-<summary>1. What is Java?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">1. What is Java?</summary>
 
 Java is a high-level, object-oriented programming language developed by Sun Microsystems (now Oracle). It is platform-independent due to the JVM (Java Virtual Machine), which allows "Write Once, Run Anywhere" (WORA).
 
@@ -26,8 +27,7 @@ Java is a high-level, object-oriented programming language developed by Sun Micr
 
 </details>
 
-<details>
-<summary>2. What are the data types in Java?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">2. What are the data types in Java?</summary>
 
 Java has two types of data types: Primitive and Non-Primitive (Reference).
 
@@ -58,8 +58,7 @@ String name = "John";
 
 </details>
 
-<details>
-<summary>3. What are the access modifiers in Java?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">3. What are the access modifiers in Java?</summary>
 
 Access modifiers control the visibility of classes, methods, and variables.
 
@@ -86,7 +85,7 @@ public class Car {
 </details>
 
 <details>
-<summary>4. What is the difference between == and equals()?</summary>
+<summary style="font-size: 1.3em; font-weight: bold;">4. What is the difference between == and equals()?</summary>
 
 - **==** compares reference equality (memory addresses) for objects, value equality for primitives.
 - **equals()** compares content/value equality for objects.
@@ -105,7 +104,7 @@ System.out.println(s1.equals(s2)); // true (same content)
 **Interview Tip:** Override equals() and hashCode() together in custom classes.
 </details>
 
-<details><summary>5. What is the static keyword?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">5. What is the static keyword?</summary>
 
 Static members belong to the class rather than instances.
 
@@ -128,7 +127,7 @@ class Counter {
 **Interview Tip:** Static methods cannot access instance variables. Used for utility methods.
 </details>
 
-<details><summary>6. What is the final keyword?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">6. What is the final keyword?</summary>
 
 Final makes variables, methods, or classes unchangeable.
 
@@ -148,7 +147,7 @@ final class MathUtils { }
 **Interview Tip:** Final for constants, security, and performance.
 </details>
 
-<details><summary>7. What is the difference between String, StringBuffer, and StringBuilder?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">7. What is the difference between String, StringBuffer, and StringBuilder?</summary>
 
 - **String:** Immutable, thread-safe, slow for modifications.
 - **StringBuffer:** Mutable, thread-safe, synchronized.
@@ -169,7 +168,108 @@ sb.append(" World"); // Modifies same object
 **Interview Tip:** Use StringBuilder for single-threaded string manipulations, StringBuffer for multi-threaded.
 </details>
 
-<details><summary>8. What are arrays in Java?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">7.5. Why is String Immutable in Java?</summary>
+
+In Java, String is actually immutable, not mutable. This is a very common interview question, so it's important to understand clearly.
+
+### What Does Immutable Mean?
+
+Immutable means the value of the object cannot be changed after it is created.
+
+For example:
+
+```java
+String str = "Hello";
+str = str + " World";
+```
+
+Here it looks like the string changed, but actually:
+
+- "Hello" object is created.
+- "Hello World" is created as a new object.
+- str now references the new object.
+- The original "Hello" string still exists in memory.
+
+### Example Showing Immutability
+
+```java
+String s1 = "Java";
+String s2 = s1;
+
+s1 = s1 + " Programming";
+
+System.out.println(s1); // Java Programming
+System.out.println(s2); // Java
+```
+
+s2 still points to "Java" because the original string was not modified.
+
+### Why String Is Immutable in Java
+
+1️⃣ **Security**
+
+Strings are used in:
+- file paths
+- network connections
+- database URLs
+
+Immutability prevents malicious modification.
+
+2️⃣ **String Pool Optimization**
+
+Java uses a String Constant Pool to save memory.
+
+Example:
+
+```java
+String a = "Java";
+String b = "Java";
+```
+
+Both a and b reference the same object in the pool.
+
+This works safely because strings cannot change.
+
+3️⃣ **Thread Safety**
+
+Since strings cannot change, they are automatically thread-safe in multi-threaded environments.
+
+4️⃣ **Hashcode Caching**
+
+Strings are used as keys in HashMap.
+
+Example:
+
+```java
+Map<String, Integer> map = new HashMap<>();
+```
+
+If strings were mutable, the hashcode could change, breaking the map.
+
+### Mutable Alternatives
+
+If you need a modifiable string, Java provides:
+
+- StringBuilder
+- StringBuffer
+
+Example:
+
+```java
+StringBuilder sb = new StringBuilder("Hello");
+sb.append(" World");
+
+System.out.println(sb); // Hello World
+```
+
+### Interview One-Line Answer
+
+In Java, String is immutable, meaning its value cannot be changed after creation. This improves security, enables string pooling, ensures thread safety, and allows efficient hashing.
+
+**Interview Tip:** String immutability is crucial for security, performance, and thread safety. Always mention the String pool and HashMap usage.
+</details>
+
+<details><summary style="font-size: 1.3em; font-weight: bold;">8. What are arrays in Java?</summary>
 
 Arrays are fixed-size, homogeneous data structures.
 
@@ -182,7 +282,7 @@ Initialization: `int[] arr = {1, 2, 3, 4, 5};`
 **Interview Tip:** Arrays have fixed size; use ArrayList for dynamic size.
 </details>
 
-<details><summary>9. What is inheritance in Java?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">9. What is inheritance in Java?</summary>
 
 Inheritance allows a class to inherit properties and methods from another class using `extends`.
 
@@ -203,7 +303,7 @@ class Dog extends Animal {
 **Interview Tip:** Java supports single inheritance. Use interfaces for multiple inheritance.
 </details>
 
-<details><summary>10. What are interfaces in Java?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">10. What are interfaces in Java?</summary>
 
 Interfaces define a contract with abstract methods. Classes implement interfaces using `implements`.
 
@@ -225,7 +325,7 @@ class Dog implements Animal {
 
 </details>
 
-<details><summary>11. What are abstract classes?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">11. What are abstract classes?</summary>
 
 Abstract classes cannot be instantiated and may contain abstract methods.
 
@@ -247,7 +347,7 @@ class Circle extends Shape {
 
 </details>
 
-<details><summary>12. What is method overloading and overriding?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">12. What is method overloading and overriding?</summary>
 
 - **Overloading:** Same method name, different parameters in the same class (compile-time polymorphism).
 - **Overriding:** Same method signature in subclass (runtime polymorphism).
@@ -277,7 +377,7 @@ class Child extends Parent {
 
 </details>
 
-<details><summary>13. What is a constructor?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">13. What is a constructor?</summary>
 
 Constructors initialize objects. Same name as class, no return type.
 
@@ -298,7 +398,7 @@ class Person {
 
 </details>
 
-<details><summary>14. What is the this keyword?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">14. What is the this keyword?</summary>
 
 `this` refers to the current object instance.
 
@@ -319,7 +419,7 @@ class Person {
 
 </details>
 
-<details><summary>15. What is the super keyword?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">15. What is the super keyword?</summary>
 
 `super` refers to the parent class.
 
@@ -339,7 +439,7 @@ class Dog extends Animal {
 
 </details>
 
-<details><summary>16. What are packages in Java?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">16. What are packages in Java?</summary>
 
 Packages organize classes and avoid name conflicts.
 
@@ -352,7 +452,7 @@ Example: `import java.util.*;`
 
 </details>
 
-<details><summary>17. What is the difference between ArrayList and LinkedList?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">17. What is the difference between ArrayList and LinkedList?</summary>
 
 - **ArrayList:** Dynamic array, fast random access, slow insertions/deletions.
 - **LinkedList:** Doubly linked list, fast insertions/deletions, slow random access.
@@ -364,7 +464,7 @@ Example: `import java.util.*;`
 
 </details>
 
-<details><summary>18. What is the difference between HashSet and TreeSet?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">18. What is the difference between HashSet and TreeSet?</summary>
 
 - **HashSet:** Unordered, uses hash, faster.
 - **TreeSet:** Ordered, uses red-black tree, slower.
@@ -376,7 +476,7 @@ Example: `import java.util.*;`
 
 </details>
 
-<details><summary>19. What is the difference between HashMap and HashTable?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">19. What is the difference between HashMap and HashTable?</summary>
 
 - **HashMap:** Not synchronized, allows null keys/values, faster.
 - **HashTable:** Synchronized, doesn't allow null, thread-safe but slower.
@@ -388,7 +488,7 @@ Example: `import java.util.*;`
 
 </details>
 
-<details><summary>20. What is the try-with-resources statement?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">20. What is the try-with-resources statement?</summary>
 
 Automatically closes resources that implement AutoCloseable.
 
@@ -406,7 +506,7 @@ try (FileReader fr = new FileReader("file.txt")) {
 
 </details>
 
-<details><summary>1. What is the difference between RestTemplate and WebClient?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">1. What is the difference between RestTemplate and WebClient?</summary>
 
 In Spring Framework / Spring Boot, both RestTemplate and WebClient are used to call external REST APIs, but they differ mainly in programming model and performance.
 
@@ -470,7 +570,7 @@ Mono<String> response = client.get()
 
 </details>
 
-<details><summary>2. How do you handle microservice communication failures?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">2. How do you handle microservice communication failures?</summary>
 
 In microservices, communication failures can happen due to network issues, service downtime, or high latency. To handle these failures, we use several resilience patterns:
 
@@ -496,7 +596,7 @@ public Mono<User> fallbackGetUser(String id, Throwable t) {
 
 </details>
 
-<details><summary>3. What are the types of Garbage Collectors (GC) in Java?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">3. What are the types of Garbage Collectors (GC) in Java?</summary>
 
 In Java, Garbage Collectors (GC) automatically manage memory by removing unused objects from the heap. Over different Java versions, several types of GC algorithms have been introduced.
 
@@ -541,7 +641,7 @@ In Java, Garbage Collectors (GC) automatically manage memory by removing unused 
 
 </details>
 
-<details><summary>4. Explain the end-to-end deployment flow.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">4. Explain the end-to-end deployment flow.</summary>
 
 Code → Build → Test → Artifact → Deploy → Monitor.
 
@@ -559,7 +659,7 @@ Example: In a Spring Boot app, use Maven to build, then deploy to AWS ECS.
 
 </details>
 
-<details><summary>5. Method Overloading vs Method Overriding</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">5. Method Overloading vs Method Overriding</summary>
 
 ### Method Overloading
 - Definition: Multiple methods in the same class have the same name but different parameter lists (number or type of parameters).
@@ -601,7 +701,7 @@ class Dog extends Animal {
 
 </details>
 
-<details><summary>6. volatile vs transient Keyword</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">6. volatile vs transient Keyword</summary>
 
 ### volatile Keyword
 - Used with variables to tell the JVM that the variable can be modified by multiple threads simultaneously.
@@ -653,7 +753,7 @@ class User implements Serializable {
 
 </details>
 
-<details><summary>7. JDK vs JRE vs JVM</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">7. JDK vs JRE vs JVM</summary>
 
 ### JDK (Java Development Kit)
 - Provides tools to develop and run Java programs.
@@ -676,7 +776,7 @@ Real-Life Example: Cooking
 
 </details>
 
-<details><summary>8. How Java works internally</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">8. How Java works internally</summary>
 
 Java Source (.java)
     ↓
@@ -698,7 +798,7 @@ Garbage Collector
 
 </details>
 
-<details><summary>9. Memory Areas in Java</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">9. Memory Areas in Java</summary>
 
 ### Heap Memory
 - Stores: Objects, Instance variables, Arrays
@@ -716,7 +816,7 @@ Garbage Collector
 
 </details>
 
-<details><summary>10. Garbage Collection (basic types, when it runs)</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">10. Garbage Collection (basic types, when it runs)</summary>
 
 Garbage Collection is an automatic memory management process in Java that removes unused objects from heap memory when JVM needs more space.
 
@@ -727,7 +827,7 @@ Garbage Collection is an automatic memory management process in Java that remove
 
 </details>
 
-<details><summary>11. OOPS (Object-Oriented Programming System)</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">11. OOPS (Object-Oriented Programming System)</summary>
 
 OOPS is a programming approach based on objects that contain Data (variables) and Behavior (methods).
 
@@ -790,7 +890,7 @@ class Car extends Vehicle {
 
 </details>
 
-<details><summary>12. Exception Handling</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">12. Exception Handling</summary>
 
 ### Types:
 - Checked: Checked at compile-time (e.g., IOException)
@@ -814,7 +914,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary>13. Access Modifiers</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">13. Access Modifiers</summary>
 
 - private: Accessible only within the same class.
 - protected: Accessible within the same package and subclasses.
@@ -827,7 +927,7 @@ void method() throws IOException {
 
 ## Interview Questions
 
-<details><summary>What is the difference between JDK, JRE, and JVM?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What is the difference between JDK, JRE, and JVM?</summary>
 
 **Explanation:** JDK (Java Development Kit) is for development with compilers and tools, JRE (Java Runtime Environment) provides the runtime environment, and JVM (Java Virtual Machine) executes bytecode.
 
@@ -837,7 +937,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary>Explain the main principles of OOP in Java.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Explain the main principles of OOP in Java.</summary>
 
 **Explanation:** OOP principles are Encapsulation (data hiding), Inheritance (code reuse), Polymorphism (many forms), and Abstraction (hiding complexity).
 
@@ -847,7 +947,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary>What is the difference between ArrayList and LinkedList?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What is the difference between ArrayList and LinkedList?</summary>
 
 **Explanation:** ArrayList uses dynamic arrays for fast random access but slow insertions, LinkedList uses nodes for fast insertions but slow random access.
 
@@ -857,7 +957,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary>How does exception handling work in Java?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">How does exception handling work in Java?</summary>
 
 **Explanation:** Exceptions are handled using try-catch-finally blocks. Checked exceptions must be caught or declared, unchecked are runtime exceptions.
 
@@ -867,7 +967,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary>What are the different types of memory areas in Java?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What are the different types of memory areas in Java?</summary>
 
 **Explanation:** Heap stores objects, Stack stores method calls and local variables, Metaspace stores class metadata.
 
@@ -877,7 +977,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary>Explain method overloading vs method overriding.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Explain method overloading vs method overriding.</summary>
 
 **Explanation:** Overloading is same method name different parameters in same class (compile-time), overriding is same signature in subclass (runtime).
 
@@ -887,7 +987,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary>What is the purpose of the static keyword?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What is the purpose of the static keyword?</summary>
 
 **Explanation:** Static members belong to the class, not instances. Used for constants, utility methods, and shared state.
 
@@ -897,7 +997,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary>How does garbage collection work in Java?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">How does garbage collection work in Java?</summary>
 
 **Explanation:** GC automatically frees memory by removing unreachable objects. Different algorithms like G1, ZGC optimize for different needs.
 
@@ -907,7 +1007,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary>What are the differences between String, StringBuffer, and StringBuilder?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What are the differences between String, StringBuffer, and StringBuilder?</summary>
 
 **Explanation:** String is immutable, StringBuffer is thread-safe mutable, StringBuilder is non-thread-safe mutable.
 
@@ -917,7 +1017,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary>Explain the concept of inheritance in Java.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Explain the concept of inheritance in Java.</summary>
 
 **Explanation:** Inheritance allows a class to inherit properties and methods from another class using extends keyword.
 
@@ -927,7 +1027,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary>What are the different types of garbage collectors in Java?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What are the different types of garbage collectors in Java?</summary>
 
 **Explanation:** Java has several GC algorithms: Serial (single-threaded), Parallel (multi-threaded throughput), CMS (concurrent low-pause), G1 (region-based), ZGC (ultra-low pause).
 
@@ -937,7 +1037,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary>Explain the difference between abstract classes and interfaces.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Explain the difference between abstract classes and interfaces.</summary>
 
 **Explanation:** Abstract classes can have concrete methods and state, interfaces define contracts with default methods. Classes extend one abstract class but implement multiple interfaces.
 
@@ -947,7 +1047,7 @@ void method() throws IOException {
 
 </details>
 
-<details><summary>What is the Java Memory Model and why is it important?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What is the Java Memory Model and why is it important?</summary>
 
 **Explanation:** JMM defines how threads interact through memory, ensuring visibility and ordering of operations across threads.
 
@@ -957,7 +1057,9 @@ void method() throws IOException {
 
 </details>
 
-<details><summary>How does Java handle memory management?</summary>
+</details>
+
+<details><summary style="font-size: 1.3em; font-weight: bold;">How does Java handle memory management?</summary>
 
 **Explanation:** Java uses automatic garbage collection to manage heap memory, while stack memory is managed automatically with method calls.
 
