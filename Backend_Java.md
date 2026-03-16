@@ -1,5 +1,7 @@
 # Backend - Java Basics
 
+> **Note:** Interview Tips are highlighted in <span style="color: #007acc;">blue</span> for easy identification.
+
 ## Basic Java Interview Questions
 
 ### 1. What is Java?
@@ -13,7 +15,7 @@ Java is a high-level, object-oriented programming language developed by Sun Micr
 - Multithreaded
 - Interpreted and Compiled
 
-**Interview Tip:** Emphasize platform-independence via bytecode and JVM.
+<span style="color: #007acc;">**Interview Tip:**</span> Emphasize platform-independence via bytecode and JVM.
 
 ### 2. What are the data types in Java?
 Java has two types of data types: Primitive and Non-Primitive (Reference).
@@ -37,7 +39,7 @@ int age = 25;
 String name = "John";
 ```
 
-**Interview Tip:** Know the size and range of primitives. Strings are immutable objects.
+<span style="color: #007acc;">**Interview Tip:**</span> Know the size and range of primitives. Strings are immutable objects.
 
 ### 3. What are the access modifiers in Java?
 Access modifiers control the visibility of classes, methods, and variables.
@@ -56,7 +58,7 @@ public class Car {
 }
 ```
 
-**Interview Tip:** private for encapsulation, public for APIs.
+<span style="color: #007acc;">**Interview Tip:**</span> private for encapsulation, public for APIs.
 
 ### 4. What is the difference between == and equals()?
 - **==** compares reference equality (memory addresses) for objects, value equality for primitives.
@@ -70,7 +72,7 @@ System.out.println(s1 == s2); // false (different objects)
 System.out.println(s1.equals(s2)); // true (same content)
 ```
 
-**Interview Tip:** Override equals() and hashCode() together in custom classes.
+<span style="color: #007acc;">**Interview Tip:**</span> Override equals() and hashCode() together in custom classes.
 
 ### 5. What is the static keyword?
 Static members belong to the class rather than instances.
@@ -103,7 +105,7 @@ final int MAX = 100;
 final class MathUtils { }
 ```
 
-**Interview Tip:** Final for constants, security, and performance.
+<span style="color: #007acc;">**Interview Tip:**</span> Final for constants, security, and performance.
 
 ### 7. What is the difference between String, StringBuffer, and StringBuilder?
 - **String:** Immutable, thread-safe, slow for modifications.
