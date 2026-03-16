@@ -22,177 +22,610 @@
 
 <details><summary>Hooks</summary>
 
-Hooks allow functional components to use state and lifecycle features.
+Hooks allow functional components to use state and lifecycle features that were previously only available in class components. They were introduced in React 16.8 to make functional components more powerful.
 
-### useState
-Used to manage component state.
+### useState - State Management
+Manages local component state. Returns a stateful value and a function to update it.
 
 ```javascript
 import { useState } from "react";
 
 function Counter() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0); // [currentState, updateFunction]
+
+  const increment = () => setCount(count + 1);
+  const decrement = () => setCount(count - 1);
+  const reset = () => setCount(0);
 
   return (
-    <button onClick={() => setCount(count + 1)}>
-      {count}
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={increment}>+</button>
+      <button onClick={decrement}>-</button>
+      <button onClick={reset}>Reset</button>
+    </div>
+  );
+}
+```
+
+### Advanced useState Patterns:
+```javascript
+// Object state
+const [user, setUser] = useState({ name: '', email: '' });
+const updateName = (name) => setUser(prev => ({ ...prev, name }));
+
+// Array state
+const [todos, setTodos] = useState([]);
+const addTodo = (text) => setTodos(prev => [...prev, { id: Date.now(), text }]);
+
+// Lazy initial state (for expensive computations)
+const [data, setData] = useState(() => expensiveInitialValue());
+```
+
+### useEffect - Side Effects
+Handles side effects like API calls, subscriptions, DOM manipulation, and cleanup.
+
+```javascript
+useEffect(() => {
+  // Effect logic runs after every render
+  console.log('Component rendered');
+
+  // Cleanup function (optional)
+  return () => {
+    console.log('Cleanup before next effect or unmount');
+  };
+}); // No dependency array = runs after every render
+
+useEffect(() => {
+  console.log('Only on mount');
+}, []); // Empty array = runs only on mount
+
+useEffect(() => {
+  console.log('Runs when count changes:', count);
+}, [count]); // Runs when count changes
+```
+
+### Common useEffect Patterns:
+```javascript
+// Data fetching
+useEffect(() => {
+  let isMounted = true;
+  fetch('/api/users')
+    .then(res => res.json())
+    .then(data => {
+      if (isMounted) setUsers(data);
+    });
+  return () => { isMounted = false; }; // Cleanup
+}, []);
+
+// Event listeners
+useEffect(() => {
+  const handleResize = () => setWindowWidth(window.innerWidth);
+  window.addEventListener('resize', handleResize);
+  return () => window.removeEventListener('resize', handleResize);
+}, []);
+
+// Timer
+useEffect(() => {
+  const timer = setInterval(() => setTime(new Date()), 1000);
+  return () => clearInterval(timer);
+}, []);
+```
+
+### useContext - Global State
+Accesses React Context without prop drilling. Context provides a way to share values between components without explicitly passing props.
+
+```javascript
+// Create context
+const ThemeContext = React.createContext('light');
+
+// Provider component
+function App() {
+  const [theme, setTheme] = useState('light');
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <Toolbar />
+    </ThemeContext.Provider>
+  );
+}
+
+// Consumer using useContext
+function Toolbar() {
+  const { theme, setTheme } = useContext(ThemeContext);
+  return (
+    <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
+      Toggle Theme: {theme}
     </button>
   );
 }
 ```
 
-Additional Example: Managing form input
-```javascript
-const [name, setName] = useState("");
-return <input value={name} onChange={(e) => setName(e.target.value)} />;
-```
-
-### useEffect
-Handles side effects like API calls.
+### useRef - Direct DOM Access
+Creates a mutable ref object that persists across renders. Used for accessing DOM elements directly or storing mutable values.
 
 ```javascript
-useEffect(() => {
-  console.log("Component mounted");
-}, []);
-```
+function TextInput() {
+  const inputRef = useRef(null);
 
-Runs when: component mounts, dependencies change.
+  const focusInput = () => {
+    inputRef.current.focus(); // Direct DOM access
+  };
 
-Additional Example: Fetching data
-```javascript
-useEffect(() => {
-  fetch('/api/data').then(res => res.json()).then(setData);
-}, []);
-```
-
-### useContext
-Access global data without prop drilling.
-
-```javascript
-const value = useContext(MyContext);
-```
-
-Example:
-```javascript
-const ThemeContext = React.createContext();
-function Component() {
-  const theme = useContext(ThemeContext);
-  return <div style={{ color: theme.color }}>Hello</div>;
+  return (
+    <div>
+      <input ref={inputRef} type="text" />
+      <button onClick={focusInput}>Focus Input</button>
+    </div>
+  );
 }
 ```
 
-### useRef
-Access DOM elements directly.
+### useMemo - Memoization
+Memoizes expensive computations to avoid unnecessary recalculations.
 
 ```javascript
-const inputRef = useRef();
+function ExpensiveComponent({ numbers }) {
+  // Without memoization - recalculates on every render
+  const sum = numbers.reduce((acc, num) => acc + num, 0);
+
+  // With memoization - only recalculates when numbers change
+  const memoizedSum = useMemo(() => {
+    console.log('Calculating sum...');
+    return numbers.reduce((acc, num) => acc + num, 0);
+  }, [numbers]);
+
+  return <div>Sum: {memoizedSum}</div>;
+}
 ```
 
-Example:
+### useCallback - Memoized Functions
+Returns a memoized callback function that only changes when dependencies change. Prevents unnecessary re-renders of child components.
+
 ```javascript
-<input ref={inputRef} />
-useEffect(() => inputRef.current.focus(), []);
+function ParentComponent() {
+  const [count, setCount] = useState(0);
+
+  // Without useCallback - new function on every render
+  const increment = () => setCount(count + 1);
+
+  // With useCallback - stable function reference
+  const memoizedIncrement = useCallback(() => {
+    setCount(prev => prev + 1);
+  }, []); // No dependencies needed
+
+  return <ChildComponent onIncrement={memoizedIncrement} />;
+}
+
+// Child component with React.memo
+const ChildComponent = React.memo(({ onIncrement }) => {
+  console.log('Child re-rendered');
+  return <button onClick={onIncrement}>Increment</button>;
+});
 ```
 
-### useMemo / useCallback
-Performance optimization.
+### Interview Explanation:
+"React Hooks revolutionized functional components by enabling state and lifecycle features. useState manages local state with array destructuring returning [value, setter]. useEffect handles side effects with dependency arrays controlling when it runs. useContext eliminates prop drilling for global state. useRef gives direct DOM access or persistent mutable values. useMemo prevents expensive recalculations, useCallback prevents unnecessary child re-renders. I use them to write cleaner, more maintainable functional components."
 
-Example useMemo:
-```javascript
-const expensiveValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
-```
-
-Example useCallback:
-```javascript
-const handleClick = useCallback(() => { console.log('Clicked'); }, []);
-```
-
-**Interview Tip:** useState for state, useEffect for side effects, useContext for global state, useRef for DOM access, useMemo/useCallback for optimization.
+**Interview Tip:** useState for state, useEffect for side effects, useContext for global state, useRef for DOM access, useMemo/useCallback for optimization. Rules: only call at top level, only in React functions.
 
 </details>
 
 <details><summary>State Management</summary>
 
-State management controls how data flows through an application.
+State management controls how data flows through a React application. Choosing the right approach depends on application complexity and data sharing needs.
 
-### Local State
-Managed inside a component using useState.
+### Local State (useState)
+Best for component-specific data that doesn't need to be shared.
 
 ```javascript
-const [name, setName] = useState("");
+function TodoItem({ todo }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editText, setEditText] = useState(todo.text);
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleSave = () => {
+    // Update todo logic
+    setIsEditing(false);
+  };
+
+  return (
+    <div>
+      {isEditing ? (
+        <input
+          value={editText}
+          onChange={(e) => setEditText(e.target.value)}
+          onBlur={handleSave}
+        />
+      ) : (
+        <span onClick={handleEdit}>{todo.text}</span>
+      )}
+    </div>
+  );
+}
 ```
 
-### Global State
-Used when many components share data.
-Popular tools: Redux, Zustand, Recoil, React Context API
+### Lifting State Up
+When multiple components need the same state, move it to their common parent.
 
-Example (Context):
 ```javascript
-const ThemeContext = React.createContext();
+function TodoApp() {
+  const [todos, setTodos] = useState([]);
+
+  const addTodo = (text) => {
+    setTodos(prev => [...prev, { id: Date.now(), text, completed: false }]);
+  };
+
+  const toggleTodo = (id) => {
+    setTodos(prev =>
+      prev.map(todo =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
+
+  return (
+    <div>
+      <AddTodo onAdd={addTodo} />
+      <TodoList todos={todos} onToggle={toggleTodo} />
+    </div>
+  );
+}
 ```
 
-Additional Example with useReducer:
+### React Context API
+For global state that needs to be accessed by many components without prop drilling.
+
 ```javascript
-const [state, dispatch] = useReducer(reducer, initialState);
+// Create context
+const UserContext = React.createContext();
+
+// Provider component
+function UserProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch user data
+    fetch('/api/user')
+      .then(res => res.json())
+      .then(data => {
+        setUser(data);
+        setLoading(false);
+      });
+  }, []);
+
+  const login = (credentials) => {
+    // Login logic
+    return fetch('/api/login', {
+      method: 'POST',
+      body: JSON.stringify(credentials)
+    }).then(res => res.json());
+  };
+
+  const logout = () => {
+    setUser(null);
+    // Clear tokens, etc.
+  };
+
+  return (
+    <UserContext.Provider value={{ user, loading, login, logout }}>
+      {children}
+    </UserContext.Provider>
+  );
+}
+
+// Usage
+function Navbar() {
+  const { user, logout } = useContext(UserContext);
+
+  return (
+    <nav>
+      {user ? (
+        <div>
+          <span>Welcome, {user.name}</span>
+          <button onClick={logout}>Logout</button>
+        </div>
+      ) : (
+        <LoginForm />
+      )}
+    </nav>
+  );
+}
 ```
 
-**Interview Tip:** Local state for component-specific data, global for app-wide. Context for simple cases, Redux for complex.
+### useReducer for Complex State
+When state logic involves multiple sub-values or complex transitions.
+
+```javascript
+const initialState = {
+  todos: [],
+  filter: 'all', // 'all', 'active', 'completed'
+  loading: false
+};
+
+function todoReducer(state, action) {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return {
+        ...state,
+        todos: [...state.todos, action.payload]
+      };
+    case 'TOGGLE_TODO':
+      return {
+        ...state,
+        todos: state.todos.map(todo =>
+          todo.id === action.payload
+            ? { ...todo, completed: !todo.completed }
+            : todo
+        )
+      };
+    case 'SET_FILTER':
+      return { ...state, filter: action.payload };
+    case 'SET_LOADING':
+      return { ...state, loading: action.payload };
+    default:
+      return state;
+  }
+}
+
+function TodoApp() {
+  const [state, dispatch] = useReducer(todoReducer, initialState);
+
+  const addTodo = (text) => {
+    dispatch({ type: 'ADD_TODO', payload: { id: Date.now(), text, completed: false } });
+  };
+
+  const filteredTodos = state.todos.filter(todo => {
+    if (state.filter === 'active') return !todo.completed;
+    if (state.filter === 'completed') return todo.completed;
+    return true;
+  });
+
+  return (
+    <div>
+      {state.loading && <div>Loading...</div>}
+      <AddTodo onAdd={addTodo} />
+      <FilterButtons
+        currentFilter={state.filter}
+        onFilterChange={(filter) => dispatch({ type: 'SET_FILTER', payload: filter })}
+      />
+      <TodoList todos={filteredTodos} onToggle={(id) => dispatch({ type: 'TOGGLE_TODO', payload: id })} />
+    </div>
+  );
+}
+```
+
+### Interview Explanation:
+"State management in React ranges from local useState for component-specific data to global solutions for app-wide state. I start with local state, lift state up when multiple components need it, use Context for theme/user data, and consider Redux/Zustand for complex apps. The key is choosing the right tool: useState for simple cases, useReducer for complex state logic, Context for global data without prop drilling. I always consider performance implications and avoid unnecessary re-renders."
+
+**Interview Tip:** Local state for component-specific data, global for app-wide. Context for simple cases, Redux for complex. Lifting state up when multiple components need same data.
 
 </details>
 
 <details><summary>API Integration</summary>
 
-Frontend applications often fetch data from servers.
+Frontend applications frequently communicate with backend APIs. Proper API integration involves handling loading states, errors, caching, and user feedback.
 
-### Fetch API
-```javascript
-fetch("https://api.example.com/users")
-  .then(res => res.json())
-  .then(data => console.log(data));
-```
-
-### Axios
-Popular HTTP client.
+### Fetch API (Built-in)
+Modern browser API for making HTTP requests. Returns Promises.
 
 ```javascript
-import axios from "axios";
+// Basic GET request
+async function fetchUsers() {
+  try {
+    const response = await fetch('/api/users');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const users = await response.json();
+    return users;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    throw error;
+  }
+}
 
-axios.get("/api/users")
-  .then(response => console.log(response.data));
-```
+// POST request with JSON body
+async function createUser(userData) {
+  const response = await fetch('/api/users', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(userData)
+  });
 
-### API Call with useEffect
-```javascript
-import { useEffect, useState } from "react";
+  if (!response.ok) {
+    throw new Error('Failed to create user');
+  }
 
-function Users() {
-  const [users, setUsers] = useState([]);
+  return response.json();
+}
 
-  useEffect(() => {
-    fetch("/api/users")
-      .then(res => res.json())
-      .then(data => setUsers(data));
-  }, []);
+// File upload
+async function uploadFile(file) {
+  const formData = new FormData();
+  formData.append('file', file);
 
-  return <div>{users.length} users</div>;
+  const response = await fetch('/api/upload', {
+    method: 'POST',
+    body: formData
+  });
+
+  return response.json();
 }
 ```
 
-Additional Example: Error handling
+### Axios (Third-party Library)
+Feature-rich HTTP client with automatic JSON parsing, interceptors, and better error handling.
+
 ```javascript
-const [error, setError] = useState(null);
-useEffect(() => {
-  fetch("/api/users")
-    .then(res => {
-      if (!res.ok) throw new Error('Failed to fetch');
-      return res.json();
-    })
-    .then(setUsers)
-    .catch(setError);
-}, []);
+import axios from 'axios';
+
+// Create configured instance
+const apiClient = axios.create({
+  baseURL: '/api',
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
+// Request interceptor for auth
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor for error handling
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Handle unauthorized
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+// Usage
+const fetchUsers = () => apiClient.get('/users');
+const createUser = (userData) => apiClient.post('/users', userData);
+const updateUser = (id, userData) => apiClient.put(`/users/${id}`, userData);
+const deleteUser = (id) => apiClient.delete(`/users/${id}`);
 ```
 
-**Interview Tip:** Handle loading states, errors, and cleanup in useEffect.
+### Custom Hook for API Calls
+Encapsulates API logic and state management for reusable components.
+
+```javascript
+import { useState, useEffect, useCallback } from 'react';
+
+function useApi(endpoint, options = {}) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const execute = useCallback(async (overrideOptions = {}) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(endpoint, { ...options, ...overrideOptions });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      setData(result);
+      return result;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [endpoint, options]);
+
+  useEffect(() => {
+    if (options.immediate) {
+      execute();
+    }
+  }, [execute, options.immediate]);
+
+  return { data, loading, error, execute, refetch: execute };
+}
+
+// Usage
+function UsersList() {
+  const { data: users, loading, error, refetch } = useApi('/api/users', {
+    immediate: true
+  });
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  return (
+    <div>
+      <button onClick={refetch}>Refresh</button>
+      {users?.map(user => <div key={user.id}>{user.name}</div>)}
+    </div>
+  );
+}
+```
+
+### Advanced Patterns
+```javascript
+// Optimistic updates
+function useOptimisticUpdate() {
+  const [items, setItems] = useState([]);
+
+  const addItem = async (newItem) => {
+    // Optimistically add to UI
+    const tempId = Date.now();
+    setItems(prev => [...prev, { ...newItem, id: tempId, pending: true }]);
+
+    try {
+      const savedItem = await apiClient.post('/items', newItem);
+      // Replace with real data
+      setItems(prev => prev.map(item =>
+        item.id === tempId ? savedItem : item
+      ));
+    } catch (error) {
+      // Revert on error
+      setItems(prev => prev.filter(item => item.id !== tempId));
+      throw error;
+    }
+  };
+
+  return { items, addItem };
+}
+
+// Infinite scroll with pagination
+function useInfiniteScroll(endpoint) {
+  const [items, setItems] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const loadMore = async () => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
+    try {
+      const response = await fetch(`${endpoint}?page=${page}&size=20`);
+      const newItems = await response.json();
+
+      if (newItems.length === 0) {
+        setHasMore(false);
+      } else {
+        setItems(prev => [...prev, ...newItems]);
+        setPage(prev => prev + 1);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { items, loadMore, hasMore, loading };
+}
+```
+
+### Interview Explanation:
+"API integration in React involves fetching data, handling loading/error states, and managing side effects. I use custom hooks to encapsulate API logic, ensuring reusability and clean components. For error handling, I implement global error boundaries and user-friendly messages. I prefer Axios for its interceptors and automatic JSON parsing, but Fetch works for simple cases. I always handle loading states to prevent poor UX and implement proper error boundaries for graceful failures."
+
+**Interview Tip:** Handle loading states, errors, and cleanup in useEffect. Use custom hooks for reusable API logic. Consider optimistic updates for better UX.
 
 </details>
 
@@ -527,6 +960,46 @@ return <input value={value} onChange={(e) => setValue(e.target.value)} />;
 ```
 
 **Real-time Example:** A search bar where input value is tracked in state for filtering results as you type.
+
+</details>
+
+<details><summary>What is the Context API and when to use it?</summary>
+
+**Explanation:** Context API provides a way to share state between components without prop drilling.
+
+**Example:** ThemeContext allows child components to access theme without passing through all parents.
+
+**Real-time Example:** In a multi-language app, LanguageContext provides current language to all components.
+
+</details>
+
+<details><summary>Explain React Router and its usage.</summary>
+
+**Explanation:** React Router enables navigation between different components/views in a single-page application.
+
+**Example:** BrowserRouter with Routes and Route components to define navigation paths.
+
+**Real-time Example:** In a dashboard app, navigating between /dashboard, /users, /settings without page reloads.
+
+</details>
+
+<details><summary>What are React performance optimization techniques?</summary>
+
+**Explanation:** Use React.memo, useMemo, useCallback to prevent unnecessary re-renders, lazy loading for code splitting.
+
+**Example:** React.memo(Component) prevents re-render if props unchanged, useMemo(() => expensiveCalc()) caches results.
+
+**Real-time Example:** In a data-heavy table, memoize row components to prevent re-rendering on unrelated state changes.
+
+</details>
+
+<details><summary>How do you handle forms in React?</summary>
+
+**Explanation:** Use controlled components with state, or libraries like React Hook Form for complex forms.
+
+**Example:** Track form values in state, validate on submit, show errors.
+
+**Real-time Example:** In a registration form, validate email format, password strength, and show field-specific error messages.
 
 </details>
 

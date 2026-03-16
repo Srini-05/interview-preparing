@@ -896,4 +896,44 @@ class UserResponse {
 
 </details>
 
+<details><summary>Explain database normalization and its importance.</summary>
+
+**Explanation:** Normalization organizes data to reduce redundancy and anomalies by splitting tables based on dependencies.
+
+**Example:** Separate Customer and Order tables instead of repeating customer info in every order.
+
+**Real-time Example:** In an e-commerce database, normalization prevents updating customer address in multiple places when it changes.
+
+</details>
+
+<details><summary>What are database transactions and why are they important?</summary>
+
+**Explanation:** Transactions group operations that must succeed or fail together, ensuring data consistency.
+
+**Example:** Bank transfer: deduct from account A and credit to B must both succeed or both rollback.
+
+**Real-time Example:** In online shopping, order placement involves inventory reduction and payment processing as one transaction.
+
+</details>
+
+<details><summary>Explain the concept of database indexing.</summary>
+
+**Explanation:** Indexes speed up data retrieval by creating sorted data structures, but slow down writes.
+
+**Example:** B-tree index on email column allows fast user lookups by email.
+
+**Real-time Example:** In a user login system, indexing email speeds up authentication from O(n) to O(log n).
+
+</details>
+
+<details><summary>What are the different types of database relationships?</summary>
+
+**Explanation:** One-to-one, one-to-many, many-to-many relationships define how tables connect.
+
+**Example:** User has one profile (one-to-one), user has many orders (one-to-many), students enroll in many courses (many-to-many).
+
+**Real-time Example:** In a blog system, author has many posts (one-to-many), posts have many tags (many-to-many).
+
+</details>
+
 </details>
