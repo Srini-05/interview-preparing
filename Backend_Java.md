@@ -93,7 +93,8 @@ System.out.println(s1.equals(s2)); // true (same content)
 <span style="color: #007acc;">**Interview Tip:**</span> Override equals() and hashCode() together in custom classes.
 </details>
 
-### 5. What is the static keyword?
+<details><summary>5. What is the static keyword?</summary>
+
 Static members belong to the class rather than instances.
 
 - Static variables: Shared among all instances.
@@ -111,7 +112,10 @@ class Counter {
 
 **Interview Tip:** Static methods cannot access instance variables. Used for utility methods.
 
-### 6. What is the final keyword?
+</details>
+
+<details><summary>6. What is the final keyword?</summary>
+
 Final makes variables, methods, or classes unchangeable.
 
 - Final variable: Cannot be reassigned.
@@ -126,7 +130,10 @@ final class MathUtils { }
 
 <span style="color: #007acc;">**Interview Tip:**</span> Final for constants, security, and performance.
 
-### 7. What is the difference between String, StringBuffer, and StringBuilder?
+</details>
+
+<details><summary>7. What is the difference between String, StringBuffer, and StringBuilder?</summary>
+
 - **String:** Immutable, thread-safe, slow for modifications.
 - **StringBuffer:** Mutable, thread-safe, synchronized.
 - **StringBuilder:** Mutable, not thread-safe, faster.
@@ -142,7 +149,10 @@ sb.append(" World"); // Modifies same object
 
 **Interview Tip:** Use StringBuilder for single-threaded string manipulations, StringBuffer for multi-threaded.
 
-### 8. What are arrays in Java?
+</details>
+
+<details><summary>8. What are arrays in Java?</summary>
+
 Arrays are fixed-size, homogeneous data structures.
 
 Declaration: `int[] arr = new int[5];`
@@ -150,7 +160,10 @@ Initialization: `int[] arr = {1, 2, 3, 4, 5};`
 
 **Interview Tip:** Arrays have fixed size; use ArrayList for dynamic size.
 
-### 9. What is inheritance in Java?
+</details>
+
+<details><summary>9. What is inheritance in Java?</summary>
+
 Inheritance allows a class to inherit properties and methods from another class using `extends`.
 
 Example:
@@ -166,7 +179,10 @@ class Dog extends Animal {
 
 **Interview Tip:** Java supports single inheritance. Use interfaces for multiple inheritance.
 
-### 10. What are interfaces in Java?
+</details>
+
+<details><summary>10. What are interfaces in Java?</summary>
+
 Interfaces define a contract with abstract methods. Classes implement interfaces using `implements`.
 
 Example:
@@ -182,7 +198,10 @@ class Dog implements Animal {
 
 **Interview Tip:** All methods are public abstract by default. From Java 8, can have default and static methods.
 
-### 11. What are abstract classes?
+</details>
+
+<details><summary>11. What are abstract classes?</summary>
+
 Abstract classes cannot be instantiated and may contain abstract methods.
 
 Example:
@@ -198,7 +217,10 @@ class Circle extends Shape {
 
 **Interview Tip:** Use abstract classes when sharing code, interfaces when defining contracts.
 
-### 12. What is method overloading and overriding?
+</details>
+
+<details><summary>12. What is method overloading and overriding?</summary>
+
 - **Overloading:** Same method name, different parameters in the same class (compile-time polymorphism).
 - **Overriding:** Same method signature in subclass (runtime polymorphism).
 
@@ -222,7 +244,10 @@ class Child extends Parent {
 
 **Interview Tip:** Overloading changes behavior, overriding replaces behavior.
 
-### 13. What is a constructor?
+</details>
+
+<details><summary>13. What is a constructor?</summary>
+
 Constructors initialize objects. Same name as class, no return type.
 
 Types: Default, Parameterized, Copy.
@@ -237,7 +262,10 @@ class Person {
 
 **Interview Tip:** If no constructor, Java provides default. Cannot be inherited.
 
-### 14. What is the this keyword?
+</details>
+
+<details><summary>14. What is the this keyword?</summary>
+
 `this` refers to the current object instance.
 
 Uses: Differentiate instance variables, call other constructors, pass current object.
@@ -252,7 +280,10 @@ class Person {
 
 **Interview Tip:** Used to avoid name conflicts.
 
-### 15. What is the super keyword?
+</details>
+
+<details><summary>15. What is the super keyword?</summary>
+
 `super` refers to the parent class.
 
 Uses: Call parent constructor, access parent methods/variables.
@@ -266,32 +297,47 @@ class Dog extends Animal {
 
 **Interview Tip:** Must be first statement in constructor.
 
-### 16. What are packages in Java?
+</details>
+
+<details><summary>16. What are packages in Java?</summary>
+
 Packages organize classes and avoid name conflicts.
 
 Example: `import java.util.*;`
 
 **Interview Tip:** Use reverse domain naming convention.
 
-### 17. What is the difference between ArrayList and LinkedList?
+</details>
+
+<details><summary>17. What is the difference between ArrayList and LinkedList?</summary>
+
 - **ArrayList:** Dynamic array, fast random access, slow insertions/deletions.
 - **LinkedList:** Doubly linked list, fast insertions/deletions, slow random access.
 
 **Interview Tip:** Choose based on use case: ArrayList for reads, LinkedList for modifications.
 
-### 18. What is the difference between HashSet and TreeSet?
+</details>
+
+<details><summary>18. What is the difference between HashSet and TreeSet?</summary>
+
 - **HashSet:** Unordered, uses hash, faster.
 - **TreeSet:** Ordered, uses red-black tree, slower.
 
 **Interview Tip:** HashSet for uniqueness, TreeSet for sorted order.
 
-### 19. What is the difference between HashMap and HashTable?
+</details>
+
+<details><summary>19. What is the difference between HashMap and HashTable?</summary>
+
 - **HashMap:** Not synchronized, allows null keys/values, faster.
 - **HashTable:** Synchronized, doesn't allow null, thread-safe but slower.
 
 **Interview Tip:** Use HashMap for single-threaded, ConcurrentHashMap for multi-threaded.
 
-### 20. What is the try-with-resources statement?
+</details>
+
+<details><summary>20. What is the try-with-resources statement?</summary>
+
 Automatically closes resources that implement AutoCloseable.
 
 Example:
@@ -303,7 +349,9 @@ try (FileReader fr = new FileReader("file.txt")) {
 
 **Interview Tip:** Prevents resource leaks.
 
-## 1. What is the difference between RestTemplate and WebClient?
+</details>
+
+<details><summary>1. What is the difference between RestTemplate and WebClient?</summary>
 
 In Spring Framework / Spring Boot, both RestTemplate and WebClient are used to call external REST APIs, but they differ mainly in programming model and performance.
 
@@ -365,7 +413,9 @@ Mono<String> response = client.get()
 
 **Interview Tip:** RestTemplate blocks threads, which can lead to performance issues in high-load scenarios. WebClient is non-blocking, making it ideal for reactive applications. Always prefer WebClient for new projects.
 
-## 2. How do you handle microservice communication failures?
+</details>
+
+<details><summary>2. How do you handle microservice communication failures?</summary>
 
 In microservices, communication failures can happen due to network issues, service downtime, or high latency. To handle these failures, we use several resilience patterns:
 
@@ -389,7 +439,9 @@ public Mono<User> fallbackGetUser(String id, Throwable t) {
 
 **Interview Tip:** Resilience patterns prevent system-wide failures. Circuit breakers are crucial in microservices to avoid cascading failures. Tools like Hystrix or Resilience4j implement these patterns easily.
 
-## 3. What are the types of Garbage Collectors (GC) in Java?
+</details>
+
+<details><summary>3. What are the types of Garbage Collectors (GC) in Java?</summary>
 
 In Java, Garbage Collectors (GC) automatically manage memory by removing unused objects from the heap. Over different Java versions, several types of GC algorithms have been introduced.
 
@@ -432,7 +484,9 @@ In Java, Garbage Collectors (GC) automatically manage memory by removing unused 
 
 **Interview Tip:** G1 is the default GC in modern Java. For low-latency applications, choose ZGC or Shenandoah. Serial GC is for small apps, Parallel for throughput, CMS/G1 for balanced performance.
 
-## 4. Explain the end-to-end deployment flow.
+</details>
+
+<details><summary>4. Explain the end-to-end deployment flow.</summary>
 
 Code → Build → Test → Artifact → Deploy → Monitor.
 
@@ -448,7 +502,9 @@ Example: In a Spring Boot app, use Maven to build, then deploy to AWS ECS.
 
 **Interview Tip:** Understand CI/CD pipelines. Deployment involves containerization (Docker) and orchestration (Kubernetes) for scalability.
 
-## 5. Method Overloading vs Method Overriding
+</details>
+
+<details><summary>5. Method Overloading vs Method Overriding</summary>
 
 ### Method Overloading
 - Definition: Multiple methods in the same class have the same name but different parameter lists (number or type of parameters).
@@ -488,7 +544,9 @@ class Dog extends Animal {
 
 **Interview Tip:** Overloading is compile-time, overriding is runtime. Overriding requires inheritance and same signature. Use @Override annotation for clarity.
 
-## 6. volatile vs transient Keyword
+</details>
+
+<details><summary>6. volatile vs transient Keyword</summary>
 
 ### volatile Keyword
 - Used with variables to tell the JVM that the variable can be modified by multiple threads simultaneously.
@@ -538,7 +596,9 @@ class User implements Serializable {
 
 **Interview Tip:** volatile for thread safety in multi-threading, transient for excluding sensitive data from serialization. Never use volatile for atomic operations like increment.
 
-## 7. JDK vs JRE vs JVM
+</details>
+
+<details><summary>7. JDK vs JRE vs JVM</summary>
 
 ### JDK (Java Development Kit)
 - Provides tools to develop and run Java programs.
@@ -559,7 +619,9 @@ Real-Life Example: Cooking
 
 **Interview Tip:** JDK for development, JRE for running apps, JVM for bytecode execution. JDK includes JRE.
 
-## 8. How Java works internally
+</details>
+
+<details><summary>8. How Java works internally</summary>
 
 Java Source (.java)
     ↓
@@ -579,7 +641,9 @@ Garbage Collector
 
 **Interview Tip:** Understand the compilation to bytecode and execution by JVM. Bytecode is platform-independent.
 
-## 9. Memory Areas in Java
+</details>
+
+<details><summary>9. Memory Areas in Java</summary>
 
 ### Heap Memory
 - Stores: Objects, Instance variables, Arrays
@@ -595,7 +659,9 @@ Garbage Collector
 
 **Interview Tip:** Heap for objects, Stack for method execution. OutOfMemoryError in heap, StackOverflowError in stack.
 
-## 10. Garbage Collection (basic types, when it runs)
+</details>
+
+<details><summary>10. Garbage Collection (basic types, when it runs)</summary>
 
 Garbage Collection is an automatic memory management process in Java that removes unused objects from heap memory when JVM needs more space.
 
@@ -604,7 +670,9 @@ Garbage Collection is an automatic memory management process in Java that remove
 
 **Interview Tip:** GC is automatic, but tuning GC can improve performance. Use tools like VisualVM to monitor GC.
 
-## 11. OOPS (Object-Oriented Programming System)
+</details>
+
+<details><summary>11. OOPS (Object-Oriented Programming System)</summary>
 
 OOPS is a programming approach based on objects that contain Data (variables) and Behavior (methods).
 
@@ -665,7 +733,9 @@ class Car extends Vehicle {
 
 **Interview Tip:** Encapsulation hides data, Inheritance reuses code, Polymorphism allows flexibility, Abstraction simplifies complexity.
 
-## 12. Exception Handling
+</details>
+
+<details><summary>12. Exception Handling</summary>
 
 ### Types:
 - Checked: Checked at compile-time (e.g., IOException)
@@ -687,7 +757,9 @@ void method() throws IOException {
 
 **Interview Tip:** Use try-catch for handling, throws for declaration. Checked exceptions must be handled or declared.
 
-## 13. Access Modifiers
+</details>
+
+<details><summary>13. Access Modifiers</summary>
 
 - private: Accessible only within the same class.
 - protected: Accessible within the same package and subclasses.
@@ -696,356 +768,4 @@ void method() throws IOException {
 
 **Interview Tip:** private for encapsulation, public for API, protected for inheritance.
 
-## 14. What is Dependency Injection?
-
-Dependency Injection (DI) is a design pattern where the dependencies of a class are provided from outside instead of the class creating them itself.
-
-In Spring, the IoC container manages the lifecycle of beans and injects dependencies using constructor, setter, or field injection. It helps achieve loose coupling and makes the application easier to test and maintain.
-
-Example:
-```java
-@Service
-class UserService {
-    private final UserRepository repo;
-
-    @Autowired
-    UserService(UserRepository repo) {
-        this.repo = repo;
-    }
-}
-```
-
-**Interview Tip:** DI promotes loose coupling. Constructor injection is preferred over field injection.
-
-## 15. What is Auto-Configuration in Spring Boot?
-
-Spring Boot automatically configures beans based on the dependencies present in the classpath.
-
-Example: Add spring-boot-starter-data-jpa → Spring Boot configures DataSource, EntityManager, etc.
-
-### How It Works Internally?
-- @SpringBootApplication = @Configuration + @EnableAutoConfiguration + @ComponentScan
-- @EnableAutoConfiguration scans classpath and loads auto-config classes from META-INF/spring.factories
-- Uses conditional annotations like @ConditionalOnClass, @ConditionalOnMissingBean
-
-**Interview Tip:** Auto-configuration reduces boilerplate. Use @ConditionalOnProperty for custom configs.
-
-## 16. Global Exception Handling
-
-Instead of writing try-catch in every controller method, we handle exceptions centrally.
-
-Spring provides @ControllerAdvice or @RestControllerAdvice. We define methods annotated with @ExceptionHandler to handle specific exceptions.
-
-Example:
-```java
-@RestControllerAdvice
-class GlobalExceptionHandler {
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> handleNotFound(ResourceNotFoundException e) {
-        return ResponseEntity.status(404).body("Resource not found");
-    }
-}
-```
-
-**Interview Tip:** Centralizes error handling, improves maintainability.
-
-## 17. How do you validate request body in Spring Boot?
-
-Use Bean Validation (JSR-380) with annotations like @NotNull, @Size, @Email in the DTO class.
-
-In the controller, use @Valid with @RequestBody to trigger validation.
-
-If validation fails, Spring throws MethodArgumentNotValidException.
-
-Example:
-```java
-class UserDTO {
-    @NotNull
-    @Size(min = 2, max = 50)
-    private String name;
-
-    @Email
-    private String email;
-}
-
-@PostMapping("/users")
-public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO dto) {
-    // logic
-}
-```
-
-**Interview Tip:** Validation happens before controller logic. Handle validation errors in @ControllerAdvice.
-
-## 18. JPA (Java Persistence API)
-
-- Object-Relational Mapping (ORM): Maps Java classes to database tables.
-- Provides methods for CRUD operations.
-- Supports JPQL.
-- JPA is a specification; Hibernate is an implementation.
-
-Example:
-```java
-@Entity
-class User {
-    @Id @GeneratedValue
-    private Long id;
-    private String name;
-}
-
-@Repository
-interface UserRepository extends JpaRepository<User, Long> {
-    List<User> findByName(String name);
-}
-```
-
-**Interview Tip:** JPA abstracts database operations. Use @Query for custom queries.
-
-## 19. ResponseEntity
-
-Used to customize HTTP response: status code, headers, body.
-
-Example:
-```java
-return ResponseEntity.ok().body(data);
-```
-
-Additional Example:
-```java
-return ResponseEntity.status(HttpStatus.CREATED).header("Custom-Header", "value").body(data);
-```
-
-**Interview Tip:** Use for custom responses, not just returning objects.
-
-## 20. .map vs .flatMap
-
-### .map
-- Transforms each element into another object.
-- One-to-one mapping.
-
-Example:
-```java
-List<String> names = users.stream().map(User::getName).collect(Collectors.toList());
-```
-
-### .flatMap
-- Transforms each element into a stream and flattens into a single stream.
-- One-to-many mapping.
-
-Example:
-```java
-List<String> allOrders = users.stream()
-    .flatMap(user -> user.getOrders().stream())
-    .map(Order::getId)
-    .collect(Collectors.toList());
-```
-
-**Interview Tip:** map for transformation, flatMap for flattening nested collections.
-
-## 21. Types of Exceptions (from GlobalExceptionHandler)
-
-- 403 Forbidden: AccessDeniedException
-- 404 Not Found: UsernameNotFoundException, ResourceNotFoundException
-- 400 Bad Request: ExecutionException, InterruptedException, MethodArgumentNotValidException, etc.
-- 405 Method Not Allowed: HttpRequestMethodNotSupportedException
-- 500 Internal Server Error: Exception (generic)
-
-**Interview Tip:** Map exceptions to appropriate HTTP status codes for REST APIs.
-
-## 22. Multithreading
-
-Multithreading allows a program to run multiple threads concurrently within the same process to improve performance and responsiveness.
-
-### Thread Lifecycle
-NEW → RUNNABLE → WAITING/BLOCKED → TERMINATED
-
-### Process vs Thread
-| Feature    | Process              | Thread                |
-|------------|----------------------|-----------------------|
-| Definition | Independent program  | Part of a process     |
-| Memory     | Own memory           | Shares memory         |
-| Communication | Slow               | Fast                  |
-| Creation cost | High              | Low                   |
-
-Example:
-```java
-class MyThread extends Thread {
-    public void run() {
-        System.out.println("Thread running");
-    }
-}
-
-MyThread t = new MyThread();
-t.start();
-```
-
-**Interview Tip:** Threads share heap, have separate stacks. Use synchronized for thread safety.
-
-## 23. Collections Framework
-
-Provides data structures to store, retrieve, and manipulate groups of objects dynamically.
-
-### Main Interfaces
-1. List: Ordered, allows duplicates (ArrayList, LinkedList)
-2. Set: No duplicates (HashSet, TreeSet)
-3. Map: Key-value pairs (HashMap, TreeMap)
-
-Example:
-```java
-List<String> list = new ArrayList<>();
-list.add("Apple");
-list.add("Apple"); // duplicates allowed
-
-Set<String> set = new HashSet<>();
-set.add("Apple");
-set.add("Apple"); // no duplicates
-
-Map<String, Integer> map = new HashMap<>();
-map.put("Apple", 1);
-```
-
-**Interview Tip:** ArrayList for random access, LinkedList for insertions/deletions. HashMap for fast lookups.
-
-## 24. Streams
-
-A sequence of elements from a data source that supports operations to process those elements.
-
-- Does not store data, processes data from source.
-- Operations: map, filter, reduce, etc.
-
-Example:
-```java
-List<String> names = users.stream()
-    .filter(u -> u.getAge() > 18)
-    .map(User::getName)
-    .collect(Collectors.toList());
-```
-
-**Interview Tip:** Streams are lazy, use collect() to materialize. Parallel streams for performance.
-
-## 25. SOLID Principles
-
-### S - Single Responsibility Principle
-A class should have only ONE reason to change.
-
-Example: Separate UserService for business logic, EmailService for notifications.
-
-### O - Open/Closed Principle
-Software entities should be open for extension but closed for modification.
-
-Example: Use interfaces to add new payment methods without changing existing code.
-
-### L - Liskov Substitution Principle
-Objects of a superclass should be replaceable with objects of a subclass without affecting correctness.
-
-Example: Rectangle and Square - ensure Square doesn't break Rectangle behavior.
-
-### I - Interface Segregation Principle
-Clients should not be forced to depend on interfaces they do not use.
-
-Example: Separate Printable and Scannable interfaces instead of one big Printer interface.
-
-### D - Dependency Inversion Principle
-High-level modules should not depend on low-level modules. Both should depend on abstractions.
-
-Example: Service depends on Repository interface, not concrete implementation.
-
-**Interview Tip:** SOLID ensures maintainable code. S for focus, O for extensibility, L for inheritance safety, I for interface design, D for decoupling.
-
-## 26. Spring Boot Topics
-
-### Core Concepts
-- @SpringBootApplication
-- Auto-configuration
-- Application properties/YAML
-- Profiles
-- Actuator
-
-### REST APIs
-- @RestController, @RequestMapping
-- @RequestParam, @PathVariable, @RequestBody
-- ResponseEntity
-
-### Data Persistence
-- Spring Data JPA
-- Entities, Repositories
-- @Transactional
-
-### Security
-- Spring Security
-- Authentication/Authorization
-- JWT/OAuth2
-
-### Testing
-- @SpringBootTest, @WebMvcTest
-- JUnit, Mockito
-
-### Advanced
-- Caching, Messaging, Scheduling, Async
-
-**Interview Tip:** Master auto-configuration and profiles for environment-specific configs.
-
-## 27. Spring Boot Annotations
-
-### Stereotype
-- @Component, @Service, @Repository, @Controller, @RestController
-
-### Configuration
-- @Configuration, @Bean, @ComponentScan
-
-### Web
-- @RequestMapping, @GetMapping, @PostMapping, @RequestParam, @PathVariable, @RequestBody, @ResponseBody
-
-### DI
-- @Autowired, @Qualifier, @Value
-
-### Data
-- @Entity, @Table, @Transactional
-
-### Validation
-- @Valid, @NotNull, @Size
-
-### Testing
-- @SpringBootTest, @MockBean
-
-**Interview Tip:** @RestController = @Controller + @ResponseBody.
-
-## 28. RequestParam, PathVariable, RequestBody, ResponseBody
-
-| Annotation     | Used For              | Example URL          | Example Usage |
-|----------------|-----------------------|----------------------|---------------|
-| @RequestParam | Query parameters     | /greet?name=Srini   | @GetMapping("/greet") public String greet(@RequestParam String name) |
-| @PathVariable | URL path variables    | /users/101          | @GetMapping("/users/{id}") public String getUser(@PathVariable int id) |
-| @RequestBody  | JSON body to object   | /createUser (POST)  | @PostMapping("/createUser") public String createUser(@RequestBody User user) |
-| @ResponseBody | Return value as response | /welcome           | @GetMapping("/welcome") @ResponseBody public String welcome() |
-
-**Interview Tip:** @RequestParam for optional params, @PathVariable for required path parts.
-
-## 29. HashMap vs ConcurrentHashMap
-
-HashMap is not thread-safe and allows one null key and multiple null values, whereas ConcurrentHashMap is thread-safe, does not allow null keys or values, and provides better performance in concurrent environments by locking at bucket level instead of locking the whole map.
-
-Example:
-```java
-Map<String, String> map = new ConcurrentHashMap<>();
-map.put("key", "value"); // thread-safe
-```
-
-**Interview Tip:** Use ConcurrentHashMap for multi-threaded access, HashMap for single-threaded.
-
-## 30. @Autowired vs Constructor Injection
-
-@Autowired is an annotation used to inject dependencies. It can be used in field, setter, or constructor injection. Constructor injection is recommended because it makes dependencies mandatory, supports immutability, improves testability, and follows good design principles.
-
-Example:
-```java
-@Service
-class Service {
-    private final Repo repo;
-
-    Service(Repo repo) { // no @Autowired needed in Spring 4.3+
-        this.repo = repo;
-    }
-}
-```
-
-**Interview Tip:** Constructor injection prevents null dependencies and is testable.
+</details>
