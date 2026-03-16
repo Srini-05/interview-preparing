@@ -1,6 +1,10 @@
 # Frontend - React
 
-## Short Forms
+> **Note:** Interview Tips are highlighted in <span style="color: #007acc;">blue</span> for easy identification.
+> **Accordion Feature:** Each question can be made collapsible by wrapping in `<details><summary>Question Title</summary> content </details>`.
+
+<details><summary>Short Forms</summary>
+
 - DOM: Document Object Model
 - BOM: Browser Object Model
 - HTML: HyperText Markup Language
@@ -12,9 +16,11 @@
 - UI: User Interface
 - UX: User Experience
 
-**Interview Tip:** Know these acronyms as they are fundamental to web development.
+<span style="color: #007acc;">**Interview Tip:**</span> Know these acronyms as they are fundamental to web development.
 
-## Hooks
+</details>
+
+<details><summary>Hooks</summary>
 
 Hooks allow functional components to use state and lifecycle features.
 
@@ -103,7 +109,9 @@ const handleClick = useCallback(() => { console.log('Clicked'); }, []);
 
 **Interview Tip:** useState for state, useEffect for side effects, useContext for global state, useRef for DOM access, useMemo/useCallback for optimization.
 
-## State Management
+</details>
+
+<details><summary>State Management</summary>
 
 State management controls how data flows through an application.
 
@@ -130,7 +138,9 @@ const [state, dispatch] = useReducer(reducer, initialState);
 
 **Interview Tip:** Local state for component-specific data, global for app-wide. Context for simple cases, Redux for complex.
 
-## API Integration
+</details>
+
+<details><summary>API Integration</summary>
 
 Frontend applications often fetch data from servers.
 
@@ -184,7 +194,10 @@ useEffect(() => {
 
 **Interview Tip:** Handle loading states, errors, and cleanup in useEffect.
 
-## Quick Summary
+</details>
+
+<details><summary>Quick Summary</summary>
+
 - Concept: React Lifecycle - Component creation, update, removal
 - Concept: Hooks - Use state & lifecycle in functional components
 - Concept: State Management - Manage application data
@@ -192,7 +205,9 @@ useEffect(() => {
 
 **Interview Tip:** React is component-based. Hooks replaced class lifecycle methods.
 
-## Axios vs Fetch
+</details>
+
+<details><summary>Axios vs Fetch</summary>
 
 Axios is a third-party HTTP client library while Fetch is a built-in browser API. Axios provides automatic JSON parsing, better error handling, interceptors, and simpler syntax, while Fetch requires more manual configuration but does not require installing any library.
 
@@ -208,7 +223,9 @@ fetch('/api/users').then(res => res.json()).then(console.log);
 
 **Interview Tip:** Axios for simplicity, Fetch for no dependencies.
 
-## State vs Props
+</details>
+
+<details><summary>State vs Props</summary>
 
 State is mutable data managed inside a component, while props are read-only data passed from a parent component to a child component.
 
@@ -236,7 +253,9 @@ function Child({ text, onUpdate }) {
 
 **Interview Tip:** Props flow down, state flows up. Use props for parent-child communication.
 
-## Component Architecture
+</details>
+
+<details><summary>Component Architecture</summary>
 
 Learn how to structure large React apps.
 
@@ -265,7 +284,9 @@ function Button({ children, onClick, variant = 'primary' }) {
 
 **Interview Tip:** Break UI into small, reusable components. Use composition over inheritance.
 
-## Routing
+</details>
+
+<details><summary>Routing</summary>
 
 Frontend apps need navigation between pages.
 
@@ -290,7 +311,9 @@ Additional Example: Protected Route
 
 **Interview Tip:** Use Link for navigation, useParams for dynamic routes.
 
-## Form Handling
+</details>
+
+<details><summary>Form Handling</summary>
 
 Forms are everywhere in applications.
 
@@ -323,7 +346,9 @@ function Form() {
 
 **Interview Tip:** Controlled components for full control, libraries for complex forms.
 
-## Authentication
+</details>
+
+<details><summary>Authentication</summary>
 
 Login and secure pages.
 
@@ -339,7 +364,9 @@ function ProtectedRoute({ children }) {
 
 **Interview Tip:** Store tokens securely, handle token expiry.
 
-## Performance Optimization
+</details>
+
+<details><summary>Performance Optimization</summary>
 
 Important for real-world apps.
 
@@ -362,7 +389,9 @@ const LazyComponent = lazy(() => import('./Component'));
 
 **Interview Tip:** Memoize expensive computations, lazy load routes.
 
-## Advanced State Management
+</details>
+
+<details><summary>Advanced State Management</summary>
 
 Beyond basic state.
 
@@ -383,7 +412,9 @@ const counterSlice = createSlice({
 
 **Interview Tip:** Redux for predictable state, Context for simple global state.
 
-## API Architecture
+</details>
+
+<details><summary>API Architecture</summary>
 
 Instead of calling APIs everywhere.
 
@@ -404,7 +435,9 @@ function useUsers() {
 
 **Interview Tip:** Abstract API calls into services or hooks.
 
-## Testing
+</details>
+
+<details><summary>Testing</summary>
 
 Companies expect frontend testing.
 
@@ -422,3 +455,79 @@ test('renders button', () => {
 ```
 
 **Interview Tip:** Test user interactions, not implementation details.
+
+</details>
+
+<details><summary>Interview Questions</summary>
+
+<details><summary>What is React and why use it?</summary>
+
+**Explanation:** React is a JavaScript library for building user interfaces, focusing on component-based architecture for reusable and maintainable code.
+
+**Example:** A simple React component.
+```javascript
+function Welcome(props) {
+  return <h1>Hello, {props.name}!</h1>;
+}
+```
+
+**Real-time Example:** Building a dashboard where each widget (like charts, user info) is a reusable React component, making it easy to update and maintain.
+
+</details>
+
+<details><summary>Explain the difference between state and props.</summary>
+
+**Explanation:** Props are read-only data passed from parent to child components, while state is mutable data managed within a component that can change over time.
+
+**Example:** Props for static data, state for dynamic.
+```javascript
+function Counter({ initialCount }) { // initialCount is prop
+  const [count, setCount] = useState(initialCount); // count is state
+  return <button onClick={() => setCount(count + 1)}>{count}</button>;
+}
+```
+
+**Real-time Example:** In an e-commerce app, product name (prop) is fixed, but quantity in cart (state) changes as user adds/removes items.
+
+</details>
+
+<details><summary>What are React Hooks and give an example of useEffect.</summary>
+
+**Explanation:** Hooks are functions that let you use state and lifecycle features in functional components. useEffect runs side effects after render.
+
+**Example:** Fetching data on component mount.
+```javascript
+useEffect(() => {
+  fetch('/api/users').then(res => res.json()).then(setUsers);
+}, []);
+```
+
+**Real-time Example:** In a news app, useEffect fetches latest articles when the page loads, updating the UI automatically.
+
+</details>
+
+<details><summary>How does React handle rendering and what is Virtual DOM?</summary>
+
+**Explanation:** React uses a Virtual DOM to optimize rendering by comparing changes and updating only what's necessary in the real DOM.
+
+**Example:** When state changes, React re-renders the component in Virtual DOM, diffs with previous, and patches real DOM.
+
+**Real-time Example:** In a chat app, when a new message arrives, only the message list updates, not the entire page, for smooth performance.
+
+</details>
+
+<details><summary>Explain controlled vs uncontrolled components.</summary>
+
+**Explanation:** Controlled components have their value controlled by React state, while uncontrolled use DOM directly.
+
+**Example:** Controlled input.
+```javascript
+const [value, setValue] = useState('');
+return <input value={value} onChange={(e) => setValue(e.target.value)} />;
+```
+
+**Real-time Example:** A search bar where input value is tracked in state for filtering results as you type.
+
+</details>
+
+</details>

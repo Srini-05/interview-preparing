@@ -1,10 +1,13 @@
 # Backend - Java Basics
 
 > **Note:** Interview Tips are highlighted in <span style="color: #007acc;">blue</span> for easy identification.
+> **Accordion Feature:** Each question can be made collapsible by wrapping in `<details><summary>Question Title</summary> content </details>` (demonstrated for first few questions).
 
 ## Basic Java Interview Questions
 
-### 1. What is Java?
+<details>
+<summary>1. What is Java?</summary>
+
 Java is a high-level, object-oriented programming language developed by Sun Microsystems (now Oracle). It is platform-independent due to the JVM (Java Virtual Machine), which allows "Write Once, Run Anywhere" (WORA).
 
 **Key Features:**
@@ -16,8 +19,13 @@ Java is a high-level, object-oriented programming language developed by Sun Micr
 - Interpreted and Compiled
 
 <span style="color: #007acc;">**Interview Tip:**</span> Emphasize platform-independence via bytecode and JVM.
+</details>
 
-### 2. What are the data types in Java?
+</details>
+
+<details>
+<summary>2. What are the data types in Java?</summary>
+
 Java has two types of data types: Primitive and Non-Primitive (Reference).
 
 **Primitive Data Types:**
@@ -40,8 +48,13 @@ String name = "John";
 ```
 
 <span style="color: #007acc;">**Interview Tip:**</span> Know the size and range of primitives. Strings are immutable objects.
+</details>
 
-### 3. What are the access modifiers in Java?
+</details>
+
+<details>
+<summary>3. What are the access modifiers in Java?</summary>
+
 Access modifiers control the visibility of classes, methods, and variables.
 
 - **public:** Accessible from anywhere.
@@ -59,8 +72,13 @@ public class Car {
 ```
 
 <span style="color: #007acc;">**Interview Tip:**</span> private for encapsulation, public for APIs.
+</details>
 
-### 4. What is the difference between == and equals()?
+</details>
+
+<details>
+<summary>4. What is the difference between == and equals()?</summary>
+
 - **==** compares reference equality (memory addresses) for objects, value equality for primitives.
 - **equals()** compares content/value equality for objects.
 
@@ -73,6 +91,7 @@ System.out.println(s1.equals(s2)); // true (same content)
 ```
 
 <span style="color: #007acc;">**Interview Tip:**</span> Override equals() and hashCode() together in custom classes.
+</details>
 
 ### 5. What is the static keyword?
 Static members belong to the class rather than instances.

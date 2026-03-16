@@ -1,6 +1,9 @@
 # Database
 
-## Normalization
+> **Note:** Interview Tips are highlighted in <span style="color: #007acc;">blue</span> for easy identification.
+> **Accordion Feature:** Each question can be made collapsible by wrapping in `<details><summary>Question Title</summary> content </details>`.
+
+<details><summary>Normalization</summary>
 
 Normalization is the process of organizing data in a database to reduce redundancy and improve data integrity by dividing data into related tables.
 
@@ -13,7 +16,9 @@ Example: Unnormalized table with redundancy → Normalized into Customer, Order,
 
 **Interview Tip:** Normalization reduces data duplication and anomalies.
 
-## Primary key vs Foreign key
+</details>
+
+<details><summary>Primary key vs Foreign key</summary>
 
 A primary key uniquely identifies a record in a table, while a foreign key establishes a relationship by referencing the primary key of another table.
 
@@ -51,7 +56,9 @@ CREATE TABLE Orders (
 
 **Interview Tip:** Primary key unique per table, foreign key links tables.
 
-## Indexing
+</details>
+
+<details><summary>Indexing</summary>
 
 Indexing improves database query performance by creating a fast lookup structure that allows the database to find rows efficiently without scanning the entire table.
 
@@ -64,7 +71,9 @@ CREATE INDEX idx_user_name ON Users(name);
 
 **Interview Tip:** Index speeds SELECT, slows INSERT/UPDATE. Use for frequently queried columns.
 
-## Joins: INNER, LEFT, RIGHT
+</details>
+
+<details><summary>Joins: INNER, LEFT, RIGHT</summary>
 
 SQL JOINs are used to combine rows from two or more tables based on a related column.
 
@@ -100,7 +109,9 @@ RIGHT JOIN Orders o ON u.user_id = o.user_id;
 
 **Interview Tip:** INNER for matching rows, LEFT for all left + matching right.
 
-## ACID Properties
+</details>
+
+<details><summary>ACID Properties</summary>
 
 ACID properties ensure reliable database transactions by guaranteeing atomicity, consistency, isolation, and durability.
 
@@ -139,7 +150,9 @@ Once committed, data stays committed
 
 **Interview Tip:** ACID ensures data reliability. NoSQL sacrifices some for scalability.
 
-## Optimizing Slow Queries
+</details>
+
+<details><summary>Optimizing Slow Queries</summary>
 
 Slow queries are optimized by analyzing execution plans, using proper indexes, minimizing data retrieval, optimizing joins, and applying caching where appropriate.
 
@@ -152,9 +165,11 @@ EXPLAIN SELECT * FROM Users WHERE name = 'John';
 
 **Interview Tip:** Use EXPLAIN to analyze query plans. Index WHERE clauses.
 
+</details>
+
 ## REST API Design
 
-## Idempotency
+<details><summary>Idempotency</summary>
 
 Idempotency ensures that repeated execution of an operation produces the same result as a single execution, preventing duplicate side effects in distributed systems.
 
@@ -164,7 +179,9 @@ Example: PUT request - updating a resource multiple times gives same result.
 
 **Interview Tip:** Use idempotency keys for payments, updates.
 
-## Pagination
+</details>
+
+<details><summary>Pagination</summary>
 
 Pagination means fetching data in chunks (pages) instead of loading everything at once.
 - Improve performance
@@ -180,7 +197,9 @@ Page<User> users = userRepository.findAll(PageRequest.of(0, 10, Sort.by("name"))
 
 **Interview Tip:** Use offset/limit or cursor-based pagination.
 
-## API Versioning
+</details>
+
+<details><summary>API Versioning</summary>
 
 API versioning is the practice of managing API changes by maintaining multiple versions to ensure backward compatibility for existing clients.
 
@@ -202,7 +221,9 @@ public List<UserV2> getUsersV2() { ... }
 
 **Interview Tip:** Version APIs to avoid breaking changes.
 
-## Request/Response DTOs
+</details>
+
+<details><summary>Request/Response DTOs</summary>
 
 Request/Response DTOs (Data Transfer Objects) are simple objects used to carry data between the client and server, without exposing internal domain models.
 
@@ -228,3 +249,59 @@ class UserResponse {
 ```
 
 **Interview Tip:** DTOs hide internal models, add validation, and control data exposure.
+
+</details>
+
+<details><summary>Interview Questions</summary>
+
+<details><summary>What is database normalization and why is it important?</summary>
+
+**Explanation:** Normalization organizes data to reduce redundancy and improve integrity by splitting tables based on dependencies.
+
+**Example:** Separate Customer and Order tables instead of repeating customer info in every order.
+
+**Real-time Example:** In an e-commerce database, normalization prevents updating customer address in multiple places when it changes.
+
+</details>
+
+<details><summary>Explain ACID properties with examples.</summary>
+
+**Explanation:** ACID ensures reliable transactions: Atomicity (all or nothing), Consistency (valid states), Isolation (independent transactions), Durability (persists after commit).
+
+**Example:** Bank transfer: Deduct from account A and add to B atomically; if failure, rollback both.
+
+**Real-time Example:** Online banking ensures money transfers are durable even if server crashes after commit.
+
+</details>
+
+<details><summary>What are SQL JOINs and when to use each type?</summary>
+
+**Explanation:** JOINs combine data from multiple tables. INNER returns matching rows, LEFT includes all left + matches, RIGHT all right + matches.
+
+**Example:** INNER JOIN users and orders on user_id to get users with orders.
+
+**Real-time Example:** In a blog, LEFT JOIN posts and comments to show posts even without comments.
+
+</details>
+
+<details><summary>How do you optimize slow database queries?</summary>
+
+**Explanation:** Use indexes on WHERE columns, analyze EXPLAIN plans, avoid SELECT *, limit data with pagination.
+
+**Example:** Add index on email column for fast user lookups.
+
+**Real-time Example:** In a search engine, indexing keywords speeds up queries from seconds to milliseconds.
+
+</details>
+
+<details><summary>What is the difference between SQL and NoSQL databases?</summary>
+
+**Explanation:** SQL is relational with fixed schema, NoSQL is flexible for unstructured data, better for scalability.
+
+**Example:** SQL for banking (strict consistency), NoSQL for social media (flexible posts).
+
+**Real-time Example:** MongoDB for storing varied product catalogs in e-commerce vs PostgreSQL for financial records.
+
+</details>
+
+</details>
