@@ -3,66 +3,177 @@
 > **Note:** Interview Tips are highlighted in <span style="color: #007acc;">blue</span> for easy identification.
 > **Accordion Feature:** Each question can be made collapsible by wrapping in `<details><summary>Question Title</summary> content </details>`.
 
+<details><summary style="font-size: 1.3em; font-weight: bold;">🚀 Spring Boot Interview Preparation Guide</summary>
+
 ## Spring Boot Interview Questions
 
-<details><summary>1. What is Dependency Injection?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">1. What is Dependency Injection in Spring Boot?</summary>
 
-Dependency Injection (DI) is a design pattern where the dependencies of a class are provided from outside instead of the class creating them itself. This promotes loose coupling and makes code more testable and maintainable.
+Dependency Injection (DI) in Spring Boot is a design pattern where the framework provides the required objects (dependencies) to a class instead of the class creating them itself. This helps make the code loosely coupled, easier to test, and easier to maintain. ⚙️
 
-### Why DI is Important?
-- **Loose Coupling**: Classes don't create their dependencies, making them independent
-- **Testability**: Easy to inject mock objects for unit testing
-- **Maintainability**: Changes to dependencies don't affect the dependent class
-- **Reusability**: Same dependency can be reused across different classes
+### 1️⃣ What is a Dependency?
 
-### Types of Dependency Injection:
-1. **Constructor Injection** (Recommended)
-2. **Setter Injection**
-3. **Field Injection**
-
-### In Spring Framework:
-The IoC (Inversion of Control) container manages the lifecycle of beans and injects dependencies. Spring uses ApplicationContext as the IoC container.
+A dependency is an object that another object needs to work.
 
 Example:
+
 ```java
-@Service
-class UserService {
-    private final UserRepository repo;
-
-    // Constructor Injection - Preferred approach
-    @Autowired  // Optional in Spring 4.3+
-    UserService(UserRepository repo) {
-        this.repo = repo;
-    }
-}
-
-// Setter Injection
-@Service
-class OrderService {
-    private OrderRepository repo;
-
-    @Autowired
-    public void setOrderRepository(OrderRepository repo) {
-        this.repo = repo;
-    }
-}
-
-// Field Injection (Not recommended for production)
-@Service
-class ProductService {
-    @Autowired
-    private ProductRepository repo;
+class Car {
+    Engine engine = new Engine();
 }
 ```
+
+Here:
+
+Car depends on Engine.
+
+Car itself creates the Engine, which creates tight coupling.
+
+### 2️⃣ With Dependency Injection
+
+Instead of creating the object inside the class, Spring injects it.
+
+```java
+class Car {
+    private Engine engine;
+
+    public Car(Engine engine) {
+        this.engine = engine;
+    }
+}
+```
+
+Now:
+
+Car does not create Engine.
+
+Spring provides it automatically.
+
+### 3️⃣ How Spring Boot Performs DI
+
+In Spring Boot, the IoC Container (Inversion of Control Container) manages objects called Beans.
+
+Spring:
+
+Creates the objects
+
+Manages their lifecycle
+
+Injects dependencies where required
+
+### 4️⃣ Types of Dependency Injection in Spring
+#### 1. Constructor Injection (Recommended) ✅
+```java
+@Service
+public class OrderService {
+
+    private final PaymentService paymentService;
+
+    public OrderService(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+}
+```
+
+Spring automatically injects PaymentService.
+
+#### 2. Field Injection
+```java
+@Service
+public class OrderService {
+
+    @Autowired
+    private PaymentService paymentService;
+
+}
+```
+
+Here:
+
+@Autowired tells Spring to inject the dependency.
+
+⚠️ Not recommended for large projects because it's harder to test.
+
+#### 3. Setter Injection
+```java
+@Service
+public class OrderService {
+
+    private PaymentService paymentService;
+
+    @Autowired
+    public void setPaymentService(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+}
+```
+
+### 5️⃣ Common Annotations Used in DI
+| Annotation | Purpose |
+|------------|---------|
+| @Component | Generic Spring bean |
+| @Service | Service layer bean |
+| @Repository | DAO layer bean |
+| @Controller | Web controller |
+| @Autowired | Inject dependency |
+
+Example:
+
+```java
+@Service
+public class PaymentService {
+}
+```
+
+Spring automatically registers it as a bean.
+
+### 6️⃣ Simple Flow Example
+```java
+@Repository
+class UserRepository {}
+
+@Service
+class UserService {
+
+    private final UserRepository repo;
+
+    public UserService(UserRepository repo) {
+        this.repo = repo;
+    }
+}
+```
+
+Flow:
+
+Spring Container
+      ↓
+Creates UserRepository Bean
+      ↓
+Creates UserService Bean
+      ↓
+Injects UserRepository into UserService
+
+### 7️⃣ Why Dependency Injection is Important 🚀
+
+Benefits:
+
+✔ Loose coupling  
+✔ Easier unit testing  
+✔ Better code maintainability  
+✔ Object lifecycle managed by Spring  
+✔ Cleaner architecture  
 
 ### Interview Explanation:
 "When I explain Dependency Injection in interviews, I compare it to how we get food delivered instead of growing our own vegetables. In software, instead of a class creating its dependencies (like new UserRepository()), the dependencies are 'injected' from outside by the framework. This makes the code more modular, easier to test (you can inject mocks), and follows the Single Responsibility Principle. Spring Boot makes this even easier with auto-configuration and component scanning."
 
 **Interview Tip:** DI promotes loose coupling. Constructor injection is preferred over field injection because it makes dependencies explicit and prevents null pointer exceptions.
 
+✅ In one line:
+
+Dependency Injection in Spring Boot means Spring automatically provides required objects (beans) to classes instead of the classes creating them manually.
 </details>
 
-<details><summary>2. What is Auto-Configuration in Spring Boot?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">2. What is Auto-Configuration in Spring Boot?</summary>
 
 Spring Boot automatically configures beans based on the dependencies present in the classpath. This eliminates the need for manual bean configuration and reduces boilerplate code.
 
@@ -112,7 +223,7 @@ public class MyApplication {
 
 </details>
 
-<details><summary>3. Global Exception Handling</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">3. Global Exception Handling</summary>
 
 Instead of writing try-catch blocks in every controller method, Spring Boot allows centralized exception handling using @ControllerAdvice. This provides consistent error responses and better maintainability.
 
@@ -211,7 +322,7 @@ public class UserService {
 
 </details>
 
-<details><summary>4. How do you validate request body in Spring Boot?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">4. How do you validate request body in Spring Boot?</summary>
 
 Spring Boot uses Bean Validation (JSR-380) with Hibernate Validator to validate request data. Validation ensures data integrity and provides meaningful error messages to clients.
 
@@ -318,7 +429,7 @@ public class StrongPasswordValidator implements ConstraintValidator<StrongPasswo
 
 </details>
 
-<details><summary>5. JPA (Java Persistence API)</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">5. JPA (Java Persistence API)</summary>
 
 JPA is a specification for Object-Relational Mapping (ORM) that allows Java objects to be mapped to database tables. It provides a standard way to perform database operations without writing SQL.
 
@@ -445,7 +556,7 @@ public class UserService {
 
 </details>
 
-<details><summary>6. ResponseEntity</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">6. ResponseEntity</summary>
 
 ResponseEntity is a powerful class in Spring that allows complete control over HTTP responses, including status codes, headers, and body. It's essential for building robust REST APIs.
 
@@ -566,7 +677,7 @@ public ResponseEntity<byte[]> downloadFile(@PathVariable String fileId) {
 
 </details>
 
-<details><summary>7. Types of Exceptions (from GlobalExceptionHandler)</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">7. Types of Exceptions (from GlobalExceptionHandler)</summary>
 
 - 403 Forbidden: AccessDeniedException
 - 404 Not Found: UsernameNotFoundException, ResourceNotFoundException
@@ -578,7 +689,7 @@ public ResponseEntity<byte[]> downloadFile(@PathVariable String fileId) {
 
 </details>
 
-<details><summary>8. Spring Boot Topics</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">8. Spring Boot Topics</summary>
 
 ### Core Concepts
 - @SpringBootApplication
@@ -613,7 +724,7 @@ public ResponseEntity<byte[]> downloadFile(@PathVariable String fileId) {
 
 </details>
 
-<details><summary>9. Spring Boot Annotations</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">9. Spring Boot Annotations</summary>
 
 ### Stereotype
 - @Component, @Service, @Repository, @Controller, @RestController
@@ -640,7 +751,7 @@ public ResponseEntity<byte[]> downloadFile(@PathVariable String fileId) {
 
 </details>
 
-<details><summary>10. RequestParam, PathVariable, RequestBody, ResponseBody</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">10. RequestParam, PathVariable, RequestBody, ResponseBody</summary>
 
 | Annotation     | Used For              | Example URL          | Example Usage |
 |----------------|-----------------------|----------------------|---------------|
@@ -653,7 +764,7 @@ public ResponseEntity<byte[]> downloadFile(@PathVariable String fileId) {
 
 </details>
 
-<details><summary>11. @Autowired vs Constructor Injection</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">11. @Autowired vs Constructor Injection</summary>
 
 @Autowired is an annotation used to inject dependencies. It can be used in field, setter, or constructor injection. Constructor injection is recommended because it makes dependencies mandatory, supports immutability, improves testability, and follows good design principles.
 
@@ -673,7 +784,7 @@ class Service {
 
 </details>
 
-<details><summary>12. Spring Profiles</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">12. Spring Profiles</summary>
 
 Spring Profiles allow you to have different configurations for different environments (dev, test, prod).
 
@@ -704,7 +815,7 @@ class ProdConfig {
 
 </details>
 
-<details><summary>13. Spring Boot Actuator</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">13. Spring Boot Actuator</summary>
 
 Spring Boot Actuator provides production-ready features like health checks, metrics, and monitoring.
 
@@ -723,7 +834,7 @@ management.endpoints.web.exposure.include=health,info,metrics
 
 </details>
 
-<details><summary>14. Spring Security Basics</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">14. Spring Security Basics</summary>
 
 Spring Security provides comprehensive security services for Java applications, including authentication, authorization, and protection against common attacks. It's the de facto standard for securing Spring applications.
 
@@ -924,7 +1035,7 @@ public class ProductService {
 
 </details>
 
-<details><summary>15. REST API Design Best Practices</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">15. REST API Design Best Practices</summary>
 
 ### HTTP Methods
 - GET: Retrieve data
@@ -953,7 +1064,7 @@ public class ProductService {
 
 </details>
 
-<details><summary>16. Spring Boot Testing</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">16. Spring Boot Testing</summary>
 
 Spring Boot provides comprehensive testing support with various testing slices and utilities. Testing is crucial for maintaining code quality and preventing regressions.
 
@@ -1166,7 +1277,7 @@ class UserServiceUnitTest {
 
 </details>
 
-<details><summary>17. Caching in Spring Boot</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">17. Caching in Spring Boot</summary>
 
 Spring Boot supports caching with annotations.
 
@@ -1199,7 +1310,7 @@ Supported cache providers: EhCache, Redis, Caffeine, etc.
 
 </details>
 
-<details><summary>18. Spring Boot with Docker</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">18. Spring Boot with Docker</summary>
 
 Dockerize Spring Boot application with multi-stage build.
 
@@ -1224,7 +1335,7 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 
 </details>
 
-<details><summary>19. JWT Authentication in Spring Boot</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">19. JWT Authentication in Spring Boot</summary>
 
 JSON Web Tokens for stateless authentication.
 
@@ -1260,7 +1371,7 @@ class JwtUtil {
 
 </details>
 
-<details><summary>20. Spring Boot Microservices</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">20. Spring Boot Microservices</summary>
 
 Spring Boot with Spring Cloud for microservices.
 
@@ -1288,7 +1399,7 @@ class UserServiceApplication {
 
 ## Interview Questions
 
-<details><summary>What is Spring Boot and why use it?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What is Spring Boot and why use it?</summary>
 
 **Explanation:** Spring Boot is a framework that simplifies Spring application development by providing auto-configuration, embedded servers, and production-ready features.
 
@@ -1298,7 +1409,7 @@ class UserServiceApplication {
 
 </details>
 
-<details><summary>Explain dependency injection in Spring Boot.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Explain dependency injection in Spring Boot.</summary>
 
 **Explanation:** Dependency injection is a design pattern where Spring manages object creation and injection of dependencies, promoting loose coupling.
 
@@ -1308,7 +1419,7 @@ class UserServiceApplication {
 
 </details>
 
-<details><summary>What is auto-configuration in Spring Boot?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What is auto-configuration in Spring Boot?</summary>
 
 **Explanation:** Auto-configuration automatically configures beans based on classpath dependencies, reducing manual configuration.
 
@@ -1318,7 +1429,7 @@ class UserServiceApplication {
 
 </details>
 
-<details><summary>How does Spring Boot handle exception handling?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">How does Spring Boot handle exception handling?</summary>
 
 **Explanation:** Spring Boot uses @ControllerAdvice for global exception handling, providing consistent error responses.
 
@@ -1328,7 +1439,7 @@ class UserServiceApplication {
 
 </details>
 
-<details><summary>Explain Spring Data JPA and its benefits.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Explain Spring Data JPA and its benefits.</summary>
 
 **Explanation:** Spring Data JPA simplifies database operations by providing repository interfaces that auto-generate queries.
 
@@ -1338,7 +1449,7 @@ class UserServiceApplication {
 
 </details>
 
-<details><summary>What is the difference between @RestController and @Controller?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What is the difference between @RestController and @Controller?</summary>
 
 **Explanation:** @RestController combines @Controller and @ResponseBody, automatically serializing return values to JSON.
 
@@ -1348,7 +1459,7 @@ class UserServiceApplication {
 
 </details>
 
-<details><summary>How do you secure a Spring Boot application?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">How do you secure a Spring Boot application?</summary>
 
 **Explanation:** Spring Security provides authentication and authorization. Configure with WebSecurityConfigurerAdapter.
 
@@ -1358,7 +1469,7 @@ class UserServiceApplication {
 
 </details>
 
-<details><summary>Explain Spring Boot profiles and their usage.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Explain Spring Boot profiles and their usage.</summary>
 
 **Explanation:** Profiles allow different configurations for different environments like dev, test, prod.
 
@@ -1368,7 +1479,7 @@ class UserServiceApplication {
 
 </details>
 
-<details><summary>What is caching in Spring Boot and how to implement it?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What is caching in Spring Boot and how to implement it?</summary>
 
 **Explanation:** Caching stores method results to avoid repeated expensive operations.
 
@@ -1378,7 +1489,7 @@ class UserServiceApplication {
 
 </details>
 
-<details><summary>How do you test Spring Boot applications?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">How do you test Spring Boot applications?</summary>
 
 **Explanation:** Spring Boot provides @SpringBootTest for integration tests, @WebMvcTest for controllers, @DataJpaTest for repositories.
 
@@ -1388,7 +1499,7 @@ class UserServiceApplication {
 
 </details>
 
-<details><summary>What is Spring Boot Actuator and its uses?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What is Spring Boot Actuator and its uses?</summary>
 
 **Explanation:** Spring Boot Actuator provides production-ready features like health checks, metrics, and monitoring endpoints.
 
@@ -1398,7 +1509,7 @@ class UserServiceApplication {
 
 </details>
 
-<details><summary>Explain Spring Boot configuration properties.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Explain Spring Boot configuration properties.</summary>
 
 **Explanation:** @ConfigurationProperties binds external configuration (properties/yaml) to Java objects.
 
@@ -1408,7 +1519,7 @@ class UserServiceApplication {
 
 </details>
 
-<details><summary>What is the difference between @Component, @Service, @Repository?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What is the difference between @Component, @Service, @Repository?</summary>
 
 **Explanation:** All are stereotypes for dependency injection, but @Repository adds exception translation, @Service indicates business logic.
 
@@ -1418,13 +1529,15 @@ class UserServiceApplication {
 
 </details>
 
-<details><summary>How do you handle validation in Spring Boot?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">How do you handle validation in Spring Boot?</summary>
 
 **Explanation:** Use Bean Validation with @Valid and annotations like @NotNull, @Email on DTOs.
 
 **Example:** @PostMapping public User create(@Valid @RequestBody UserDTO dto) validates input.
 
 **Real-time Example:** In a registration form, @Email ensures valid email format, @NotBlank prevents empty names.
+
+</details>
 
 </details>
 
