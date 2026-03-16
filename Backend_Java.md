@@ -1229,6 +1229,141 @@ class Counter {
 **Interview Tip:** Know the difference between `synchronized` methods vs blocks. Understand when to use `ReentrantLock` over `synchronized`. Be familiar with concurrent collections like `ConcurrentHashMap`.
 </details>
 
+<details><summary style="font-size: 1.3em; font-weight: bold;">6. ExecutorService</summary>
+
+ExecutorService is an interface in Java used to manage and control threads efficiently. It is part of the java.util.concurrent package.
+
+Instead of manually creating threads with Thread, ExecutorService manages a pool of threads and executes tasks asynchronously.
+
+### 1️⃣ What is ExecutorService?
+
+ExecutorService is used to:
+
+- Manage thread pools
+- Execute tasks asynchronously
+- Improve performance and scalability
+- Control thread lifecycle
+
+### 2️⃣ Why ExecutorService is Needed
+
+Without ExecutorService:
+
+```java
+Thread t = new Thread(() -> {
+    System.out.println("Task running");
+});
+t.start();
+```
+
+**Problems:**
+- Too many threads can be created
+- Hard to manage threads
+- Poor performance
+
+ExecutorService solves this using thread pools.
+
+### 3️⃣ Example Using ExecutorService
+```java
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class Example {
+    public static void main(String[] args) {
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+
+        executor.submit(() -> {
+            System.out.println("Task executed by thread");
+        });
+
+        executor.shutdown();
+    }
+}
+```
+
+### 4️⃣ Creating ExecutorService
+
+Using Executors utility class:
+
+#### Fixed Thread Pool
+```java
+ExecutorService executor = Executors.newFixedThreadPool(5);
+```
+
+Creates 5 reusable threads.
+
+#### Single Thread Executor
+```java
+ExecutorService executor = Executors.newSingleThreadExecutor();
+```
+
+Runs tasks one by one.
+
+#### Cached Thread Pool
+```java
+ExecutorService executor = Executors.newCachedThreadPool();
+```
+
+Creates threads dynamically as needed.
+
+### 5️⃣ Submitting Tasks
+#### Runnable Task
+```java
+executor.submit(() -> {
+    System.out.println("Running task");
+});
+```
+
+#### Callable Task (returns value)
+```java
+Future<Integer> future = executor.submit(() -> 10 + 20);
+System.out.println(future.get());
+```
+
+### 6️⃣ Important Methods
+| Method | Description |
+|--------|-------------|
+| submit() | Submit task |
+| execute() | Run task |
+| shutdown() | Stop accepting new tasks |
+| shutdownNow() | Stop all tasks immediately |
+| invokeAll() | Execute multiple tasks |
+
+### 7️⃣ Example: Multiple Tasks
+```java
+ExecutorService executor = Executors.newFixedThreadPool(2);
+
+for(int i = 1; i <= 5; i++) {
+    int task = i;
+    executor.submit(() -> {
+        System.out.println("Task " + task + " executed");
+    });
+}
+
+executor.shutdown();
+```
+
+### 8️⃣ Advantages
+
+✔ Better thread management  
+✔ Thread reuse via pools  
+✔ Improves performance  
+✔ Easier concurrency handling  
+
+### 9️⃣ ExecutorService vs Thread
+| Feature | Thread | ExecutorService |
+|---------|--------|-----------------|
+| Thread creation | Manual | Managed by pool |
+| Performance | Lower | Higher |
+| Scalability | Poor | Better |
+| Task management | Difficult | Easy |
+
+### 🔟 Interview One-Line Answer
+
+ExecutorService is a Java concurrency interface that manages a pool of threads to execute asynchronous tasks efficiently instead of creating threads manually.
+
+**Interview Tip:** ExecutorService is preferred over manual thread creation for better resource management and performance in production applications.
+</details>
+
 <details><summary style="font-size: 1.3em; font-weight: bold;">🚀 Advanced Java Concepts - CompletableFuture</summary>
 
 CompletableFuture is a class in Java (introduced in Java 8) used for asynchronous programming. It allows you to run tasks in the background and handle their results without blocking the main thread.
@@ -1364,6 +1499,62 @@ All in parallel, making the API much faster.
 CompletableFuture is a Java class used for asynchronous programming that allows tasks to run in parallel, supports chaining, combining futures, and handling results without blocking threads.
 
 **Interview Tip:** If you want, I can also explain a very common Java interview question: Difference between Future vs CompletableFuture vs ExecutorService (asked in many backend interviews).
+
+### 11️⃣ Why is CompletableFuture Better Than Future?
+
+CompletableFuture is considered superior to the traditional Future interface for several key reasons:
+
+#### 1. **Non-blocking Operations**
+- **Future**: The `get()` method blocks the current thread until the result is available, which can lead to poor performance in high-concurrency scenarios.
+- **CompletableFuture**: Provides non-blocking methods like `thenApply()`, `thenAccept()`, and `thenCombine()` that allow chaining operations without blocking.
+
+#### 2. **Task Chaining and Composition**
+- **Future**: No built-in support for chaining multiple asynchronous operations. You can't easily combine or sequence futures.
+- **CompletableFuture**: Supports fluent API for chaining operations:
+  ```java
+  CompletableFuture.supplyAsync(() -> "Hello")
+      .thenApply(s -> s + " World")
+      .thenAccept(System.out::println);
+  ```
+
+#### 3. **Combining Multiple Futures**
+- **Future**: Difficult to combine results from multiple asynchronous operations.
+- **CompletableFuture**: Easy to combine multiple futures using `thenCombine()`, `allOf()`, or `anyOf()`:
+  ```java
+  CompletableFuture<Integer> future1 = CompletableFuture.supplyAsync(() -> 10);
+  CompletableFuture<Integer> future2 = CompletableFuture.supplyAsync(() -> 20);
+  CompletableFuture<Integer> result = future1.thenCombine(future2, Integer::sum);
+  ```
+
+#### 4. **Exception Handling**
+- **Future**: Limited exception handling; exceptions are wrapped in ExecutionException.
+- **CompletableFuture**: Rich exception handling with `exceptionally()`, `handle()`, and `whenComplete()` methods.
+
+#### 5. **Manual Completion**
+- **Future**: Cannot be completed manually; the result must come from the asynchronous computation.
+- **CompletableFuture**: Can be completed manually using `complete()`, `completeExceptionally()`, or `cancel()` methods.
+
+#### 6. **Reactive Programming Support**
+- **Future**: Synchronous API that doesn't fit well with reactive programming paradigms.
+- **CompletableFuture**: Supports reactive programming patterns and integrates well with reactive streams.
+
+#### 7. **Performance**
+- **Future**: Blocking calls can lead to thread starvation and poor resource utilization.
+- **CompletableFuture**: Non-blocking nature leads to better scalability and resource utilization.
+
+#### Key Differences Summary:
+| Feature | Future | CompletableFuture |
+|---------|--------|-------------------|
+| Blocking | Yes (get() blocks) | No (non-blocking callbacks) |
+| Chaining | Not supported | Supported via fluent API |
+| Combining | Difficult | Easy with thenCombine/allOf |
+| Exception Handling | Limited | Rich with exceptionally/handle |
+| Manual Completion | Not possible | Possible with complete() |
+| Reactive Support | No | Yes |
+
+**Interview Answer:** "CompletableFuture is better than Future because it supports non-blocking operations, task chaining, combining multiple futures, and better exception handling. While Future's get() method blocks the thread, CompletableFuture allows you to chain operations fluently without blocking, making it ideal for reactive and high-performance applications."
+
+**Real-world Example:** In a microservice architecture, CompletableFuture allows you to fetch data from multiple services in parallel and combine results without blocking threads, significantly improving response times compared to using Future.
 </details>
 
 </details>
