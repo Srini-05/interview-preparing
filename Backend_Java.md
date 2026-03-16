@@ -659,49 +659,7 @@ Example: In a Spring Boot app, use Maven to build, then deploy to AWS ECS.
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">5. Method Overloading vs Method Overriding</summary>
-
-### Method Overloading
-- Definition: Multiple methods in the same class have the same name but different parameter lists (number or type of parameters).
-- Key points:
-  - Happens at compile-time (compile-time polymorphism).
-  - Return type can be different, but parameters must differ.
-  - Same class only (or in subclass, but generally overloading is within the class).
-
-Example:
-```java
-class Calculator {
-    int add(int a, int b) { return a + b; }
-    double add(double a, double b) { return a + b; }
-}
-```
-
-### Method Overriding
-- Definition: A subclass provides its own version of a method that is already defined in its parent class.
-- Key points:
-  - Happens at runtime (runtime polymorphism).
-  - Method signature (name + parameters) must be the same.
-  - Return type must be the same (or covariant).
-  - Access modifier cannot be more restrictive than the parent.
-  - Used for implementing specific behavior in subclass.
-
-Example:
-```java
-class Animal {
-    void sound() { System.out.println("Animal sound"); }
-}
-
-class Dog extends Animal {
-    @Override
-    void sound() { System.out.println("Bark"); }
-}
-```
-
-**Interview Tip:** Overloading is compile-time, overriding is runtime. Overriding requires inheritance and same signature. Use @Override annotation for clarity.
-
-</details>
-
-<details><summary style="font-size: 1.3em; font-weight: bold;">6. volatile vs transient Keyword</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">volatile vs transient Keyword</summary>
 
 ### volatile Keyword
 - Used with variables to tell the JVM that the variable can be modified by multiple threads simultaneously.
@@ -753,7 +711,7 @@ class User implements Serializable {
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">7. JDK vs JRE vs JVM</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">JDK vs JRE vs JVM</summary>
 
 ### JDK (Java Development Kit)
 - Provides tools to develop and run Java programs.
@@ -776,7 +734,7 @@ Real-Life Example: Cooking
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">8. How Java works internally</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">How Java works internally</summary>
 
 Java Source (.java)
     ↓
@@ -798,7 +756,7 @@ Garbage Collector
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">9. Memory Areas in Java</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Memory Areas in Java</summary>
 
 ### Heap Memory
 - Stores: Objects, Instance variables, Arrays
@@ -816,7 +774,7 @@ Garbage Collector
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">10. Garbage Collection (basic types, when it runs)</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Garbage Collection (basic types, when it runs)</summary>
 
 Garbage Collection is an automatic memory management process in Java that removes unused objects from heap memory when JVM needs more space.
 
@@ -827,7 +785,7 @@ Garbage Collection is an automatic memory management process in Java that remove
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">11. OOPS (Object-Oriented Programming System)</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">OOPS (Object-Oriented Programming System)</summary>
 
 OOPS is a programming approach based on objects that contain Data (variables) and Behavior (methods).
 
@@ -890,7 +848,7 @@ class Car extends Vehicle {
 
 </details>
 
-<details><summary style="font-size: 1.3em; font-weight: bold;">12. Exception Handling</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Exception Handling</summary>
 
 ### Types:
 - Checked: Checked at compile-time (e.g., IOException)
@@ -911,161 +869,6 @@ void method() throws IOException {
 ```
 
 **Interview Tip:** Use try-catch for handling, throws for declaration. Checked exceptions must be handled or declared.
-
-</details>
-
-<details><summary style="font-size: 1.3em; font-weight: bold;">13. Access Modifiers</summary>
-
-- private: Accessible only within the same class.
-- protected: Accessible within the same package and subclasses.
-- public: Accessible from anywhere.
-- default (no modifier): Accessible within the same package.
-
-**Interview Tip:** private for encapsulation, public for API, protected for inheritance.
-
-</details>
-
-## Interview Questions
-
-<details><summary style="font-size: 1.3em; font-weight: bold;">Q: What is the difference between JDK, JRE, and JVM?</summary>
-
-**Explanation:** JDK (Java Development Kit) is for development with compilers and tools, JRE (Java Runtime Environment) provides the runtime environment, and JVM (Java Virtual Machine) executes bytecode.
-
-**Example:** JDK includes JRE, which includes JVM. You need JDK to develop, JRE to run applications.
-
-**Real-time Example:** In a production server, you deploy with JRE since you only need to run, not compile code.
-
-</details>
-
-<details><summary style="font-size: 1.3em; font-weight: bold;">Q: Explain the main principles of OOP in Java.</summary>
-
-**Explanation:** OOP principles are Encapsulation (data hiding), Inheritance (code reuse), Polymorphism (many forms), and Abstraction (hiding complexity).
-
-**Example:** A Car class encapsulates data, inherits from Vehicle, overrides methods polymorphically, and uses abstract methods for abstraction.
-
-**Real-time Example:** In a banking app, Account class encapsulates balance, different account types inherit from it, and methods like calculateInterest show polymorphism.
-
-</details>
-
-<details><summary style="font-size: 1.3em; font-weight: bold;">Q: What is the difference between ArrayList and LinkedList?</summary>
-
-**Explanation:** ArrayList uses dynamic arrays for fast random access but slow insertions, LinkedList uses nodes for fast insertions but slow random access.
-
-**Example:** Use ArrayList for reading data frequently, LinkedList for frequent additions/removals.
-
-**Real-time Example:** In a task manager app, use ArrayList for displaying tasks (mostly reading), LinkedList for managing a queue of tasks to process.
-
-</details>
-
-<details><summary style="font-size: 1.3em; font-weight: bold;">Q: How does exception handling work in Java?</summary>
-
-**Explanation:** Exceptions are handled using try-catch-finally blocks. Checked exceptions must be caught or declared, unchecked are runtime exceptions.
-
-**Example:** try { risky code } catch (Exception e) { handle } finally { cleanup }
-
-**Real-time Example:** In file operations, catch IOException for missing files, use finally to ensure file streams are closed.
-
-</details>
-
-<details><summary style="font-size: 1.3em; font-weight: bold;">Q: What are the different types of memory areas in Java?</summary>
-
-**Explanation:** Heap stores objects, Stack stores method calls and local variables, Metaspace stores class metadata.
-
-**Example:** Objects go to heap, method variables to stack, class information to metaspace.
-
-**Real-time Example:** In a web application, user sessions are stored in heap, method parameters in stack, and loaded classes in metaspace.
-
-</details>
-
-<details><summary style="font-size: 1.3em; font-weight: bold;">Q: Explain method overloading vs method overriding.</summary>
-
-**Explanation:** Overloading is same method name different parameters in same class (compile-time), overriding is same signature in subclass (runtime).
-
-**Example:** print(int) and print(String) is overloading, Dog overriding Animal.sound() is overriding.
-
-**Real-time Example:** Calculator class overloads add() for int and double, while Dog overrides Animal's makeSound() method.
-
-</details>
-
-<details><summary style="font-size: 1.3em; font-weight: bold;">Q: What is the purpose of the static keyword?</summary>
-
-**Explanation:** Static members belong to the class, not instances. Used for constants, utility methods, and shared state.
-
-**Example:** Math.PI is static constant, Collections.sort() is static utility method.
-
-**Real-time Example:** In a configuration class, static constants hold database URLs shared across all instances.
-
-</details>
-
-<details><summary style="font-size: 1.3em; font-weight: bold;">Q: How does garbage collection work in Java?</summary>
-
-**Explanation:** GC automatically frees memory by removing unreachable objects. Different algorithms like G1, ZGC optimize for different needs.
-
-**Example:** When heap is full, GC marks unreachable objects and reclaims memory.
-
-**Real-time Example:** In a long-running server application, GC prevents memory leaks by cleaning up unused HTTP request objects.
-
-</details>
-
-<details><summary style="font-size: 1.3em; font-weight: bold;">Q: What are the differences between String, StringBuffer, and StringBuilder?</summary>
-
-**Explanation:** String is immutable, StringBuffer is thread-safe mutable, StringBuilder is non-thread-safe mutable.
-
-**Example:** Use StringBuilder for building strings in loops, StringBuffer for multi-threaded string building.
-
-**Real-time Example:** In logging frameworks, StringBuilder is used for efficient log message construction in single-threaded contexts.
-
-</details>
-
-<details><summary style="font-size: 1.3em; font-weight: bold;">Q: Explain the concept of inheritance in Java.</summary>
-
-**Explanation:** Inheritance allows a class to inherit properties and methods from another class using extends keyword.
-
-**Example:** Dog extends Animal to inherit eat() method and add bark().
-
-**Real-time Example:** In an e-commerce system, CreditCardPayment extends Payment to inherit common payment logic while adding card-specific methods.
-
-</details>
-
-<details><summary style="font-size: 1.3em; font-weight: bold;">Q: What are the different types of garbage collectors in Java?</summary>
-
-**Explanation:** Java has several GC algorithms: Serial (single-threaded), Parallel (multi-threaded throughput), CMS (concurrent low-pause), G1 (region-based), ZGC (ultra-low pause).
-
-**Example:** Use G1 for most applications as it's the default, ZGC for sub-10ms pause requirements.
-
-**Real-time Example:** In a high-throughput trading system, Parallel GC maximizes throughput, while in a user-facing app, ZGC minimizes pauses.
-
-</details>
-
-<details><summary style="font-size: 1.3em; font-weight: bold;">Q: Explain the difference between abstract classes and interfaces.</summary>
-
-**Explanation:** Abstract classes can have concrete methods and state, interfaces define contracts with default methods. Classes extend one abstract class but implement multiple interfaces.
-
-**Example:** Abstract Vehicle class with drive() implementation, Vehicle interface with start() contract.
-
-**Real-time Example:** In a game, Character is abstract with common behavior, Movable and Attackable are interfaces for different capabilities.
-
-</details>
-
-<details><summary style="font-size: 1.3em; font-weight: bold;">Q: What is the Java Memory Model and why is it important?</summary>
-
-**Explanation:** JMM defines how threads interact through memory, ensuring visibility and ordering of operations across threads.
-
-**Example:** Volatile variables ensure writes are visible to all threads, synchronized blocks create memory barriers.
-
-**Real-time Example:** In a multi-threaded cache, volatile ensures all threads see the latest cached value.
-
-</details>
-
-</details>
-
-<details><summary style="font-size: 1.3em; font-weight: bold;">Q: How does Java handle memory management?</summary>
-
-**Explanation:** Java uses automatic garbage collection to manage heap memory, while stack memory is managed automatically with method calls.
-
-**Example:** Objects are created on heap, method variables on stack. GC reclaims unreachable objects.
-
-**Real-time Example:** In a web server, GC prevents memory leaks from HTTP request objects that are no longer referenced.
 
 </details>
 
