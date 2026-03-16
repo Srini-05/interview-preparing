@@ -1557,4 +1557,313 @@ CompletableFuture is considered superior to the traditional Future interface for
 **Real-world Example:** In a microservice architecture, CompletableFuture allows you to fetch data from multiple services in parallel and combine results without blocking threads, significantly improving response times compared to using Future.
 </details>
 
+<details><summary style="font-size: 1.3em; font-weight: bold;">🚀 Advanced Java Concepts - Java Streams</summary>
+
+### 1️⃣ flatMap() in Java Streams
+
+In Java, flatMap() is a method used in the Java Stream API to transform and flatten nested collections into a single stream.
+
+It is commonly used when each element produces multiple values, and you want one combined stream.
+
+#### What is flatMap?
+
+flatMap() transforms each element into a stream of elements and then flattens all streams into one stream.
+
+Think of it as:
+
+List<List<String>> → List<String>
+
+#### Simple Example
+**Problem:** You have a list of lists.
+
+```java
+List<List<String>> list = Arrays.asList(
+    Arrays.asList("Java", "Python"),
+    Arrays.asList("React", "Angular"),
+    Arrays.asList("MySQL", "PostgreSQL")
+);
+```
+
+**Using flatMap:**
+```java
+List<String> result = list.stream()
+        .flatMap(Collection::stream)
+        .collect(Collectors.toList());
+
+System.out.println(result);
+```
+
+**Output:**
+```
+[Java, Python, React, Angular, MySQL, PostgreSQL]
+```
+
+Here flatMap() removes nesting.
+
+#### Difference Between map() and flatMap()
+| Feature | map() | flatMap() |
+|---------|-------|-----------|
+| Output | One-to-one mapping | One-to-many mapping |
+| Result | Nested structure | Flattened structure |
+| Use case | Simple transformation | Flatten collections |
+
+**Example Using map():**
+```java
+List<List<String>> result = list.stream()
+        .map(l -> l)
+        .collect(Collectors.toList());
+```
+
+**Output:**
+```
+[[Java, Python], [React, Angular], [MySQL, PostgreSQL]]
+```
+
+The structure remains nested.
+
+#### Example with Strings
+
+Split words into characters.
+
+```java
+List<String> words = Arrays.asList("Java", "Code");
+
+List<String> letters = words.stream()
+        .flatMap(word -> Arrays.stream(word.split("")))
+        .collect(Collectors.toList());
+
+System.out.println(letters);
+```
+
+**Output:**
+```
+[J, a, v, a, C, o, d, e]
+```
+
+#### Real Use Case
+
+In Spring Boot applications:
+
+**Example:**
+- Users
+- Each user has multiple orders
+
+Using flatMap() you can collect all orders from all users into one list.
+
+#### Interview One-Line Answer
+
+flatMap() is a Java Stream API method that transforms each element into a stream and flattens the result into a single stream, removing nested structures.
+
+**Interview Tip:** flatMap() is essential when dealing with nested collections like List<List<T>> and you want to flatten them into List<T>.
+
+### 2️⃣ map() in Java Streams
+
+In Java, map() is a method in the Java Stream API used to transform each element of a stream into another element.
+
+It applies a function to every element and returns a new stream with the transformed values.
+
+#### What is map()?
+
+map() performs one-to-one transformation.
+
+Input → Transformation → Output
+
+Example:
+
+[1, 2, 3] → multiply by 2 → [2, 4, 6]
+
+#### Simple Example
+```java
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Example {
+    public static void main(String[] args) {
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4);
+
+        List<Integer> result = numbers.stream()
+                .map(n -> n * 2)
+                .collect(Collectors.toList());
+
+        System.out.println(result);
+    }
+}
+```
+
+**Output:**
+```
+[2, 4, 6, 8]
+```
+
+Here: map() multiplies each number by 2.
+
+#### Example with Strings
+
+Convert strings to uppercase.
+
+```java
+List<String> names = Arrays.asList("java", "react", "spring");
+
+List<String> upper = names.stream()
+        .map(String::toUpperCase)
+        .collect(Collectors.toList());
+
+System.out.println(upper);
+```
+
+**Output:**
+```
+[JAVA, REACT, SPRING]
+```
+
+#### Example with Objects
+
+Suppose we have a User class.
+
+```java
+class User {
+    String name;
+    int age;
+}
+```
+
+Extract only names:
+
+```java
+List<String> names = users.stream()
+        .map(user -> user.getName())
+        .collect(Collectors.toList());
+```
+
+Here: map() transforms User → String
+
+#### map() Flow
+List → Stream → map() → collect()
+
+Example:
+
+[1,2,3]
+   ↓
+stream()
+   ↓
+map(n → n*2)
+   ↓
+[2,4,6]
+
+#### Interview One-Line Answer
+
+map() in Java Streams is used to transform each element of a stream into another value by applying a function and returning a new stream of transformed elements.
+
+**Interview Tip:** map() is for one-to-one transformations, while flatMap() is for flattening nested structures.
+
+### 3️⃣ map() vs flatMap() in Java Streams
+
+In Java, map() and flatMap() are methods in the Java Stream API used to transform data in streams. The main difference is how they handle nested structures.
+
+#### map()
+
+**Purpose:** Transforms each element in the stream into another single element.
+
+One-to-one transformation
+
+**Example:**
+```java
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+List<Integer> numbers = Arrays.asList(1, 2, 3);
+
+List<Integer> result = numbers.stream()
+        .map(n -> n * 2)
+        .collect(Collectors.toList());
+
+System.out.println(result);
+```
+
+**Output:**
+```
+[2, 4, 6]
+```
+
+Here:
+1 → 2
+2 → 4
+3 → 6
+
+Each element becomes one new element.
+
+#### flatMap()
+
+**Purpose:** Transforms each element into multiple elements (a stream) and flattens them into one stream.
+
+One-to-many transformation
+
+**Example:**
+```java
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+List<List<String>> list = Arrays.asList(
+        Arrays.asList("Java", "Spring"),
+        Arrays.asList("React", "Angular")
+);
+
+List<String> result = list.stream()
+        .flatMap(l -> l.stream())
+        .collect(Collectors.toList());
+
+System.out.println(result);
+```
+
+**Output:**
+```
+[Java, Spring, React, Angular]
+```
+
+Here nested lists are flattened into a single list.
+
+#### Visual Difference
+**map():**
+Input: [1,2,3]
+
+map(n → n*2)
+
+Output: [2,4,6]
+
+**flatMap():**
+Input: [[A,B],[C,D]]
+
+flatMap()
+
+Output: [A,B,C,D]
+
+#### Key Differences
+| Feature | map() | flatMap() |
+|---------|-------|-----------|
+| Transformation | One-to-one | One-to-many |
+| Output structure | Same structure | Flattened |
+| Use case | Simple mapping | Nested collections |
+| Result type | Stream<T> | Stream<R> (flattened) |
+
+#### Real Example
+
+Suppose we have:
+- Users → Orders
+
+**Using map():** Stream<List<Order>>
+
+**Using flatMap():** Stream<Order>
+
+So flatMap() is used to flatten nested collections.
+
+#### Interview One-Line Answer
+
+map() performs one-to-one transformation on stream elements, while flatMap() transforms elements into streams and flattens them into a single stream.
+
+**Interview Tip:** Use map() for simple transformations and flatMap() when you need to flatten nested collections. A common follow-up question is: "What is the difference between map() in Java Streams and map() in HashMap?"
+</details>
+
 </details>
