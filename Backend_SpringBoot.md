@@ -1397,6 +1397,92 @@ class UserServiceApplication {
 
 </details>
 
+<details><summary style="font-size: 1.3em; font-weight: bold;">21. API Gateway in Spring Boot</summary>
+
+An API Gateway is a single entry point for all client requests in a microservices architecture. Instead of clients calling multiple services directly, they send requests to the gateway, which then routes them to the appropriate service.
+
+### 🧠 Simple Definition
+
+API Gateway = Front door for your backend services
+
+### 📊 Why We Need API Gateway
+
+**Without API Gateway:**
+- Client calls multiple services ❌
+- Complex logic on frontend ❌
+- Security handled everywhere ❌
+
+**With API Gateway:**
+- One endpoint ✅
+- Centralized logic ✅
+- Easier management ✅
+
+### 🔄 How It Works
+```
+Client (Mobile/Web)
+        ↓
+   API Gateway
+   ↓    ↓    ↓
+User  Order  Payment Services
+```
+
+### ⚙️ Key Responsibilities
+#### 1. Routing
+Sends request to correct microservice
+
+**Example:** /users → User Service
+
+#### 2. Authentication & Authorization
+Validates tokens (JWT, OAuth2)
+
+#### 3. Load Balancing
+Distributes traffic across instances
+
+#### 4. Rate Limiting
+Prevents too many requests (protects backend)
+
+#### 5. Logging & Monitoring
+Tracks requests and responses
+
+#### 6. Request/Response Transformation
+Modify headers, format, etc.
+
+### 🔧 API Gateway in Spring Boot
+
+In Spring Cloud Gateway:
+
+**Example Config (application.yml):**
+```yaml
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/users/**
+```
+
+👉 This means: Request /users/** → forwarded to user service
+
+### 🚀 Popular API Gateways
+- Spring Cloud Gateway
+- Netflix Zuul
+- Kong Gateway
+- Amazon API Gateway
+
+### ⚠️ Disadvantages
+- Single point of failure (if not handled properly)
+- Adds slight latency
+- Extra component to manage
+
+### 🧠 Interview One-Liner
+
+"API Gateway is a centralized entry point that handles routing, security, and cross-cutting concerns for microservices."
+
+**Interview Tip:** API Gateway simplifies client interactions with microservices. Use Spring Cloud Gateway for Spring Boot applications. Always implement proper security and monitoring.
+</details>
+
 ## Interview Questions
 
 <details><summary style="font-size: 1.3em; font-weight: bold;">What is Spring Boot and why use it?</summary>
