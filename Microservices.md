@@ -3,7 +3,9 @@
 > **Note:** Interview Tips are highlighted in <span style="color: #007acc;">blue</span> for easy identification.
 > **Accordion Feature:** Each question can be made collapsible by wrapping in `<details><summary>Question Title</summary> content </details>`.
 
-<details><summary>What are Microservices?</summary>
+<details><summary>🏗️ Microservices Interview Preparation Guide</summary>
+
+<details><summary style="font-size: 1.3em; font-weight: bold;">What are Microservices?</summary>
 
 Microservices architecture is an approach to building applications as a collection of small, independent services that communicate over well-defined APIs. Each service is responsible for a specific business capability and can be developed, deployed, and scaled independently.
 
@@ -71,7 +73,72 @@ public class OrderController {
 
 </details>
 
-<details><summary>Monolith vs Microservices</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">🚀 Spring Boot Annotations (Detailed Table)</summary>
+
+### Core Component Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@Component` | • Marks a class as a Spring bean<br>• Automatically detected during component scan<br>• Used for generic components |
+| `@Service` | • Special type of @Component<br>• Used in service layer<br>• Contains business logic |
+| `@Repository` | • Used for DAO layer<br>• Handles database operations<br>• Provides exception translation |
+| `@Controller` | • Handles web requests<br>• Returns view (HTML/JSP)<br>• Used in MVC applications |
+| `@RestController` | • Combines @Controller + @ResponseBody<br>• Returns JSON/XML directly<br>• Used for REST APIs |
+
+### Dependency Injection Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@Autowired` | • Injects dependencies automatically<br>• Removes need for manual object creation<br>• Works by type |
+| `@Qualifier` | • Resolves multiple bean conflict<br>• Specifies exact bean to inject<br>• Used with @Autowired |
+| `@Value` | • Injects values from properties file<br>• Used for configuration values<br>• Example: `${server.port}` |
+| `@Configuration` | • Marks class as configuration class<br>• Used to define beans<br>• Replaces XML config |
+| `@Bean` | • Creates and manages bean manually<br>• Defined inside @Configuration class<br>• Useful for third-party classes |
+
+### HTTP Request Mapping Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@RequestMapping` | • Maps HTTP requests to methods<br>• Supports all HTTP methods<br>• Can be used at class & method level |
+| `@GetMapping` | • Handles GET requests<br>• Shortcut for @RequestMapping(method=GET)<br>• Used to fetch data |
+| `@PostMapping` | • Handles POST requests<br>• Used to create data<br>• Sends data in request body |
+| `@PutMapping` | • Handles PUT requests<br>• Used to update data<br>• Idempotent operation |
+| `@DeleteMapping` | • Handles DELETE requests<br>• Used to delete resources<br>• Returns status response |
+
+### Parameter Binding Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@PathVariable` | • Extracts value from URL path<br>• Used in REST APIs<br>• Example: `/user/{id}` |
+| `@RequestParam` | • Gets query parameters<br>• Example: `/user?id=1`<br>• Optional or required |
+| `@RequestBody` | • Converts JSON to Java object<br>• Used in POST/PUT APIs<br>• Uses HTTP request body |
+| `@ResponseBody` | • Converts Java object to JSON<br>• Sends response directly<br>• Used in REST APIs |
+
+### Application Configuration Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@SpringBootApplication` | • Main Spring Boot annotation<br>• Combines 3 annotations<br>• Starts application |
+| `@EnableAutoConfiguration` | • Automatically configures Spring Boot<br>• Based on dependencies<br>• Reduces manual setup |
+| `@ComponentScan` | • Scans packages for beans<br>• Detects @Component, @Service etc.<br>• Registers them in context |
+
+### JPA/Entity Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@Entity` | • Marks class as DB entity<br>• Maps to table<br>• Used in JPA |
+| `@Table` | • Specifies table name<br>• Used with @Entity<br>• Optional if names match |
+| `@Id` | • Marks primary key<br>• Unique identifier<br>• Required in entity |
+| `@GeneratedValue` | • Auto-generates ID<br>• Supports strategies (AUTO, IDENTITY)<br>• Used with @Id |
+| `@Column` | • Maps field to column<br>• Can define name, length, nullable<br>• Optional customization |
+| `@OneToMany` | • One entity → many entities<br>• Example: One user → many orders<br>• Defines relationship |
+| `@ManyToOne` | • Many entities → one entity<br>• Example: Many orders → one user<br>• Foreign key mapping |
+
+**Interview Tip:** Spring Boot annotations reduce boilerplate code. @Autowired injects dependencies, @RestController creates REST endpoints, @Entity maps to database tables.
+
+</details>
+
+<details><summary style="font-size: 1.3em; font-weight: bold;">Monolith vs Microservices</summary>
 
 ### Monolithic Architecture
 A monolithic application is a single, unified codebase where all components are tightly coupled and deployed as one unit. This was the traditional way of building applications.
@@ -186,7 +253,7 @@ microservices-app/
 
 </details>
 
-<details><summary>REST vs Async Communication</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">REST vs Async Communication</summary>
 
 REST is commonly used for synchronous communication where an immediate response is required, while asynchronous communication uses events or messages to achieve loose coupling, scalability, and resilience.
 
@@ -211,7 +278,7 @@ kafkaTemplate.send("order-created", order);
 
 </details>
 
-<details><summary>Service Discovery</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Service Discovery</summary>
 
 Service discovery allows microservices to dynamically locate and communicate with each other at runtime without hard-coding network details.
 
@@ -225,7 +292,7 @@ Example: Service registers with Eureka, client looks up via Eureka client.
 
 </details>
 
-<details><summary>API Gateway</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">API Gateway</summary>
 
 An API Gateway acts as a single entry point for all client requests in a microservices architecture. It handles cross-cutting concerns like routing, authentication, rate limiting, and response aggregation, allowing backend services to focus on business logic.
 
@@ -384,7 +451,7 @@ Gateway calls multiple services and aggregates responses.
 
 </details>
 
-<details><summary>Resilience in Microservices</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Resilience in Microservices</summary>
 
 If one microservice is down, dependent requests may fail, but with resilience patterns like circuit breakers, retries, fallbacks, and asynchronous messaging, the system can isolate failures, degrade gracefully, and recover without impacting all services.
 
@@ -410,7 +477,7 @@ public Mono<Inventory> fallbackInventory(String itemId, Throwable t) {
 
 </details>
 
-<details><summary>Communication Patterns</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Communication Patterns</summary>
 
 ### Synchronous
 - REST, gRPC
@@ -444,7 +511,7 @@ public void createOrder(Order order) {
 
 </details>
 
-<details><summary>Data Management</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Data Management</summary>
 
 Each microservice owns its data, but challenges arise with distributed transactions.
 
@@ -463,7 +530,7 @@ Example Saga:
 
 </details>
 
-<details><summary>Deployment & Scaling</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Deployment & Scaling</summary>
 
 - Containerization (Docker)
 - Orchestration (Kubernetes)
@@ -504,7 +571,7 @@ spec:
 
 </details>
 
-<details><summary>Challenges</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Challenges</summary>
 
 - Service discovery
 - Distributed tracing
@@ -516,7 +583,7 @@ spec:
 
 </details>
 
-<details><summary>Tools & Technologies</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Tools & Technologies</summary>
 
 - Spring Boot/Cloud for Java
 - Docker/Kubernetes
@@ -529,9 +596,9 @@ spec:
 
 </details>
 
-<details><summary>Interview Questions</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Interview Questions</summary>
 
-<details><summary>What are microservices and their benefits?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What are microservices and their benefits?</summary>
 
 **Explanation:** Microservices are small, independent services that work together to form an application, each handling a specific business function.
 
@@ -541,7 +608,7 @@ spec:
 
 </details>
 
-<details><summary>Explain service discovery and why it's important.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Explain service discovery and why it's important.</summary>
 
 **Explanation:** Service discovery allows services to find and communicate with each other dynamically, without hard-coded addresses.
 
@@ -551,7 +618,7 @@ spec:
 
 </details>
 
-<details><summary>What is an API Gateway and its role?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What is an API Gateway and its role?</summary>
 
 **Explanation:** API Gateway is a single entry point for clients, handling routing, authentication, rate limiting, and aggregating responses from multiple services.
 
@@ -561,7 +628,7 @@ spec:
 
 </details>
 
-<details><summary>How do you handle data consistency in microservices?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">How do you handle data consistency in microservices?</summary>
 
 **Explanation:** Use patterns like Saga for distributed transactions, event sourcing, or eventual consistency instead of traditional ACID.
 
@@ -571,7 +638,7 @@ spec:
 
 </details>
 
-<details><summary>What are circuit breakers and why use them?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What are circuit breakers and why use them?</summary>
 
 **Explanation:** Circuit breakers prevent cascading failures by stopping calls to a failing service and allowing fallback responses.
 
@@ -581,7 +648,7 @@ spec:
 
 </details>
 
-<details><summary>Explain synchronous vs asynchronous communication in microservices.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Explain synchronous vs asynchronous communication in microservices.</summary>
 
 **Explanation:** Synchronous uses HTTP/REST for immediate responses, asynchronous uses messaging for decoupling and scalability.
 
@@ -591,7 +658,7 @@ spec:
 
 </details>
 
-<details><summary>What is distributed tracing and why is it important?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What is distributed tracing and why is it important?</summary>
 
 **Explanation:** Distributed tracing tracks requests across multiple services to identify performance bottlenecks and failures.
 
@@ -601,7 +668,7 @@ spec:
 
 </details>
 
-<details><summary>How do you handle configuration in microservices?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">How do you handle configuration in microservices?</summary>
 
 **Explanation:** Use centralized configuration servers like Spring Cloud Config to manage configs across all services.
 
@@ -611,13 +678,15 @@ spec:
 
 </details>
 
-<details><summary>What are the challenges of microservices and how to overcome them?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What are the challenges of microservices and how to overcome them?</summary>
 
 **Explanation:** Challenges include distributed transactions, service discovery, monitoring. Overcome with sagas, service mesh, centralized logging.
 
 **Example:** Use event sourcing for data consistency, circuit breakers for resilience.
 
 **Real-time Example:** Netflix solved scaling challenges with microservices, using tools like Hystrix for resilience.
+
+</details>
 
 </details>
 
