@@ -895,116 +895,269 @@ test('renders button', () => {
 
 <details><summary style="font-size: 1.3em; font-weight: bold;">Basic React + Async Interview Questions</summary>
 
-🚀 BASIC REACT + ASYNC INTERVIEW QUESTIONS
-1️⃣ What is a Promise?
+### What is a Promise?
 
-👉 A Promise is an object that represents the result of an asynchronous operation.
-👉 It can be in three states: pending, resolved, or rejected, and helps handle async code cleanly.
+**Interview Answer:**
 
-2️⃣ What is async/await?
+> A Promise is an object that represents the result of an asynchronous operation.
+> It can be in three states: pending, resolved, or rejected, and helps handle async code cleanly.
 
-👉 async/await is a modern way to handle asynchronous operations in JavaScript.
-👉 It makes code look synchronous and improves readability compared to .then() chaining.
+**Explanation:**
 
-3️⃣ Difference between Promise and async/await?
+Promises represent asynchronous operations that may complete in the future. They provide a cleaner way to handle async code compared to callbacks, avoiding callback hell.
 
-👉 Both handle asynchronous operations, but async/await provides cleaner and more readable syntax.
-👉 Promises use .then() and .catch(), while async/await uses try-catch blocks.
+---
 
-4️⃣ What is React?
+### What is async/await?
 
-👉 React is a JavaScript library used to build user interfaces, especially single-page applications.
-👉 It uses a component-based architecture and virtual DOM for efficient updates.
+**Interview Answer:**
 
-5️⃣ What is a Component?
+> async/await is a modern way to handle asynchronous operations in JavaScript.
+> It makes code look synchronous and improves readability compared to .then() chaining.
 
-👉 A component is a reusable piece of UI in React.
-👉 It can be a function that returns JSX and helps in building modular applications.
+**Explanation:**
 
-6️⃣ What is useState?
+async functions return promises, and await pauses execution until the promise resolves. It's syntactic sugar over promises that makes asynchronous code easier to read and write.
 
-👉 useState is a React hook used to manage state in functional components.
-👉 It allows components to store and update dynamic data, triggering re-renders.
+---
 
-7️⃣ What is useEffect?
+### Difference between Promise and async/await?
 
-👉 useEffect is a hook used to perform side effects like API calls or subscriptions.
-👉 It runs after render and depends on the dependency array.
+**Interview Answer:**
 
-8️⃣ What is dependency array?
+> Both handle asynchronous operations, but async/await provides cleaner and more readable syntax.
+> Promises use .then() and .catch(), while async/await uses try-catch blocks.
 
-👉 The dependency array controls when useEffect runs.
-👉 If empty, it runs once; if values change, it re-runs based on those dependencies.
+**Explanation:**
 
-9️⃣ What are props?
+Promises use chaining with .then() and .catch(), while async/await allows writing async code that looks synchronous. async/await is built on top of promises.
 
-👉 Props are inputs passed from parent to child components.
-👉 They are read-only and help in making components reusable.
+---
 
-🔟 What is state?
+### What is React?
 
-👉 State is a built-in object used to store dynamic data in a component.
-👉 When state changes, the component re-renders automatically.
+**Interview Answer:**
 
-1️⃣1️⃣ Props vs State
+> React is a JavaScript library used to build user interfaces, especially single-page applications.
+> It uses a component-based architecture and virtual DOM for efficient updates.
 
-👉 Props are read-only and passed from parent to child, while state is managed within the component.
-👉 State can change over time, but props cannot be modified by the child.
+**Explanation:**
 
-1️⃣2️⃣ What is lifting state up?
+React focuses on building reusable UI components. It uses a virtual DOM for performance and supports declarative programming where you describe what the UI should look like.
 
-👉 Lifting state up means moving state to a common parent component.
-👉 This allows multiple child components to share and sync the same data.
+---
 
-1️⃣3️⃣ What is event handling in React?
+### What is a Component?
 
-👉 Event handling is used to respond to user actions like clicks or input.
-👉 React uses camelCase syntax like onClick and passes functions as handlers.
+**Interview Answer:**
 
-1️⃣4️⃣ What is conditional rendering?
+> A component is a reusable piece of UI in React.
+> It can be a function that returns JSX and helps in building modular applications.
 
-👉 Conditional rendering means displaying UI based on certain conditions.
-👉 It can be done using ternary operators or logical operators.
+**Explanation:**
 
-1️⃣5️⃣ What is key in React?
+Components are the building blocks of React apps. They encapsulate UI logic and can be reused throughout the application. Components can be functional or class-based.
 
-👉 Keys are used to uniquely identify elements in a list.
-👉 They help React optimize rendering and avoid unnecessary updates.
+---
 
-1️⃣6️⃣ What is Axios?
+### What is useState?
 
-👉 Axios is a library used to make HTTP requests like GET and POST.
-👉 It returns promises and simplifies API handling compared to fetch.
+**Interview Answer:**
 
-1️⃣7️⃣ What happens when state updates?
+> useState is a React hook used to manage state in functional components.
+> It allows components to store and update dynamic data, triggering re-renders.
 
-👉 When state updates, React re-renders the component.
-👉 It compares the virtual DOM and updates only changed parts in the real DOM.
+**Explanation:**
 
-1️⃣8️⃣ What is Virtual DOM?
+useState returns an array with the current state value and a setter function. When the setter is called, React re-renders the component with the new state.
 
-👉 Virtual DOM is a lightweight copy of the real DOM.
-👉 React uses it to improve performance by updating only necessary elements.
+---
 
-1️⃣9️⃣ What is controlled component?
+### What is useEffect?
 
-👉 A controlled component is a form element controlled by React state.
-👉 The input value is managed using state and updated via onChange.
+**Interview Answer:**
 
-2️⃣0️⃣ What is useCallback?
+> useEffect is a hook used to perform side effects like API calls or subscriptions.
+> It runs after render and depends on the dependency array.
 
-👉 useCallback is a hook used to memoize functions.
-👉 It prevents unnecessary re-creation of functions and improves performance.
+**Explanation:**
 
-🔥 FINAL INTERVIEW TIP
+useEffect runs after every render by default, but can be controlled with a dependency array. It's used for side effects that need to happen after the component updates.
 
-👉 Speak like this:
+---
 
-"React is component-based and state-driven"
+### What is dependency array?
 
-"Async operations handled using Promises or async/await"
+**Interview Answer:**
 
-"Hooks simplify functional component logic"
+> The dependency array controls when useEffect runs.
+> If empty, it runs once; if values change, it re-runs based on those dependencies.
+
+**Explanation:**
+
+The dependency array tells React when to re-run the effect. Empty array means run once on mount, specific values mean run when those values change.
+
+---
+
+### What are props?
+
+**Interview Answer:**
+
+> Props are inputs passed from parent to child components.
+> They are read-only and help in making components reusable.
+
+**Explanation:**
+
+Props allow data to flow from parent to child components. They are immutable within the child component and help customize component behavior.
+
+---
+
+### What is state?
+
+**Interview Answer:**
+
+> State is a built-in object used to store dynamic data in a component.
+> When state changes, the component re-renders automatically.
+
+**Explanation:**
+
+State holds data that can change over time. Changes to state trigger re-renders, allowing the UI to update dynamically based on user interactions or data changes.
+
+---
+
+### Props vs State
+
+**Interview Answer:**
+
+> Props are read-only and passed from parent to child, while state is managed within the component.
+> State can change over time, but props cannot be modified by the child.
+
+**Explanation:**
+
+Props flow down from parent to child, state is internal to the component. Props are immutable, state is mutable and triggers re-renders.
+
+---
+
+### What is lifting state up?
+
+**Interview Answer:**
+
+> Lifting state up means moving state to a common parent component.
+> This allows multiple child components to share and sync the same data.
+
+**Explanation:**
+
+When multiple components need to share state, move it to their closest common ancestor. Child components receive the state as props and callbacks to update it.
+
+---
+
+### What is event handling in React?
+
+**Interview Answer:**
+
+> Event handling is used to respond to user actions like clicks or input.
+> React uses camelCase syntax like onClick and passes functions as handlers.
+
+**Explanation:**
+
+React wraps browser events in a synthetic event system. Event handlers are functions passed to JSX elements using camelCase naming (onClick, onChange).
+
+---
+
+### What is conditional rendering?
+
+**Interview Answer:**
+
+> Conditional rendering means displaying UI based on certain conditions.
+> It can be done using ternary operators or logical operators.
+
+**Explanation:**
+
+Show different UI based on state or props. Common patterns include ternary operators, logical &&, or switch statements in JSX.
+
+---
+
+### What is key in React?
+
+**Interview Answer:**
+
+> Keys are used to uniquely identify elements in a list.
+> They help React optimize rendering and avoid unnecessary updates.
+
+**Explanation:**
+
+Keys help React identify which items have changed, been added, or removed in a list. They should be stable, unique identifiers.
+
+---
+
+### What is Axios?
+
+**Interview Answer:**
+
+> Axios is a library used to make HTTP requests like GET and POST.
+> It returns promises and simplifies API handling compared to fetch.
+
+**Explanation:**
+
+Axios provides a simple API for HTTP requests with automatic JSON parsing, interceptors, and better error handling than the native fetch API.
+
+---
+
+### What happens when state updates?
+
+**Interview Answer:**
+
+> When state updates, React re-renders the component.
+> It compares the virtual DOM and updates only changed parts in the real DOM.
+
+**Explanation:**
+
+State changes trigger re-renders. React uses reconciliation to efficiently update only the parts of the DOM that actually changed.
+
+---
+
+### What is Virtual DOM?
+
+**Interview Answer:**
+
+> Virtual DOM is a lightweight copy of the real DOM.
+> React uses it to improve performance by updating only necessary elements.
+
+**Explanation:**
+
+React maintains a virtual representation of the DOM in memory. When state changes, it diffs the virtual DOM and applies minimal changes to the real DOM.
+
+---
+
+### What is controlled component?
+
+**Interview Answer:**
+
+> A controlled component is a form element controlled by React state.
+> The input value is managed using state and updated via onChange.
+
+**Explanation:**
+
+The component's value is bound to state, and changes are handled through onChange events. This gives React full control over form data.
+
+---
+
+### What is useCallback?
+
+**Interview Answer:**
+
+> useCallback is a hook used to memoize functions.
+> It prevents unnecessary re-creation of functions and improves performance.
+
+**Explanation:**
+
+useCallback returns a memoized version of the callback that only changes when dependencies change. It prevents child components from re-rendering unnecessarily.
+
+---
+
+**Final Interview Tip:**
+
+> Speak like this: "React is component-based and state-driven" "Async operations handled using Promises or async/await" "Hooks simplify functional component logic"
 
 </details>
 
