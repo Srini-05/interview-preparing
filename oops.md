@@ -3,11 +3,13 @@
 ## Table of Contents
 - [What is OOPS?](#what-is-oops)
 - [Why OOPS?](#why-oops)
-- [🎯 Complete OOPS Concepts Overview](#-complete-oops-concepts-overview)
-- [🔒 Encapsulation](#-encapsulation)
-- [👨‍👦 Inheritance](#-inheritance)
-- [🎭 Polymorphism](#-polymorphism)
-- [🎨 Abstraction](#-abstraction)
+- [📚 OOPS Concepts — Theoretical Overview (No Code)](#📚-oops-concepts—theoretical-overview-no-code)
+- [📝 Quick OOPS Concepts Summary](#📝-quick-oops-concepts-summary)
+- [🎯 Complete OOPS Concepts Overview](#🎯-complete-oops-concepts-overview)
+- [🔒 Encapsulation](#🔒-encapsulation)
+- [👪 Inheritance](#👪-inheritance)
+- [🎭 Polymorphism](#🎭-polymorphism)
+- [🎨 Abstraction](#🎨-abstraction)
 - [Abstract Class vs Interface](#abstract-class-vs-interface)
 
 ---
@@ -164,6 +166,32 @@ This section provides a complete theoretical understanding of all Object-Oriente
 
 ---
 
+<a id="📝-quick-oops-concepts-summary"></a>
+### 📝 Quick OOPS Concepts Summary
+
+**Encapsulation:**
+* Definition: Encapsulation is about bundling data (variables) and methods that operate on the data within a single unit or class. It also restricts direct access to some of the object's components.
+* Real-life Example: Think of a capsule medicine—it hides the contents inside and only releases them in the right way.
+* Java Example: Using private variables and public getters/setters to access them.
+
+**Inheritance:**
+* Definition: Inheritance allows a class to inherit fields and methods from another class, promoting code reusability.
+* Real-life Example: Like a child inheriting traits from parents—similar to how a subclass inherits properties from a superclass.
+* Java Example: A Dog class extends an Animal class.
+
+**Polymorphism:**
+* Definition: Polymorphism means "many forms." It allows methods to do different things based on the object that invokes them.
+* Real-life Example: A call button that can be used to call mom, dad, or a friend—same action, different outcomes.
+* Java Example: Method overloading (same method name with different parameters) and method overriding (same method name in superclass and subclass).
+
+**Abstraction:**
+* Definition: Abstraction hides the complex implementation details and shows only the necessary features of an object.
+* Real-life Example: Driving a car—you use the steering wheel and pedals without needing to know how the engine works.
+* Java Example: Abstract classes and interfaces that define methods without implementing them.
+
+---
+
+<a id="🎯-complete-oops-concepts-overview"></a>
 <details>
 <summary>🎯 Complete OOPS Concepts Overview</summary>
 
@@ -750,6 +778,7 @@ Always mention how OOPS helped you in a real project. Compare it with procedural
 
 </details>
 
+<a id="🔒-encapsulation"></a>
 <details>
 <summary>🔒 Encapsulation</summary>
 
@@ -833,6 +862,7 @@ account.deposit(1000);     // ✅ Allowed
 
 </details>
 
+<a id="👪-inheritance"></a>
 <details>
 <summary>👪 Inheritance</summary>
 
@@ -919,6 +949,7 @@ dog.bark();    // Own method: "Buddy is barking"
 
 </details>
 
+<a id="🎭-polymorphism"></a>
 <details>
 <summary>🎭 Polymorphism</summary>
 
@@ -1010,8 +1041,9 @@ System.out.println(calc.add(1.5, 2.5));   // 4.0 (double, double)
 
 </details>
 
+<a id="🎨-abstraction"></a>
 <details>
-<summary>🎯 Abstraction</summary>
+<summary>🎨 Abstraction</summary>
 
 ### Definition
 **Abstraction = Hide What, Show How** — Hiding implementation details and showing only essential features to the user.
