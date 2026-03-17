@@ -3,7 +3,9 @@
 > **Note:** Interview Tips are highlighted in <span style="color: #007acc;">blue</span> for easy identification.
 > **Accordion Feature:** Each question can be made collapsible by wrapping in `<details><summary>Question Title</summary> content </details>`.
 
-<details><summary>Short Forms</summary>
+<details><summary>⚛️ React Interview Preparation Guide</summary>
+
+<details><summary style="font-size: 1.3em; font-weight: bold;">Short Forms</summary>
 
 - DOM: Document Object Model
 - BOM: Browser Object Model
@@ -20,7 +22,7 @@
 
 </details>
 
-<details><summary>Hooks</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Hooks</summary>
 
 Hooks allow functional components to use state and lifecycle features that were previously only available in class components. They were introduced in React 16.8 to make functional components more powerful.
 
@@ -210,7 +212,7 @@ const ChildComponent = React.memo(({ onIncrement }) => {
 
 </details>
 
-<details><summary>State Management</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">State Management</summary>
 
 State management controls how data flows through a React application. Choosing the right approach depends on application complexity and data sharing needs.
 
@@ -405,7 +407,7 @@ function TodoApp() {
 
 </details>
 
-<details><summary>API Integration</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">API Integration</summary>
 
 Frontend applications frequently communicate with backend APIs. Proper API integration involves handling loading states, errors, caching, and user feedback.
 
@@ -629,7 +631,7 @@ function useInfiniteScroll(endpoint) {
 
 </details>
 
-<details><summary>Quick Summary</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Quick Summary</summary>
 
 - Concept: React Lifecycle - Component creation, update, removal
 - Concept: Hooks - Use state & lifecycle in functional components
@@ -640,7 +642,7 @@ function useInfiniteScroll(endpoint) {
 
 </details>
 
-<details><summary>Axios vs Fetch</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Axios vs Fetch</summary>
 
 Axios is a third-party HTTP client library while Fetch is a built-in browser API. Axios provides automatic JSON parsing, better error handling, interceptors, and simpler syntax, while Fetch requires more manual configuration but does not require installing any library.
 
@@ -658,7 +660,7 @@ fetch('/api/users').then(res => res.json()).then(console.log);
 
 </details>
 
-<details><summary>State vs Props</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">State vs Props</summary>
 
 State is mutable data managed inside a component, while props are read-only data passed from a parent component to a child component.
 
@@ -688,7 +690,7 @@ function Child({ text, onUpdate }) {
 
 </details>
 
-<details><summary>Component Architecture</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Component Architecture</summary>
 
 Learn how to structure large React apps.
 
@@ -719,7 +721,7 @@ function Button({ children, onClick, variant = 'primary' }) {
 
 </details>
 
-<details><summary>Routing</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Routing</summary>
 
 Frontend apps need navigation between pages.
 
@@ -746,7 +748,7 @@ Additional Example: Protected Route
 
 </details>
 
-<details><summary>Form Handling</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Form Handling</summary>
 
 Forms are everywhere in applications.
 
@@ -781,7 +783,7 @@ function Form() {
 
 </details>
 
-<details><summary>Authentication</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Authentication</summary>
 
 Login and secure pages.
 
@@ -799,7 +801,7 @@ function ProtectedRoute({ children }) {
 
 </details>
 
-<details><summary>Performance Optimization</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Performance Optimization</summary>
 
 Important for real-world apps.
 
@@ -824,7 +826,7 @@ const LazyComponent = lazy(() => import('./Component'));
 
 </details>
 
-<details><summary>Advanced State Management</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Advanced State Management</summary>
 
 Beyond basic state.
 
@@ -847,7 +849,7 @@ const counterSlice = createSlice({
 
 </details>
 
-<details><summary>API Architecture</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">API Architecture</summary>
 
 Instead of calling APIs everywhere.
 
@@ -870,7 +872,7 @@ function useUsers() {
 
 </details>
 
-<details><summary>Testing</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Testing</summary>
 
 Companies expect frontend testing.
 
@@ -891,9 +893,124 @@ test('renders button', () => {
 
 </details>
 
-<details><summary>Interview Questions</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Basic React + Async Interview Questions</summary>
 
-<details><summary>What is React and why use it?</summary>
+🚀 BASIC REACT + ASYNC INTERVIEW QUESTIONS
+1️⃣ What is a Promise?
+
+👉 A Promise is an object that represents the result of an asynchronous operation.
+👉 It can be in three states: pending, resolved, or rejected, and helps handle async code cleanly.
+
+2️⃣ What is async/await?
+
+👉 async/await is a modern way to handle asynchronous operations in JavaScript.
+👉 It makes code look synchronous and improves readability compared to .then() chaining.
+
+3️⃣ Difference between Promise and async/await?
+
+👉 Both handle asynchronous operations, but async/await provides cleaner and more readable syntax.
+👉 Promises use .then() and .catch(), while async/await uses try-catch blocks.
+
+4️⃣ What is React?
+
+👉 React is a JavaScript library used to build user interfaces, especially single-page applications.
+👉 It uses a component-based architecture and virtual DOM for efficient updates.
+
+5️⃣ What is a Component?
+
+👉 A component is a reusable piece of UI in React.
+👉 It can be a function that returns JSX and helps in building modular applications.
+
+6️⃣ What is useState?
+
+👉 useState is a React hook used to manage state in functional components.
+👉 It allows components to store and update dynamic data, triggering re-renders.
+
+7️⃣ What is useEffect?
+
+👉 useEffect is a hook used to perform side effects like API calls or subscriptions.
+👉 It runs after render and depends on the dependency array.
+
+8️⃣ What is dependency array?
+
+👉 The dependency array controls when useEffect runs.
+👉 If empty, it runs once; if values change, it re-runs based on those dependencies.
+
+9️⃣ What are props?
+
+👉 Props are inputs passed from parent to child components.
+👉 They are read-only and help in making components reusable.
+
+🔟 What is state?
+
+👉 State is a built-in object used to store dynamic data in a component.
+👉 When state changes, the component re-renders automatically.
+
+1️⃣1️⃣ Props vs State
+
+👉 Props are read-only and passed from parent to child, while state is managed within the component.
+👉 State can change over time, but props cannot be modified by the child.
+
+1️⃣2️⃣ What is lifting state up?
+
+👉 Lifting state up means moving state to a common parent component.
+👉 This allows multiple child components to share and sync the same data.
+
+1️⃣3️⃣ What is event handling in React?
+
+👉 Event handling is used to respond to user actions like clicks or input.
+👉 React uses camelCase syntax like onClick and passes functions as handlers.
+
+1️⃣4️⃣ What is conditional rendering?
+
+👉 Conditional rendering means displaying UI based on certain conditions.
+👉 It can be done using ternary operators or logical operators.
+
+1️⃣5️⃣ What is key in React?
+
+👉 Keys are used to uniquely identify elements in a list.
+👉 They help React optimize rendering and avoid unnecessary updates.
+
+1️⃣6️⃣ What is Axios?
+
+👉 Axios is a library used to make HTTP requests like GET and POST.
+👉 It returns promises and simplifies API handling compared to fetch.
+
+1️⃣7️⃣ What happens when state updates?
+
+👉 When state updates, React re-renders the component.
+👉 It compares the virtual DOM and updates only changed parts in the real DOM.
+
+1️⃣8️⃣ What is Virtual DOM?
+
+👉 Virtual DOM is a lightweight copy of the real DOM.
+👉 React uses it to improve performance by updating only necessary elements.
+
+1️⃣9️⃣ What is controlled component?
+
+👉 A controlled component is a form element controlled by React state.
+👉 The input value is managed using state and updated via onChange.
+
+2️⃣0️⃣ What is useCallback?
+
+👉 useCallback is a hook used to memoize functions.
+👉 It prevents unnecessary re-creation of functions and improves performance.
+
+🔥 FINAL INTERVIEW TIP
+
+👉 Speak like this:
+
+"React is component-based and state-driven"
+
+"Async operations handled using Promises or async/await"
+
+"Hooks simplify functional component logic"
+
+</details>
+
+<details><summary style="font-size: 1.3em; font-weight: bold;">Interview Questions</summary>
+
+<details><summary style="font-size: 1.3em; font-weight: bold;">What is React and why use it?</summary>
 
 **Explanation:** React is a JavaScript library for building user interfaces, focusing on component-based architecture for reusable and maintainable code.
 
@@ -908,7 +1025,7 @@ function Welcome(props) {
 
 </details>
 
-<details><summary>Explain the difference between state and props.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Explain the difference between state and props.</summary>
 
 **Explanation:** Props are read-only data passed from parent to child components, while state is mutable data managed within a component that can change over time.
 
@@ -924,7 +1041,7 @@ function Counter({ initialCount }) { // initialCount is prop
 
 </details>
 
-<details><summary>What are React Hooks and give an example of useEffect.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What are React Hooks and give an example of useEffect.</summary>
 
 **Explanation:** Hooks are functions that let you use state and lifecycle features in functional components. useEffect runs side effects after render.
 
@@ -939,7 +1056,7 @@ useEffect(() => {
 
 </details>
 
-<details><summary>How does React handle rendering and what is Virtual DOM?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">How does React handle rendering and what is Virtual DOM?</summary>
 
 **Explanation:** React uses a Virtual DOM to optimize rendering by comparing changes and updating only what's necessary in the real DOM.
 
@@ -949,7 +1066,7 @@ useEffect(() => {
 
 </details>
 
-<details><summary>Explain controlled vs uncontrolled components.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Explain controlled vs uncontrolled components.</summary>
 
 **Explanation:** Controlled components have their value controlled by React state, while uncontrolled use DOM directly.
 
@@ -963,7 +1080,7 @@ return <input value={value} onChange={(e) => setValue(e.target.value)} />;
 
 </details>
 
-<details><summary>What is the Context API and when to use it?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What is the Context API and when to use it?</summary>
 
 **Explanation:** Context API provides a way to share state between components without prop drilling.
 
@@ -973,7 +1090,7 @@ return <input value={value} onChange={(e) => setValue(e.target.value)} />;
 
 </details>
 
-<details><summary>Explain React Router and its usage.</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">Explain React Router and its usage.</summary>
 
 **Explanation:** React Router enables navigation between different components/views in a single-page application.
 
@@ -983,7 +1100,7 @@ return <input value={value} onChange={(e) => setValue(e.target.value)} />;
 
 </details>
 
-<details><summary>What are React performance optimization techniques?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">What are React performance optimization techniques?</summary>
 
 **Explanation:** Use React.memo, useMemo, useCallback to prevent unnecessary re-renders, lazy loading for code splitting.
 
@@ -993,13 +1110,15 @@ return <input value={value} onChange={(e) => setValue(e.target.value)} />;
 
 </details>
 
-<details><summary>How do you handle forms in React?</summary>
+<details><summary style="font-size: 1.3em; font-weight: bold;">How do you handle forms in React?</summary>
 
 **Explanation:** Use controlled components with state, or libraries like React Hook Form for complex forms.
 
 **Example:** Track form values in state, validate on submit, show errors.
 
 **Real-time Example:** In a registration form, validate email format, password strength, and show field-specific error messages.
+
+</details>
 
 </details>
 
