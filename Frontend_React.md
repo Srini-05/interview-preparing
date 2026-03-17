@@ -1010,31 +1010,34 @@ test('renders button', () => {
 
 <details><summary style="font-size: 1.3em; font-weight: bold;">Local Storage and Web Storage Interview Questions</summary>
 
-Here’s a clear interview-ready answer for Local Storage in React 👇
+### What is Local Storage?
 
-✅ What is Local Storage?
-👉 Interview Answer
+**Interview Answer:**
 
-👉 "Local Storage is a browser feature used to store data on the client side in key-value pairs."
-👉 "The data persists even after page refresh or browser restart."
+> "Local Storage is a browser feature used to store data on the client side in key-value pairs."
+> "The data persists even after page refresh or browser restart."
 
-💡 Explanation
+**Explanation:**
 
-Stored in browser
+- Stored in browser
+- No expiry time
+- Data is stored as string
+- Capacity ~5MB
 
-No expiry time
+### Basic Methods
 
-Data is stored as string
-
-Capacity ~5MB
-
-✅ Basic Methods
+```javascript
 localStorage.setItem("key", "value");   // store
 localStorage.getItem("key");           // get
 localStorage.removeItem("key");        // delete
 localStorage.clear();                  // clear all
-✅ Using Local Storage in React
-Example:
+```
+
+### Using Local Storage in React
+
+**Example:**
+
+```javascript
 import React, { useState } from "react";
 
 export default function App() {
@@ -1058,81 +1061,95 @@ export default function App() {
     </div>
   );
 }
-✅ Storing Objects (Important 🔥)
+```
+
+### Storing Objects (Important 🔥)
+
+```javascript
 // store object
 localStorage.setItem("user", JSON.stringify({ name: "John" }));
 
 // get object
 const user = JSON.parse(localStorage.getItem("user"));
-🎯 What to say in interview
+```
 
-👉 "Local storage is used to persist data in the browser without expiration."
-👉 "In React, we use it for saving user data, tokens, or preferences."
+**What to say in interview:**
 
-⚠️ Important Points
+> "Local storage is used to persist data in the browser without expiration."
+> "In React, we use it for saving user data, tokens, or preferences."
 
-Stores only strings
+**Important Points:**
 
-Not secure for sensitive data
+- Stores only strings
+- Not secure for sensitive data
+- Use JSON.stringify & JSON.parse
 
-Use JSON.stringify & JSON.parse
+**One-line answer:**
 
-🔥 One-line answer
+> "Local Storage is used to persist client-side data across sessions in React apps."
 
-👉 "Local Storage is used to persist client-side data across sessions in React apps."
+### sessionStorage vs localStorage
 
-✅ sessionStorage vs localStorage
-👉 Interview Answer
+**Interview Answer:**
 
-👉 "Both sessionStorage and localStorage are used to store data in the browser as key-value pairs."
-👉 "The main difference is that localStorage persists even after closing the browser, while sessionStorage is cleared when the session (tab) ends."
+> "Both sessionStorage and localStorage are used to store data in the browser as key-value pairs."
+> "The main difference is that localStorage persists even after closing the browser, while sessionStorage is cleared when the session (tab) ends."
 
-🔥 Key Differences
-Feature	localStorage	sessionStorage
-Lifetime	Permanent (until manually cleared)	Till tab/browser is open
-Scope	Shared across tabs (same origin)	Only per tab
-Storage Limit	~5MB	~5MB
-Use Case	Save user data, tokens, preferences	Temporary data (form, session)
-✅ Example
+**Key Differences:**
+
+| Feature       | localStorage                  | sessionStorage              |
+|---------------|-------------------------------|-----------------------------|
+| Lifetime     | Permanent (until manually cleared) | Till tab/browser is open   |
+| Scope        | Shared across tabs (same origin) | Only per tab               |
+| Storage Limit| ~5MB                          | ~5MB                       |
+| Use Case     | Save user data, tokens, preferences | Temporary data (form, session) |
+
+**Example:**
+
+```javascript
 // localStorage
 localStorage.setItem("name", "John");
 
 // sessionStorage
 sessionStorage.setItem("name", "John");
-💡 Explanation
+```
 
-localStorage → survives refresh + browser restart
+**Explanation:**
 
-sessionStorage → deleted when tab closes
+- localStorage → survives refresh + browser restart
+- sessionStorage → deleted when tab closes
+- Both store only strings
 
-Both store only strings
+**What to say in interview:**
 
-🎯 What to say in interview
+> "localStorage is for long-term storage, sessionStorage is for temporary session-based data."
+> "sessionStorage is safer for temporary sensitive data since it clears automatically."
 
-👉 "localStorage is for long-term storage, sessionStorage is for temporary session-based data."
-👉 "sessionStorage is safer for temporary sensitive data since it clears automatically."
+**One-line answer:**
 
-🔥 One-line answer
+> "localStorage persists data across sessions, while sessionStorage is limited to a single browser session."
 
-👉 "localStorage persists data across sessions, while sessionStorage is limited to a single browser session."
+### Cookies vs Web Storage (localStorage / sessionStorage)
 
-Here’s a clear interview-ready answer (2–3 lines + comparison) 👇
+**Interview Answer:**
 
-✅ Cookies vs Web Storage (localStorage / sessionStorage)
-👉 Interview Answer
+> "Cookies and Web Storage are both used to store data on the client side."
+> "Cookies are sent to the server with every request, while localStorage and sessionStorage are only stored in the browser."
 
-👉 "Cookies and Web Storage are both used to store data on the client side."
-👉 "Cookies are sent to the server with every request, while localStorage and sessionStorage are only stored in the browser."
+**Key Differences:**
 
-🔥 Key Differences
-Feature	Cookies 🍪	localStorage / sessionStorage 🗄️
-Sent to Server	✅ Yes (every request)	❌ No
-Storage Size	~4KB	~5MB
-Expiry	Can be set	local: no expiry, session: tab
-Performance	Slower (sent in headers)	Faster
-Security	More secure (HttpOnly, Secure)	Less secure
-Use Case	Auth, session, tracking	UI state, user data
-✅ Example
+| Feature       | Cookies 🍪                   | localStorage / sessionStorage 🗄️ |
+|---------------|------------------------------|-----------------------------------|
+| Sent to Server| ✅ Yes (every request)      | ❌ No                            |
+| Storage Size  | ~4KB                         | ~5MB                             |
+| Expiry        | Can be set                   | local: no expiry, session: tab   |
+| Performance   | Slower (sent in headers)     | Faster                           |
+| Security      | More secure (HttpOnly, Secure) | Less secure                     |
+| Use Case      | Auth, session, tracking      | UI state, user data              |
+
+**Example:**
+
+```javascript
 // Cookie
 document.cookie = "user=John";
 
@@ -1141,22 +1158,22 @@ localStorage.setItem("user", "John");
 
 // sessionStorage
 sessionStorage.setItem("user", "John");
-💡 Explanation
+```
 
-Cookies → used for authentication & server communication
+**Explanation:**
 
-localStorage → long-term client storage
+- Cookies → used for authentication & server communication
+- localStorage → long-term client storage
+- sessionStorage → temporary (tab-based)
 
-sessionStorage → temporary (tab-based)
+**What to say in interview:**
 
-🎯 What to say in interview
+> "Cookies are used when data needs to be sent to the server."
+> "Web storage is better for client-side data due to larger size and better performance."
 
-👉 "Cookies are used when data needs to be sent to the server."
-👉 "Web storage is better for client-side data due to larger size and better performance."
+**One-line answer:**
 
-🔥 One-line answer
-
-👉 "Cookies are server-oriented storage, while localStorage/sessionStorage are client-side storage."
+> "Cookies are server-oriented storage, while localStorage/sessionStorage are client-side storage."
 
 </details>
 
