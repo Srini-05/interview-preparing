@@ -134,7 +134,116 @@ public class OrderController {
 | `@OneToMany` | • One entity → many entities<br>• Example: One user → many orders<br>• Defines relationship |
 | `@ManyToOne` | • Many entities → one entity<br>• Example: Many orders → one user<br>• Foreign key mapping |
 
-**Interview Tip:** Spring Boot annotations reduce boilerplate code. @Autowired injects dependencies, @RestController creates REST endpoints, @Entity maps to database tables.
+### Transaction & Caching Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@Transactional` | • Manages database transactions<br>• Ensures ACID properties<br>• Rollback on exceptions |
+| `@EnableTransactionManagement` | • Enables transaction management<br>• Required for @Transactional<br>• Usually auto-configured |
+| `@Cacheable` | • Caches method results<br>• Improves performance<br>• Example: `@Cacheable("users")` |
+| `@CacheEvict` | • Removes entries from cache<br>• Used for update operations<br>• Example: `@CacheEvict(value="users", key="#user.id")` |
+| `@CachePut` | • Updates cache with new data<br>• Always executes method<br>• Updates cache after execution |
+| `@EnableCaching` | • Enables Spring caching<br>• Required for cache annotations<br>• Auto-configured with Spring Boot |
+
+### Asynchronous Processing Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@Async` | • Executes method asynchronously<br>• Returns CompletableFuture or void<br>• Improves responsiveness |
+| `@EnableAsync` | • Enables async processing<br>• Required for @Async<br>• Usually auto-configured |
+| `@Scheduled` | • Schedules method execution<br>• Uses cron expressions<br>• Example: `@Scheduled(fixedRate = 5000)` |
+| `@EnableScheduling` | • Enables scheduled tasks<br>• Required for @Scheduled<br>• Auto-configured with Spring Boot |
+
+### Security Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@EnableWebSecurity` | • Enables Spring Security<br>• Configures security settings<br>• Required for security features |
+| `@PreAuthorize` | • Checks authorization before method<br>• Example: `@PreAuthorize("hasRole('ADMIN')")`<br>• Method-level security |
+| `@PostAuthorize` | • Checks authorization after method<br>• Less common than @PreAuthorize<br>• Allows method execution first |
+| `@Secured` | • Legacy authorization annotation<br>• Example: `@Secured("ROLE_ADMIN")`<br>• Simpler than @PreAuthorize |
+
+### Validation Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@Valid` | • Triggers validation on object<br>• Used with @RequestBody<br>• Validates nested objects |
+| `@NotNull` | • Field cannot be null<br>• Basic validation<br>• Used with @Valid |
+| `@NotEmpty` | • Collection/string cannot be empty<br>• For collections and strings<br>• Extends @NotNull |
+| `@Size` | • Validates size/length<br>• Example: `@Size(min=2, max=30)`<br>• For strings and collections |
+| `@Email` | • Validates email format<br>• Uses regex pattern<br>• For email fields |
+
+### Exception Handling Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@ControllerAdvice` | • Global exception handler<br>• Handles exceptions across controllers<br>• Centralized error handling |
+| `@ExceptionHandler` | • Handles specific exceptions<br>• Used in @ControllerAdvice<br>• Returns custom error responses |
+| `@ResponseStatus` | • Sets HTTP status for exceptions<br>• Example: `@ResponseStatus(HttpStatus.NOT_FOUND)`<br>• Automatic status mapping |
+
+### Testing Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@SpringBootTest` | • Integration test for Spring Boot<br>• Loads full application context<br>• Tests with real dependencies |
+| `@WebMvcTest` | • Tests MVC controllers<br>• Loads only web layer<br>• Faster than full context |
+| `@DataJpaTest` | • Tests JPA repositories<br>• Configures test database<br>• Focuses on data layer |
+| `@MockBean` | • Creates mock beans<br>• Replaces real beans in tests<br>• Used for unit testing |
+| `@Test` | • Marks method as test<br>• Standard JUnit annotation<br>• Executes during test phase |
+
+### Profile & Environment Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@Profile` | • Activates bean based on profile<br>• Example: `@Profile("dev")`<br>• Environment-specific configuration |
+| `@ActiveProfiles` | • Activates profiles in tests<br>• Example: `@ActiveProfiles("test")`<br>• Overrides default profiles |
+
+### Conditional Configuration Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@ConditionalOnProperty` | • Creates bean if property exists<br>• Example: `@ConditionalOnProperty("feature.enabled")`<br>• Feature toggles |
+| `@ConditionalOnClass` | • Creates bean if class is present<br>• Example: `@ConditionalOnClass(DataSource.class)`<br>• Optional dependencies |
+| `@ConditionalOnMissingBean` | • Creates bean if no other bean exists<br>• Prevents duplicate beans<br>• Auto-configuration safety |
+
+### Configuration Properties Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@ConfigurationProperties` | • Binds properties to object<br>• Example: `@ConfigurationProperties("app.config")`<br>• Type-safe configuration |
+| `@EnableConfigurationProperties` | • Enables @ConfigurationProperties<br>• Required for external binding<br>• Registers property beans |
+
+### Resilience & Retry Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@Retryable` | • Retries failed operations<br>• Example: `@Retryable(maxAttempts=3)`<br>• Automatic retry logic |
+| `@Recover` | • Fallback method for retries<br>• Executed after all retries fail<br>• Graceful error handling |
+| `@CircuitBreaker` | • Prevents cascading failures<br>• Opens circuit when failures exceed threshold<br>• Improves system resilience |
+
+### Web & CORS Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@CrossOrigin` | • Enables CORS for endpoints<br>• Example: `@CrossOrigin(origins="http://localhost:3000")`<br>• Cross-origin resource sharing |
+| `@EnableWebMvc` | • Enables Spring MVC configuration<br>• Usually auto-configured<br>• Manual MVC setup |
+
+### Feign Client Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@FeignClient` | • Declares REST client interface<br>• Example: `@FeignClient("user-service")`<br>• Declarative REST calls |
+| `@EnableFeignClients` | • Enables Feign clients<br>• Scans for @FeignClient<br>• Auto-configures clients |
+
+### Batch Processing Annotations
+
+| Annotation | Explanation |
+|------------|-------------|
+| `@EnableBatchProcessing` | • Enables Spring Batch<br>• Configures batch infrastructure<br>• Job and step management |
+| `@Job` | • Defines a batch job<br>• Contains steps to execute<br>• Orchestrates batch processing |
+| `@Step` | • Defines a step in a job<br>• Reader, processor, writer<br>• Individual processing unit |
+
+**Interview Tip:** Spring Boot annotations reduce boilerplate code. @Autowired injects dependencies, @RestController creates REST endpoints, @Entity maps to database tables, @Transactional manages transactions, @Cacheable improves performance, @FeignClient simplifies service communication, @CircuitBreaker provides resilience.
 
 </details>
 
