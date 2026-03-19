@@ -1,6 +1,6 @@
 # ☕ Java Backend Interview Questions
 
-> **50+ Questions** | Organized by topic | Open/Close Accordions | Comparison Tables | Clear Explanations
+> **80 Questions** | Organized by topic | Open/Close Accordions | Comparison Tables | Clear Explanations
 
 ---
 
@@ -16,6 +16,14 @@
 - [Multi-threading & Concurrency](#-multi-threading--concurrency)
 - [Spring Framework](#-spring-framework)
 - [Bonus Questions](#-bonus-questions)
+- [Java Internals & Deep Concepts](#-java-internals--deep-concepts)
+- [Advanced Multi-threading](#-advanced-multi-threading)
+- [Java Data Structures & Algorithms](#-java-data-structures--algorithms)
+- [Java 8+ Modern Features](#-java-8-modern-features)
+- [Java Design & Patterns](#-java-design--patterns)
+- [Java Memory & Performance](#-java-memory--performance)
+- [Spring Boot & Backend](#-spring-boot--backend)
+- [Java Best Practices & Miscellaneous](#-java-best-practices--miscellaneous)
 
 ---
 
@@ -1881,6 +1889,1549 @@ public void createPerson() {
 | Inheritance | `extends` | Code reuse | Copy-pasting code |
 | Polymorphism | `@Override` | Flexibility | Hard-coded type checks |
 | Abstraction | `abstract`/`interface` | Hide complexity | Exposing implementation |
+
+---
+
+---
+
+## 🔬 Java Internals & Deep Concepts
+
+<details>
+<summary><b>Q51. What is the difference between shallow copy and deep copy?</b></summary>
+
+> **One-Line Answer:** Shallow copy copies the object reference — both copies point to the same nested objects. Deep copy creates a fully independent clone — changes in one do NOT affect the other.
+
+### Visual Explanation
+
+```
+Shallow Copy:
+original ──► [name="Alice", address ──► AddressObj]
+copy     ──► [name="Alice", address ──► AddressObj]  ← SAME object!
+
+Deep Copy:
+original ──► [name="Alice", address ──► AddressObj1]
+copy     ──► [name="Alice", address ──► AddressObj2]  ← NEW object!
+```
+
+### Code Example
+
+```java
+class Address {
+    String city;
+    Address(String city) { this.city = city; }
+}
+
+class Person implements Cloneable {
+    String name;
+    Address address;
+
+    Person(String name, Address address) {
+        this.name = name;
+        this.address = address;
+    }
+
+    // SHALLOW COPY — clone() default behavior
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();  // copies reference to address, not the object
+    }
+
+    // DEEP COPY — manually clone nested objects
+    protected Person deepCopy() {
+        return new Person(this.name, new Address(this.address.city));
+    }
+}
+
+// Usage
+Person original = new Person("Alice", new Address("Mumbai"));
+Person shallow  = (Person) original.clone();
+Person deep     = original.deepCopy();
+
+original.address.city = "Delhi";
+System.out.println(shallow.address.city);  // "Delhi" ← affected!
+System.out.println(deep.address.city);     // "Mumbai" ← NOT affected
+```
+
+### Ways to Achieve Deep Copy
+
+| Method | Notes |
+|--------|-------|
+| Manual copy constructor | Most explicit and safe |
+| Override `clone()` recursively | Verbose, error-prone |
+| Serialization/Deserialization | Easy but slow |
+| Libraries (ModelMapper, MapStruct) | Best for production |
+
+> 💡 **Interview Tip:** Java's default `clone()` is a shallow copy. Always use deep copy when your object has mutable nested objects (like lists, other objects).
+
+</details>
+
+---
+
+<details>
+<summary><b>Q52. What is the difference between instance initializer block, static initializer block, and constructor?</b></summary>
+
+> **One-Line Answer:** Static block runs once when class loads. Instance block runs every time an object is created (before constructor). Constructor initializes the specific object.
+
+### Execution Order
+
+```java
+class Demo {
+    // 1. Static block — runs ONCE when class is first loaded
+    static {
+        System.out.println("1. Static block");
+    }
+
+    // 2. Instance block — runs EVERY time before constructor
+    {
+        System.out.println("2. Instance initializer block");
+    }
+
+    // 3. Constructor — runs EVERY time an object is created
+    Demo() {
+        System.out.println("3. Constructor");
+    }
+}
+
+new Demo();
+new Demo();
+
+// Output:
+// 1. Static block           ← only once!
+// 2. Instance initializer block
+// 3. Constructor
+// 2. Instance initializer block
+// 3. Constructor
+```
+
+### Comparison Table
+
+| Feature | Static Block | Instance Block | Constructor |
+|---------|-------------|---------------|-------------|
+| Runs when | Class is first loaded | Every object creation | Every object creation |
+| Runs how many times | Once | Once per object | Once per object |
+| Has access to | Static members only | All members | All members |
+| Can be overloaded | ❌ No | ❌ No | ✅ Yes |
+| Use case | Load config, register drivers | Common init across constructors | Object-specific initialization |
+
+> 💡 **Interview Tip:** Instance blocks are rarely used in practice, but great for interview discussions. They help share common initialization code across multiple constructors.
+
+</details>
+
+---
+
+<details>
+<summary><b>Q53. What is covariant return type in Java?</b></summary>
+
+> **One-Line Answer:** Covariant return type allows an overriding method to return a more specific (subclass) type than the return type declared in the parent method.
+
+### Code Example
+
+```java
+class Animal {
+    Animal create() {
+        return new Animal();
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    Dog create() {          // returns Dog (subtype of Animal) — VALID!
+        return new Dog();
+    }
+}
+
+// Without covariant return type (old Java), you'd need:
+Animal a = new Dog().create();
+Dog d = (Dog) a;  // explicit cast needed
+
+// With covariant return type:
+Dog d = new Dog().create();  // no cast needed!
+```
+
+> 💡 **Interview Tip:** Covariant return types make APIs cleaner by avoiding unnecessary casting. Widely used in Builder patterns and factory methods.
+
+</details>
+
+---
+
+<details>
+<summary><b>Q54. What is the difference between abstract class and interface with default methods (Java 8+)?</b></summary>
+
+> **One-Line Answer:** After Java 8, interfaces can have default and static methods — making the line thinner. But abstract classes still support state (instance fields), constructors, and non-public methods.
+
+### Remaining Differences After Java 8
+
+| Feature | Abstract Class | Interface (Java 8+) |
+|---------|--------------|---------------------|
+| Instance fields/state | ✅ Yes | ❌ No (only constants) |
+| Constructor | ✅ Yes | ❌ No |
+| Default methods | ✅ Yes | ✅ Yes (since Java 8) |
+| Static methods | ✅ Yes | ✅ Yes (since Java 8) |
+| Private methods | ✅ Yes | ✅ Yes (since Java 9) |
+| Access modifiers on methods | Any | public only |
+| Multiple inheritance | ❌ No (extend one only) | ✅ Yes (implement many) |
+
+### When to Choose Which?
+
+```java
+// Use ABSTRACT CLASS when:
+// — you have shared state (fields) and common behavior
+abstract class Template {
+    private int retryCount = 3;  // state — interface can't do this
+    abstract void process();
+    void retry() { /* uses retryCount */ }
+}
+
+// Use INTERFACE when:
+// — you want to define a contract that many unrelated classes follow
+interface Auditable {
+    default void log(String action) {
+        System.out.println("Action: " + action);
+    }
+}
+```
+
+> 💡 **Interview Tip:** The golden rule — prefer interfaces for API design (multiple inheritance, no state). Use abstract classes when you need shared state or constructors.
+
+</details>
+
+---
+
+<details>
+<summary><b>Q55. What is method hiding in Java?</b></summary>
+
+> **One-Line Answer:** Method hiding happens when a subclass defines a static method with the same name as a static method in the parent class. Unlike overriding, the method called depends on the reference type, not the actual object.
+
+### Code Example
+
+```java
+class Parent {
+    static void greet() { System.out.println("Parent greet"); }
+    void hello()        { System.out.println("Parent hello"); }
+}
+
+class Child extends Parent {
+    static void greet() { System.out.println("Child greet"); }  // HIDING
+    @Override
+    void hello()        { System.out.println("Child hello"); }  // OVERRIDING
+}
+
+Parent obj = new Child();
+
+obj.greet();   // "Parent greet"  ← reference type decides (hiding)
+obj.hello();   // "Child hello"   ← actual object decides (overriding)
+```
+
+### Hiding vs Overriding
+
+| Feature | Method Hiding (static) | Method Overriding (instance) |
+|---------|----------------------|------------------------------|
+| Applies to | static methods | instance methods |
+| Resolved at | Compile time (reference type) | Runtime (actual object type) |
+| Polymorphism | ❌ No | ✅ Yes |
+| @Override | Not applicable | Recommended |
+
+> 💡 **Interview Tip:** Static methods cannot be overridden — they can only be hidden. This is a common interview trick question!
+
+</details>
+
+---
+
+<details>
+<summary><b>Q56. What is the instanceof operator?</b></summary>
+
+> **One-Line Answer:** instanceof checks if an object is an instance of a specific class or implements a specific interface — returns true or false. Java 16+ introduced pattern matching with instanceof.
+
+### Code Example
+
+```java
+Object obj = "Hello";
+
+// Traditional instanceof
+if (obj instanceof String) {
+    String s = (String) obj;   // explicit cast still needed
+    System.out.println(s.length());
+}
+
+// Java 16+ Pattern Matching instanceof (no cast needed!)
+if (obj instanceof String s) {
+    System.out.println(s.length());  // s is already a String here
+}
+
+// Works with inheritance
+class Animal {}
+class Dog extends Animal {}
+
+Dog d = new Dog();
+System.out.println(d instanceof Dog);    // true
+System.out.println(d instanceof Animal); // true (Dog IS-A Animal)
+System.out.println(d instanceof Object); // true (everything is Object)
+```
+
+> 💡 **Interview Tip:** Pattern matching instanceof (Java 16+) reduces boilerplate — no more cast after the check. Mention this to show you're up to date!
+
+</details>
+
+---
+
+<details>
+<summary><b>Q57. What is var (local variable type inference) in Java 10+?</b></summary>
+
+> **One-Line Answer:** var lets the compiler infer the type of a local variable automatically — reducing boilerplate while keeping Java statically typed. It only works for local variables, not fields or method parameters.
+
+### Code Example
+
+```java
+// Before Java 10 — verbose
+ArrayList<Map<String, List<Integer>>> data = new ArrayList<Map<String, List<Integer>>>();
+BufferedReader reader = new BufferedReader(new FileReader("file.txt"));
+
+// Java 10+ with var — cleaner!
+var data   = new ArrayList<Map<String, List<Integer>>>();
+var reader = new BufferedReader(new FileReader("file.txt"));
+
+// Works in for loops
+var list = List.of("Alice", "Bob", "Charlie");
+for (var name : list) {
+    System.out.println(name.toUpperCase());  // name is inferred as String
+}
+```
+
+### Rules for var
+
+| Allowed ✅ | Not Allowed ❌ |
+|-----------|--------------|
+| Local variables | Class fields |
+| For loop variables | Method parameters |
+| Try-with-resources | Return types |
+| Lambda parameters (Java 11) | Array initializer shortcut |
+
+> 💡 **Interview Tip:** var is still statically typed — the type is fixed at compile time, not runtime. It's syntax sugar only, not like JavaScript's dynamic typing.
+
+</details>
+
+---
+
+## 🧵 Advanced Multi-threading
+
+<details>
+<summary><b>Q58. What is the difference between synchronized and ReentrantLock?</b></summary>
+
+> **One-Line Answer:** synchronized is simple and automatic. ReentrantLock is more flexible — supports tryLock, fairness policy, multiple conditions, and interruptible locking.
+
+### Comparison Table
+
+| Feature | synchronized | ReentrantLock |
+|---------|-------------|--------------|
+| Lock type | Implicit (JVM managed) | Explicit (manual lock/unlock) |
+| Fairness | ❌ Not guaranteed | ✅ Optional fair mode |
+| tryLock | ❌ No | ✅ Yes — non-blocking attempt |
+| Interruptible | ❌ No | ✅ Yes — lockInterruptibly() |
+| Multiple conditions | ❌ No | ✅ Yes — newCondition() |
+| Ease of use | Simple | More complex |
+| Performance | Good | Slightly better under contention |
+
+### Code Example
+
+```java
+import java.util.concurrent.locks.ReentrantLock;
+
+class SafeCounter {
+    private int count = 0;
+    private final ReentrantLock lock = new ReentrantLock();
+
+    void increment() {
+        lock.lock();           // acquire lock
+        try {
+            count++;
+        } finally {
+            lock.unlock();     // ALWAYS release in finally!
+        }
+    }
+
+    void tryIncrement() {
+        if (lock.tryLock()) {  // non-blocking — returns false if locked
+            try {
+                count++;
+            } finally {
+                lock.unlock();
+            }
+        } else {
+            System.out.println("Could not acquire lock, skipping");
+        }
+    }
+}
+```
+
+> 💡 **Interview Tip:** Always call `unlock()` inside a `finally` block with ReentrantLock — otherwise a thrown exception will leave the lock permanently acquired (deadlock!).
+
+</details>
+
+---
+
+<details>
+<summary><b>Q59. What is ExecutorService and thread pool?</b></summary>
+
+> **One-Line Answer:** ExecutorService manages a pool of threads — reusing them for tasks instead of creating/destroying threads for each task, which is expensive.
+
+### Why Use Thread Pools?
+
+- Creating a thread costs ~1MB of memory and ~100ms startup time
+- Thread pools reuse threads — submit tasks, threads pick them up
+- Prevents system overload from unlimited thread creation
+
+### Types of Thread Pools
+
+| Pool Type | Method | Best For |
+|-----------|--------|----------|
+| Fixed Thread Pool | `newFixedThreadPool(n)` | CPU-bound tasks with known concurrency |
+| Cached Thread Pool | `newCachedThreadPool()` | Many short-lived tasks |
+| Single Thread Executor | `newSingleThreadExecutor()` | Sequential task execution |
+| Scheduled Thread Pool | `newScheduledThreadPool(n)` | Recurring/delayed tasks |
+| ForkJoinPool | `ForkJoinPool.commonPool()` | Parallel recursive tasks |
+
+### Code Example
+
+```java
+ExecutorService pool = Executors.newFixedThreadPool(4);
+
+// Submit Runnable (no return value)
+pool.submit(() -> System.out.println("Task 1"));
+
+// Submit Callable (returns a value via Future)
+Future<Integer> future = pool.submit(() -> {
+    Thread.sleep(1000);
+    return 42;
+});
+
+System.out.println("Result: " + future.get());  // blocks until done
+
+// Always shutdown!
+pool.shutdown();             // waits for running tasks to finish
+pool.awaitTermination(10, TimeUnit.SECONDS);
+```
+
+> 💡 **Interview Tip:** Always call `shutdown()` on ExecutorService — otherwise threads stay alive and the JVM won't exit. Use `shutdownNow()` to cancel pending tasks immediately.
+
+</details>
+
+---
+
+<details>
+<summary><b>Q60. What is the difference between Callable and Runnable?</b></summary>
+
+> **One-Line Answer:** Runnable represents a task with no return value and cannot throw checked exceptions. Callable can return a result (via Future) and can throw checked exceptions.
+
+### Comparison Table
+
+| Feature | Runnable | Callable<V> |
+|---------|---------|------------|
+| Method | `void run()` | `V call() throws Exception` |
+| Return value | ❌ None | ✅ Returns V |
+| Throws checked exception | ❌ No | ✅ Yes |
+| Used with | Thread, ExecutorService | ExecutorService only |
+| Result access | N/A | Via `Future<V>.get()` |
+| Introduced | Java 1.0 | Java 5 |
+
+### Code Example
+
+```java
+// Runnable — fire and forget
+Runnable task = () -> System.out.println("Running!");
+new Thread(task).start();
+
+// Callable — get a result back
+Callable<String> callable = () -> {
+    Thread.sleep(500);
+    return "Done!";
+};
+
+ExecutorService pool = Executors.newSingleThreadExecutor();
+Future<String> future = pool.submit(callable);
+
+// future.get() blocks until Callable finishes
+String result = future.get();
+System.out.println(result);  // "Done!"
+pool.shutdown();
+```
+
+> 💡 **Interview Tip:** `Future.get()` blocks the calling thread. Use `future.isDone()` to check without blocking, or `CompletableFuture` for fully async chaining.
+
+</details>
+
+---
+
+<details>
+<summary><b>Q61. What is CompletableFuture in Java?</b></summary>
+
+> **One-Line Answer:** CompletableFuture (Java 8) provides a fully non-blocking, chainable way to write async code — like a Promise in JavaScript. It eliminates callback hell and blocking Future.get() calls.
+
+### Code Example
+
+```java
+// Basic async task
+CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+    // runs in a separate thread (ForkJoinPool by default)
+    return "Hello";
+});
+
+// Chain transformations
+CompletableFuture<String> result = CompletableFuture
+    .supplyAsync(() -> "Hello")
+    .thenApply(s -> s + " World")       // transform result
+    .thenApply(String::toUpperCase);    // transform again
+
+System.out.println(result.get());  // "HELLO WORLD"
+
+// Combine two futures
+CompletableFuture<String> userFuture = CompletableFuture.supplyAsync(() -> "Alice");
+CompletableFuture<Integer> ageFuture = CompletableFuture.supplyAsync(() -> 25);
+
+CompletableFuture<String> combined = userFuture.thenCombine(ageFuture,
+    (name, age) -> name + " is " + age);
+
+System.out.println(combined.get());  // "Alice is 25"
+
+// Error handling
+CompletableFuture<String> safe = CompletableFuture
+    .supplyAsync(() -> { throw new RuntimeException("Oops!"); })
+    .exceptionally(ex -> "Default value");
+
+System.out.println(safe.get());  // "Default value"
+```
+
+### Key Methods
+
+| Method | Purpose |
+|--------|---------|
+| `supplyAsync()` | Run async task that returns value |
+| `runAsync()` | Run async task with no return value |
+| `thenApply()` | Transform result (like map) |
+| `thenAccept()` | Consume result (like forEach) |
+| `thenCombine()` | Combine two futures |
+| `exceptionally()` | Handle errors, provide default |
+| `allOf()` | Wait for all futures to complete |
+| `anyOf()` | Continue when ANY future completes |
+
+> 💡 **Interview Tip:** CompletableFuture is the modern replacement for Future. It's central to reactive and async programming in Java — a must-know for senior roles.
+
+</details>
+
+---
+
+## 🗂️ Java Data Structures & Algorithms
+
+<details>
+<summary><b>Q62. What is a Stack in Java? How to implement it?</b></summary>
+
+> **One-Line Answer:** Stack is a LIFO (Last In, First Out) data structure. Java provides the Stack class (legacy) and ArrayDeque (recommended modern alternative).
+
+### Code Example
+
+```java
+// Legacy Stack class (extends Vector — avoid in new code)
+Stack<Integer> stack = new Stack<>();
+stack.push(10);
+stack.push(20);
+stack.push(30);
+System.out.println(stack.peek());  // 30 — view top without removing
+System.out.println(stack.pop());   // 30 — remove top
+System.out.println(stack.isEmpty()); // false
+
+// Modern Approach — ArrayDeque as Stack (RECOMMENDED)
+Deque<Integer> deque = new ArrayDeque<>();
+deque.push(10);  // addFirst
+deque.push(20);
+deque.peek();    // peekFirst
+deque.pop();     // removeFirst
+```
+
+### Real-World Uses of Stack
+
+| Use Case | How Stack Helps |
+|----------|----------------|
+| Undo/Redo operations | Push actions, pop to undo |
+| Browser back button | Push visited pages |
+| Expression evaluation | Parse and evaluate math expressions |
+| Method call tracking | JVM call stack |
+| Balanced parentheses check | Push open, pop on close |
+
+> 💡 **Interview Tip:** Always use `ArrayDeque` instead of `Stack` class. `Stack` extends `Vector` (synchronized), which adds unnecessary overhead. `ArrayDeque` is faster and not thread-safe (which is fine for most use cases).
+
+</details>
+
+---
+
+<details>
+<summary><b>Q63. What is a Queue in Java? What are its implementations?</b></summary>
+
+> **One-Line Answer:** Queue is a FIFO (First In, First Out) data structure. Java offers LinkedList, ArrayDeque, PriorityQueue as implementations, and BlockingQueue variants for thread-safe operations.
+
+### Queue Implementations
+
+| Class | Type | Use Case |
+|-------|------|----------|
+| `ArrayDeque` | Regular Queue/Deque | General purpose (fast, non-thread-safe) |
+| `LinkedList` | Queue/Deque | Also a List — flexible but more memory |
+| `PriorityQueue` | Priority Queue | Elements dequeued by natural order or comparator |
+| `ArrayBlockingQueue` | Blocking Queue | Thread-safe, bounded — producer/consumer |
+| `LinkedBlockingQueue` | Blocking Queue | Thread-safe, optionally bounded |
+| `ConcurrentLinkedQueue` | Lock-free Queue | High-concurrency scenarios |
+
+### Code Example
+
+```java
+// Regular Queue
+Queue<String> queue = new LinkedList<>();
+queue.offer("Alice");   // add to tail (prefer offer over add)
+queue.offer("Bob");
+queue.offer("Charlie");
+
+System.out.println(queue.peek());  // "Alice" — view head without removing
+System.out.println(queue.poll());  // "Alice" — remove head (prefer poll over remove)
+System.out.println(queue.size());  // 2
+
+// PriorityQueue — dequeues smallest first
+Queue<Integer> pq = new PriorityQueue<>();
+pq.offer(30); pq.offer(10); pq.offer(20);
+System.out.println(pq.poll());  // 10 (smallest first)
+System.out.println(pq.poll());  // 20
+
+// BlockingQueue — for producer-consumer pattern
+BlockingQueue<String> bq = new ArrayBlockingQueue<>(10);
+bq.put("task1");             // blocks if full
+String task = bq.take();     // blocks if empty
+```
+
+> 💡 **Interview Tip:** Use `offer()`/`poll()` instead of `add()`/`remove()` — they return false/null instead of throwing exceptions when the queue is full/empty.
+
+</details>
+
+---
+
+<details>
+<summary><b>Q64. What is the difference between Iterator and ListIterator?</b></summary>
+
+> **One-Line Answer:** Iterator can traverse any Collection in one direction (forward only). ListIterator is specific to List and supports bidirectional traversal, plus add/set operations during iteration.
+
+### Comparison Table
+
+| Feature | Iterator | ListIterator |
+|---------|---------|-------------|
+| Works with | Any Collection | List only |
+| Direction | Forward only | Forward AND backward |
+| Add elements | ❌ No | ✅ Yes |
+| Replace elements | ❌ No | ✅ Yes (set()) |
+| Get index | ❌ No | ✅ nextIndex() / previousIndex() |
+
+### Code Example
+
+```java
+List<String> names = new ArrayList<>(Arrays.asList("Alice", "Bob", "Charlie"));
+
+// Iterator — forward only
+Iterator<String> it = names.iterator();
+while (it.hasNext()) {
+    String name = it.next();
+    if (name.equals("Bob")) {
+        it.remove();  // safe removal during iteration
+    }
+}
+
+// ListIterator — bidirectional
+ListIterator<String> lit = names.listIterator();
+while (lit.hasNext()) {
+    String name = lit.next();
+    lit.set(name.toUpperCase());  // replace element
+}
+// traverse backwards
+while (lit.hasPrevious()) {
+    System.out.println(lit.previous());
+}
+```
+
+> 💡 **Interview Tip:** Never modify a collection directly during iteration — always use `iterator.remove()` to avoid `ConcurrentModificationException`.
+
+</details>
+
+---
+
+## 🌐 Java 8+ Modern Features
+
+<details>
+<summary><b>Q65. What are Method References in Java 8?</b></summary>
+
+> **One-Line Answer:** Method references are a shorthand for lambdas that call an existing method — cleaner and more readable. Syntax: `ClassName::methodName`.
+
+### 4 Types of Method References
+
+| Type | Syntax | Equivalent Lambda |
+|------|--------|-----------------|
+| Static method | `Class::staticMethod` | `x -> Class.staticMethod(x)` |
+| Instance method (specific object) | `obj::instanceMethod` | `x -> obj.instanceMethod(x)` |
+| Instance method (arbitrary object) | `Class::instanceMethod` | `x -> x.instanceMethod()` |
+| Constructor | `Class::new` | `x -> new Class(x)` |
+
+### Code Example
+
+```java
+List<String> names = Arrays.asList("Charlie", "Alice", "Bob");
+
+// Lambda way
+names.forEach(name -> System.out.println(name));
+names.sort((a, b) -> a.compareTo(b));
+
+// Method reference way (cleaner!)
+names.forEach(System.out::println);          // instance on specific object
+names.sort(String::compareTo);               // instance on arbitrary object
+names.replaceAll(String::toUpperCase);       // instance on arbitrary object
+
+// Static method reference
+List<String> filtered = names.stream()
+    .filter(Objects::nonNull)                 // static method
+    .collect(Collectors.toList());
+
+// Constructor reference
+List<Integer> nums = Arrays.asList(1, 2, 3);
+List<String> strings = nums.stream()
+    .map(String::valueOf)                     // static method ref
+    .collect(Collectors.toList());
+```
+
+> 💡 **Interview Tip:** Method references are just syntactic sugar for lambdas — the compiler converts them. Use them to improve readability when the lambda just calls an existing method.
+
+</details>
+
+---
+
+<details>
+<summary><b>Q66. What are default and static methods in Java 8 interfaces?</b></summary>
+
+> **One-Line Answer:** Default methods allow interfaces to have method implementations without breaking existing implementing classes. Static methods in interfaces are utility methods called on the interface itself.
+
+### Why Were They Introduced?
+
+Before Java 8, adding a new method to an interface would break ALL implementing classes. Default methods solve this — existing classes inherit the default implementation automatically.
+
+### Code Example
+
+```java
+interface Greeting {
+    // Abstract method — must be implemented
+    String greet(String name);
+
+    // Default method — optional to override
+    default String greetLoudly(String name) {
+        return greet(name).toUpperCase();  // reuses abstract method
+    }
+
+    // Static method — called on the interface itself
+    static String defaultGreet() {
+        return "Hello, stranger!";
+    }
+}
+
+class FriendlyGreeting implements Greeting {
+    @Override
+    public String greet(String name) { return "Hi, " + name + "!"; }
+    // greetLoudly() inherited for free!
+}
+
+// Usage
+FriendlyGreeting fg = new FriendlyGreeting();
+System.out.println(fg.greet("Alice"));       // "Hi, Alice!"
+System.out.println(fg.greetLoudly("Alice")); // "HI, ALICE!"
+System.out.println(Greeting.defaultGreet()); // "Hello, stranger!"
+```
+
+### Default Method Diamond Problem
+
+```java
+interface A { default void hello() { System.out.println("A"); } }
+interface B { default void hello() { System.out.println("B"); } }
+
+class C implements A, B {
+    @Override
+    public void hello() {
+        A.super.hello();  // must explicitly resolve the conflict
+    }
+}
+```
+
+> 💡 **Interview Tip:** If a class implements two interfaces with the same default method, it MUST override that method to resolve the ambiguity — or the compiler will give an error.
+
+</details>
+
+---
+
+<details>
+<summary><b>Q67. What is the new Date and Time API in Java 8?</b></summary>
+
+> **One-Line Answer:** Java 8 introduced java.time package — immutable, thread-safe date/time classes (LocalDate, LocalTime, LocalDateTime, ZonedDateTime) that replace the buggy, mutable Calendar and Date classes.
+
+### Old (Broken) vs New (Java 8)
+
+| Old Class | Problem | Java 8 Replacement |
+|-----------|---------|-------------------|
+| `java.util.Date` | Mutable, confusing API | `LocalDate`, `LocalDateTime` |
+| `java.util.Calendar` | Verbose, buggy (months are 0-indexed!) | `LocalDate`, `ZonedDateTime` |
+| `SimpleDateFormat` | Not thread-safe | `DateTimeFormatter` |
+
+### Code Example
+
+```java
+// LocalDate — date only (no time, no timezone)
+LocalDate today = LocalDate.now();
+LocalDate birthday = LocalDate.of(1995, Month.JUNE, 15);
+LocalDate nextWeek = today.plusDays(7);
+long daysBetween = ChronoUnit.DAYS.between(birthday, today);
+
+// LocalTime — time only
+LocalTime now = LocalTime.now();
+LocalTime meeting = LocalTime.of(14, 30, 0);
+
+// LocalDateTime — date + time (no timezone)
+LocalDateTime event = LocalDateTime.of(2025, 12, 31, 23, 59);
+
+// ZonedDateTime — with timezone
+ZonedDateTime mumbaiTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+
+// Formatting
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+String formatted = today.format(formatter);  // "19/03/2026"
+LocalDate parsed = LocalDate.parse("25/12/2025", formatter);
+```
+
+> 💡 **Interview Tip:** The Java 8 Date/Time API is immutable — methods like `plusDays()` return a NEW object, they don't modify the original. This makes it thread-safe!
+
+</details>
+
+---
+
+<details>
+<summary><b>Q68. What are Streams — parallel streams vs sequential streams?</b></summary>
+
+> **One-Line Answer:** Sequential streams process elements one at a time in order. Parallel streams split the work across multiple CPU cores using the ForkJoinPool — faster for large datasets, but has ordering and thread-safety caveats.
+
+### Code Example
+
+```java
+List<Integer> numbers = IntStream.rangeClosed(1, 1_000_000)
+                                 .boxed()
+                                 .collect(Collectors.toList());
+
+// Sequential stream — single thread, ordered
+long sumSeq = numbers.stream()
+                     .mapToLong(Integer::longValue)
+                     .sum();
+
+// Parallel stream — multiple threads, unordered
+long sumPar = numbers.parallelStream()
+                     .mapToLong(Integer::longValue)
+                     .sum();
+// (both give same result for sum, but parallel is faster on large data)
+```
+
+### Sequential vs Parallel
+
+| Feature | Sequential | Parallel |
+|---------|-----------|---------|
+| Threads | Single | Multiple (ForkJoinPool) |
+| Order | Guaranteed | Not guaranteed |
+| Overhead | Low | Higher (thread coordination) |
+| Good for | Small data, ordered ops | Large data, independent ops |
+| Thread-safety required | ❌ No | ✅ Yes (shared state) |
+
+### When NOT to Use Parallel Streams
+
+```java
+// BAD — shared mutable state in parallel stream (race condition!)
+List<Integer> result = new ArrayList<>();  // not thread-safe!
+numbers.parallelStream().forEach(result::add);  // data corruption!
+
+// GOOD — use thread-safe collectors instead
+List<Integer> result = numbers.parallelStream()
+                              .filter(n -> n % 2 == 0)
+                              .collect(Collectors.toList());  // safe!
+```
+
+> 💡 **Interview Tip:** Parallel streams are NOT always faster! For small lists, thread creation overhead outweighs benefits. Benchmark before using parallelStream() in production.
+
+</details>
+
+---
+
+## 🏗️ Java Design & Patterns
+
+<details>
+<summary><b>Q69. What is the Builder Pattern? When to use it?</b></summary>
+
+> **One-Line Answer:** Builder Pattern constructs complex objects step-by-step with a fluent API — avoiding telescoping constructors and making object creation readable and flexible.
+
+### The Problem It Solves
+
+```java
+// PROBLEM: Telescoping constructor anti-pattern
+new Person("Alice", 25, "Mumbai", "alice@email.com", "9876543210", true, false);
+// What does 'true, false' mean? Impossible to tell!
+
+// SOLUTION: Builder Pattern
+Person alice = new Person.Builder("Alice", 25)
+    .city("Mumbai")
+    .email("alice@email.com")
+    .phone("9876543210")
+    .premiumMember(true)
+    .build();
+```
+
+### Full Builder Pattern Example
+
+```java
+public class Person {
+    // All fields final — truly immutable!
+    private final String name;
+    private final int age;
+    private final String city;
+    private final String email;
+
+    // Private constructor — only Builder can call this
+    private Person(Builder builder) {
+        this.name  = builder.name;
+        this.age   = builder.age;
+        this.city  = builder.city;
+        this.email = builder.email;
+    }
+
+    // Static nested Builder class
+    public static class Builder {
+        private final String name;  // required
+        private final int age;      // required
+        private String city;        // optional
+        private String email;       // optional
+
+        public Builder(String name, int age) {
+            this.name = name;
+            this.age  = age;
+        }
+        public Builder city(String city)   { this.city = city;   return this; }
+        public Builder email(String email) { this.email = email; return this; }
+        public Person build()              { return new Person(this); }
+    }
+}
+```
+
+> 💡 **Interview Tip:** Lombok's `@Builder` annotation generates all this boilerplate automatically. But understanding the manual implementation shows you know what's happening under the hood.
+
+</details>
+
+---
+
+<details>
+<summary><b>Q70. What is the Singleton Pattern? How to make it thread-safe?</b></summary>
+
+> **One-Line Answer:** Singleton ensures only ONE instance of a class exists in the JVM. Thread-safe implementation requires double-checked locking with volatile, or the enum-based approach.
+
+### 4 Ways to Implement Singleton
+
+```java
+// 1. EAGER INITIALIZATION — simple, but creates instance even if never used
+public class Singleton {
+    private static final Singleton INSTANCE = new Singleton();
+    private Singleton() {}
+    public static Singleton getInstance() { return INSTANCE; }
+}
+
+// 2. LAZY INITIALIZATION — not thread-safe!
+public class Singleton {
+    private static Singleton instance;
+    private Singleton() {}
+    public static Singleton getInstance() {
+        if (instance == null) {           // race condition here!
+            instance = new Singleton();
+        }
+        return instance;
+    }
+}
+
+// 3. DOUBLE-CHECKED LOCKING — thread-safe and lazy
+public class Singleton {
+    private static volatile Singleton instance;  // volatile is crucial!
+    private Singleton() {}
+    public static Singleton getInstance() {
+        if (instance == null) {
+            synchronized (Singleton.class) {
+                if (instance == null) {   // second check inside sync block
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+}
+
+// 4. ENUM — best approach! Thread-safe, serialization-safe, reflection-safe
+public enum Singleton {
+    INSTANCE;
+    public void doSomething() { /* ... */ }
+}
+// Usage: Singleton.INSTANCE.doSomething();
+```
+
+### Why volatile in Double-Checked Locking?
+
+Without `volatile`, the JVM can reorder instructions — another thread might see a partially constructed object. `volatile` prevents instruction reordering.
+
+> 💡 **Interview Tip:** The **enum** singleton is the recommended approach by Joshua Bloch (Effective Java). It's immune to reflection attacks, serialization issues, and is automatically thread-safe.
+
+</details>
+
+---
+
+<details>
+<summary><b>Q71. What is the Observer Pattern in Java?</b></summary>
+
+> **One-Line Answer:** Observer Pattern defines a one-to-many dependency — when the subject (publisher) changes state, all registered observers (subscribers) are automatically notified.
+
+### Code Example
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+// Subject (Publisher)
+interface Subject {
+    void subscribe(Observer o);
+    void unsubscribe(Observer o);
+    void notifyObservers(String event);
+}
+
+// Observer (Subscriber)
+interface Observer {
+    void update(String event);
+}
+
+// Concrete Subject
+class EventSystem implements Subject {
+    private List<Observer> observers = new ArrayList<>();
+
+    @Override public void subscribe(Observer o)   { observers.add(o); }
+    @Override public void unsubscribe(Observer o) { observers.remove(o); }
+    @Override public void notifyObservers(String event) {
+        observers.forEach(o -> o.update(event));
+    }
+
+    public void triggerEvent(String event) {
+        System.out.println("Event: " + event);
+        notifyObservers(event);
+    }
+}
+
+// Concrete Observer
+class EmailNotifier implements Observer {
+    @Override
+    public void update(String event) {
+        System.out.println("Email sent for: " + event);
+    }
+}
+
+// Usage
+EventSystem es = new EventSystem();
+es.subscribe(new EmailNotifier());
+es.subscribe(event -> System.out.println("SMS sent for: " + event));  // lambda!
+es.triggerEvent("New Order");
+// Output:
+// Event: New Order
+// Email sent for: New Order
+// SMS sent for: New Order
+```
+
+> 💡 **Interview Tip:** Java's `java.util.Observable` class and `Observer` interface are deprecated (Java 9+). In Spring, this pattern is implemented through `ApplicationEvent` and `@EventListener`. In modern Java, use reactive streams (RxJava, Reactor) for event-driven programming.
+
+</details>
+
+---
+
+## 🔐 Java Memory & Performance
+
+<details>
+<summary><b>Q72. What is memory leak in Java? How to prevent it?</b></summary>
+
+> **One-Line Answer:** A memory leak in Java happens when objects are no longer needed but still referenced — preventing GC from reclaiming that memory. Java's GC doesn't prevent memory leaks, it only collects unreachable objects.
+
+### Common Causes of Memory Leaks
+
+```java
+// 1. STATIC COLLECTIONS growing forever
+class Cache {
+    static Map<String, Object> cache = new HashMap<>();
+    void store(String key, Object val) {
+        cache.put(key, val);  // never cleaned — grows forever!
+    }
+}
+
+// 2. Unregistered Listeners / Observers
+button.addActionListener(myListener);
+// If you never remove myListener, it holds a reference forever
+
+// 3. Unclosed Resources
+Connection conn = getConnection();
+// If exception before conn.close() — leak! Use try-with-resources instead
+
+// 4. ThreadLocal variables not removed
+ThreadLocal<Object> tl = new ThreadLocal<>();
+tl.set(bigObject);
+// When thread is pooled (ExecutorService), the ThreadLocal persists!
+// FIX:
+try {
+    tl.set(bigObject);
+    // use it...
+} finally {
+    tl.remove();  // always clean up!
+}
+```
+
+### Prevention Strategies
+
+| Strategy | How It Helps |
+|----------|-------------|
+| Use `WeakReference` for caches | GC can collect even if reference exists |
+| Always close resources (try-with-resources) | Prevents unclosed I/O leaks |
+| Unregister listeners | Prevents listener accumulation |
+| Clear ThreadLocal in finally | Prevents thread pool leaks |
+| Use `WeakHashMap` for caches | Keys collected by GC when no strong ref |
+
+### Detection Tools
+
+- **VisualVM** — Heap dump analysis, memory profiling
+- **JProfiler** — Professional profiler
+- **Eclipse MAT (Memory Analyzer Tool)** — Heap dump analysis
+- **JVM flags** — `-Xmx`, `-verbose:gc`, `-XX:+HeapDumpOnOutOfMemoryError`
+
+> 💡 **Interview Tip:** Java prevents dangling pointers but NOT memory leaks. Leaks happen when you hold references you no longer need. The most common real-world leak: static collections and unclosed database connections.
+
+</details>
+
+---
+
+<details>
+<summary><b>Q73. What is String interning in Java?</b></summary>
+
+> **One-Line Answer:** String interning places a String into the String Pool — so that identical strings share the same memory. Calling `intern()` on a String returns the pooled version.
+
+### How It Works
+
+```java
+String s1 = new String("Java");  // creates new object in heap (NOT pool)
+String s2 = new String("Java");  // another new object
+String s3 = "Java";              // from pool
+String s4 = "Java";              // same pool object
+
+System.out.println(s1 == s2);     // false — different heap objects
+System.out.println(s3 == s4);     // true  — same pool object
+System.out.println(s1 == s3);     // false — s1 not in pool
+
+// intern() — move to pool
+String s5 = s1.intern();          // returns pool version
+System.out.println(s5 == s3);     // true!
+System.out.println(s5 == s1);     // false! (s1 still points to heap object)
+```
+
+### When to Use intern()
+
+```java
+// Good use: store many duplicate strings (e.g., country codes from DB)
+// Without interning: 1 million rows × "INDIA" = 1 million String objects
+// With interning: 1 million rows × "INDIA" = 1 String object in pool
+```
+
+> 💡 **Interview Tip:** The String Pool is stored in Metaspace (since Java 8). Don't overuse intern() — the pool has a fixed size and can cause performance issues if overloaded.
+
+</details>
+
+---
+
+## 🌿 Spring Boot & Backend
+
+<details>
+<summary><b>Q74. What is Spring Boot Auto-configuration?</b></summary>
+
+> **One-Line Answer:** Auto-configuration automatically configures Spring beans based on the JARs present on the classpath — so you get a working app with minimal setup. No XML needed.
+
+### How It Works
+
+```java
+// You add this dependency to pom.xml:
+// spring-boot-starter-web
+
+// Spring Boot detects Spring MVC on classpath and automatically configures:
+// — DispatcherServlet
+// — Tomcat embedded server
+// — Jackson for JSON
+// — Error handlers
+// All without you writing any configuration!
+
+// Just write your controller:
+@RestController
+public class HelloController {
+    @GetMapping("/hello")
+    public String hello() { return "Hello World!"; }
+}
+// And run! It just works.
+```
+
+### @SpringBootApplication = 3 Annotations
+
+```java
+@SpringBootApplication
+// is equivalent to:
+@SpringBootConfiguration  // marks as config class (like @Configuration)
+@EnableAutoConfiguration  // triggers auto-configuration
+@ComponentScan            // scans for @Component, @Service, @Repository, etc.
+public class MyApp {
+    public static void main(String[] args) {
+        SpringApplication.run(MyApp.class, args);
+    }
+}
+```
+
+### How to Disable Specific Auto-configuration
+
+```java
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+public class MyApp { }  // won't auto-configure database
+```
+
+> 💡 **Interview Tip:** Auto-configuration follows "Convention over Configuration" — it makes smart defaults but allows you to override anything. Check `spring.factories` or `AutoConfiguration.imports` file to see all auto-configurations.
+
+</details>
+
+---
+
+<details>
+<summary><b>Q75. What are Spring Boot Actuator endpoints?</b></summary>
+
+> **One-Line Answer:** Spring Boot Actuator exposes production-ready monitoring endpoints — health checks, metrics, environment info, thread dumps, and more — over HTTP or JMX.
+
+### Common Actuator Endpoints
+
+| Endpoint | URL | Purpose |
+|----------|-----|---------|
+| Health | `/actuator/health` | App health status |
+| Info | `/actuator/info` | App info (version, build) |
+| Metrics | `/actuator/metrics` | JVM, HTTP, DB metrics |
+| Env | `/actuator/env` | Environment properties |
+| Beans | `/actuator/beans` | All Spring beans |
+| Mappings | `/actuator/mappings` | All URL mappings |
+| Threaddump | `/actuator/threaddump` | Current thread states |
+| Loggers | `/actuator/loggers` | Change log levels at runtime |
+| Shutdown | `/actuator/shutdown` | Graceful app shutdown |
+
+### Setup
+
+```yaml
+# application.yml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics  # expose only these
+  endpoint:
+    health:
+      show-details: always  # show full health details
+```
+
+> 💡 **Interview Tip:** In production, NEVER expose all actuator endpoints publicly — especially `/actuator/env` and `/actuator/shutdown`. Secure them with Spring Security or expose only `/health` externally.
+
+</details>
+
+---
+
+<details>
+<summary><b>Q76. What is the difference between @Bean and @Component?</b></summary>
+
+> **One-Line Answer:** @Component is a class-level annotation for auto-detection via classpath scanning. @Bean is a method-level annotation inside @Configuration classes for explicit bean creation — used when you need fine-grained control or the class isn't yours to annotate.
+
+### Comparison Table
+
+| Feature | @Component | @Bean |
+|---------|-----------|-------|
+| Applied to | Class | Method inside @Configuration class |
+| Detection | Classpath scan (auto) | Explicit method call |
+| Use when | You own the class | Third-party class or need control |
+| Stereotype variants | @Service, @Repository, @Controller | N/A |
+
+### Code Example
+
+```java
+// @Component — applied to your own class
+@Component
+public class EmailService {
+    public void send(String msg) { /* ... */ }
+}
+
+// @Bean — used for third-party or complex bean creation
+@Configuration
+public class AppConfig {
+
+    // You can't annotate ObjectMapper class with @Component (it's from Jackson)
+    // So you create a @Bean method instead:
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+}
+```
+
+> 💡 **Interview Tip:** Use @Component when you own the class. Use @Bean when you need to configure a bean from a third-party library or when the bean creation logic is complex.
+
+</details>
+
+---
+
+<details>
+<summary><b>Q77. What is Spring Bean Scope?</b></summary>
+
+> **One-Line Answer:** Bean scope defines how many instances of a bean Spring creates and how long they live. Default is Singleton — one instance per Spring container.
+
+### Bean Scopes
+
+| Scope | Instances | Lifetime | Use Case |
+|-------|-----------|----------|----------|
+| **singleton** (default) | 1 per ApplicationContext | Application lifetime | Services, Repositories |
+| **prototype** | New for every request | Caller manages it | Stateful beans |
+| **request** | 1 per HTTP request | Request lifetime | Web: request-specific data |
+| **session** | 1 per HTTP session | Session lifetime | Web: user session data |
+| **application** | 1 per ServletContext | App lifetime | Web: application-wide config |
+
+### Code Example
+
+```java
+// Singleton — default, no annotation needed, but explicit for clarity
+@Service
+@Scope("singleton")  // or just @Service — same thing
+public class UserService { }
+
+// Prototype — new instance every time it's injected/requested
+@Component
+@Scope("prototype")
+public class ShoppingCart {  // stateful — each user needs their own
+    private List<Item> items = new ArrayList<>();
+}
+
+// Request scope — one per HTTP request
+@Component
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class RequestContext { }
+```
+
+> 💡 **Interview Tip:** Injecting a prototype bean into a singleton is tricky — the singleton gets just one prototype instance (at creation time). Use `@Lookup` annotation or `ApplicationContext.getBean()` to get a new prototype instance each time.
+
+</details>
+
+---
+
+## 📝 Java Best Practices & Miscellaneous
+
+<details>
+<summary><b>Q78. What is the difference between checked and runtime exceptions? When to use which?</b></summary>
+
+> **One-Line Answer:** Use checked exceptions for recoverable external failures (file not found, network timeout). Use unchecked (runtime) exceptions for programming errors and unrecoverable conditions.
+
+### Decision Guide
+
+```
+Is the caller ABLE to recover from this error?
+├── YES → Checked Exception (caller must handle it)
+│         e.g., FileNotFoundException — caller can ask user for another file
+└── NO  → Runtime Exception (don't force caller to handle)
+          e.g., NullPointerException — indicates a bug, not a scenario
+```
+
+### Common Exception Hierarchy
+
+| Exception | Type | When Thrown |
+|-----------|------|-------------|
+| `IOException` | Checked | File/network I/O issues |
+| `SQLException` | Checked | Database errors |
+| `ClassNotFoundException` | Checked | Class not found at runtime |
+| `NullPointerException` | Unchecked | Accessing null reference |
+| `IllegalArgumentException` | Unchecked | Invalid method argument |
+| `IllegalStateException` | Unchecked | Wrong state to call this method |
+| `UnsupportedOperationException` | Unchecked | Operation not supported |
+| `IndexOutOfBoundsException` | Unchecked | Invalid array/list index |
+
+### Best Practice: Custom Exception
+
+```java
+// Good custom exception design
+public class OrderNotFoundException extends RuntimeException {
+    private final Long orderId;
+
+    public OrderNotFoundException(Long orderId) {
+        super("Order not found with ID: " + orderId);
+        this.orderId = orderId;
+    }
+
+    public Long getOrderId() { return orderId; }
+}
+```
+
+> 💡 **Interview Tip:** Modern Java convention (and Spring's approach): prefer **unchecked** exceptions. Checked exceptions leak implementation details and make APIs harder to use. Always include meaningful messages.
+
+</details>
+
+---
+
+<details>
+<summary><b>Q79. What is the difference between mutable and immutable objects? How to create an immutable class?</b></summary>
+
+> **One-Line Answer:** Mutable objects can be changed after creation. Immutable objects cannot — every "modification" returns a new object. Immutable objects are thread-safe by nature.
+
+### Rules to Create an Immutable Class
+
+1. Declare the class `final` (prevent subclassing)
+2. Make all fields `private` and `final`
+3. No setter methods
+4. Initialize all fields via constructor
+5. Return deep copies of mutable fields (like lists)
+
+### Code Example
+
+```java
+public final class ImmutablePerson {
+    private final String name;
+    private final int age;
+    private final List<String> hobbies;  // mutable field — needs deep copy!
+
+    public ImmutablePerson(String name, int age, List<String> hobbies) {
+        this.name    = name;
+        this.age     = age;
+        this.hobbies = new ArrayList<>(hobbies);  // defensive copy on creation
+    }
+
+    public String getName()         { return name; }
+    public int getAge()             { return age; }
+    public List<String> getHobbies() {
+        return Collections.unmodifiableList(hobbies);  // return unmodifiable view
+    }
+    // NO setters!
+}
+```
+
+### Benefits of Immutability
+
+| Benefit | Explanation |
+|---------|-------------|
+| Thread-safe | Can be shared across threads without synchronization |
+| Cacheable | Safe to cache (String pool, Integer cache) |
+| Reliable | State never changes unexpectedly |
+| Good Map keys | Hashcode is stable (prerequisite for HashMap keys) |
+
+> 💡 **Interview Tip:** Java's built-in immutable classes: `String`, `Integer`, `BigDecimal`, `LocalDate`. Java 16+ records (`record Person(String name, int age) {}`) create immutable classes automatically!
+
+</details>
+
+---
+
+<details>
+<summary><b>Q80. What is the difference between transient, volatile, and synchronized?</b></summary>
+
+> **One-Line Answer:** transient = skip this field during serialization. volatile = ensure field is read/written to main memory (visibility). synchronized = ensure only one thread enters a block at a time (atomicity + visibility).
+
+### Comparison Table
+
+| Keyword | Applied To | Purpose | Thread-Related? |
+|---------|-----------|---------|----------------|
+| `transient` | Fields | Skip during Java serialization | ❌ No |
+| `volatile` | Fields | Guarantee main memory visibility | ✅ Yes |
+| `synchronized` | Methods/Blocks | Mutual exclusion + visibility | ✅ Yes |
+
+### Code Example
+
+```java
+class UserSession implements Serializable {
+    String username;          // will be serialized
+    transient String password; // NOT serialized (sensitive data!)
+    transient Connection conn; // NOT serialized (can't serialize a connection!)
+
+    volatile boolean isLoggedIn;  // visible to all threads immediately
+
+    synchronized void logout() {  // only one thread at a time
+        isLoggedIn = false;
+        // cleanup...
+    }
+}
+```
+
+> 💡 **Interview Tip:** `transient` and `volatile` are frequently confused. Remember: `transient` = "skip in file/network", `volatile` = "always use RAM, not CPU cache". They solve completely different problems.
+
+</details>
+
+---
+
+## 📊 Additional Comparison Tables
+
+### Exception Types at a Glance
+
+| Category | Examples | Must Handle? | Represents |
+|----------|---------|-------------|-----------|
+| **Checked** | IOException, SQLException | ✅ Yes | External failures |
+| **Unchecked** | NullPointerException, IllegalArgumentException | ❌ No | Programming bugs |
+| **Error** | OutOfMemoryError, StackOverflowError | ❌ No (don't catch) | JVM-level problems |
+
+---
+
+### Thread Creation Methods Comparison
+
+| Method | Returns Result? | Throws Exception? | Thread Management |
+|--------|---------------|-----------------|-----------------|
+| `Thread + Runnable` | ❌ No | ❌ No | Manual |
+| `Callable + Future` | ✅ Yes | ✅ Yes | Via ExecutorService |
+| `CompletableFuture` | ✅ Yes | ✅ Yes | Auto (ForkJoinPool) |
+
+---
+
+### Java Version Feature Summary
+
+| Java Version | Key Features |
+|-------------|-------------|
+| **Java 8** | Lambdas, Streams, Optional, Default methods, New Date/Time API |
+| **Java 9** | Module system, JShell, Private interface methods |
+| **Java 10** | `var` (local variable type inference) |
+| **Java 11** | `String` methods (isBlank, strip), `Files` methods, HTTP Client |
+| **Java 14** | Switch expressions (standard), Records (preview) |
+| **Java 16** | Records (standard), `instanceof` pattern matching |
+| **Java 17** | Sealed classes, Pattern matching for switch (preview) |
+| **Java 21** | Virtual threads (Project Loom), Pattern matching finalized |
+
+---
+
+### Spring Annotations Quick Reference
+
+| Annotation | Purpose | Layer |
+|-----------|---------|-------|
+| `@SpringBootApplication` | Entry point + auto-config | Application |
+| `@Component` | Generic Spring bean | Any |
+| `@Service` | Business logic bean | Service |
+| `@Repository` | Data access bean + exception translation | Repository |
+| `@Controller` | MVC web controller | Web |
+| `@RestController` | REST API controller (@Controller + @ResponseBody) | Web |
+| `@Autowired` | Dependency injection | Any |
+| `@Bean` | Explicit bean declaration | Config |
+| `@Configuration` | Configuration class | Config |
+| `@Value` | Inject property value | Any |
+| `@Transactional` | Database transaction management | Service |
+| `@GetMapping` / `@PostMapping` | HTTP method mapping | Web |
+| `@RequestBody` | Deserialize request body to object | Web |
+| `@ResponseBody` | Serialize return value to response body | Web |
+| `@PathVariable` | Extract URL path variable | Web |
+| `@RequestParam` | Extract query parameter | Web |
 
 ---
 
