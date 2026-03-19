@@ -205,6 +205,66 @@ const ChildComponent = React.memo(({ onIncrement }) => {
 });
 ```
 
+### usePrevious - Previous Value Hook
+Stores the previous value of a state or prop across renders. Useful when you want to compare current and previous values.
+
+```javascript
+import { useEffect, useRef } from 'react';
+
+function usePrevious(value) {
+  const ref = useRef(); // holds previous value
+
+  useEffect(() => {
+    ref.current = value; // update after render
+  }, [value]);
+
+  return ref.current; // previous value
+}
+
+export default usePrevious;
+```
+
+#### How it Works
+- `useRef()` stores a mutable object that persists across renders.
+- `useEffect()` updates the ref after each render.
+- Returning `ref.current` gives the previous value (not current).
+
+#### Usage Example
+```javascript
+import React, { useState, useEffect } from 'react';
+import usePrevious from './usePrevious';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  const prevCount = usePrevious(count);
+
+  useEffect(() => {
+    if (prevCount !== undefined) {
+      console.log(`Previous: ${prevCount}, Current: ${count}`);
+    }
+  }, [count, prevCount]);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+```
+
+**Output on clicks:**
+- Previous: 0, Current: 1
+- Previous: 1, Current: 2
+- Previous: 2, Current: 3
+
+#### Key Points
+- `useRef` doesn't trigger a rerender.
+- `usePrevious` works for state or props.
+- Very handy for animations, comparisons, or side effects.
+
+**Interview Tip:** Custom hooks like `usePrevious` demonstrate advanced React knowledge. Mention it stores previous values without causing re-renders, perfect for comparison logic.
+
 ### Interview Explanation:
 "React Hooks revolutionized functional components by enabling state and lifecycle features. useState manages local state with array destructuring returning [value, setter]. useEffect handles side effects with dependency arrays controlling when it runs. useContext eliminates prop drilling for global state. useRef gives direct DOM access or persistent mutable values. useMemo prevents expensive recalculations, useCallback prevents unnecessary child re-renders. I use them to write cleaner, more maintainable functional components."
 
@@ -400,10 +460,258 @@ function TodoApp() {
 }
 ```
 
+### React Transactions (Batched Updates)
+Managing atomic state updates or batching multiple operations. React doesn't have a literal transaction API like databases, but concepts like state batching, `unstable_batchedUpdates`, or libraries for transactional state are often referred to as "transactions" in React interviews.
+
+#### React's Batched Updates (Simple "Transaction" Concept)
+React automatically batches multiple state updates inside event handlers to reduce re-renders. This is conceptually like a transaction: all updates are applied together.
+
+```javascript
+import React, { useState } from 'react';
+
+function Counter() {
+  const [countA, setCountA] = useState(0);
+  const [countB, setCountB] = useState(0);
+
+  const handleClick = () => {
+    // Both state updates are batched
+    setCountA(countA + 1);
+    setCountB(countB + 1);
+  };
+
+  return (
+    <div>
+      <p>Count A: {countA}</p>
+      <p>Count B: {countB}</p>
+      <button onClick={handleClick}>Increment Both</button>
+    </div>
+  );
+}
+```
+
+✅ Both updates happen in one render, like a mini transaction.
+
+#### Using unstable_batchedUpdates (for async / non-React events)
+React normally batches only in React events. For external events (like setTimeout or network responses), you can force batching:
+
+```javascript
+import { unstable_batchedUpdates } from 'react-dom';
+
+function updateBoth(countA, countB, setCountA, setCountB) {
+  unstable_batchedUpdates(() => {
+    setCountA(countA + 1);
+    setCountB(countB + 1);
+  });
+}
+```
+
+Guarantees single render for multiple updates.
+
+#### Transaction-like State Libraries
+Some libraries allow true transactional updates with rollback, especially for complex forms or offline apps:
+
+- Zustand with middleware
+- Redux Toolkit with Immer
+- Recoil transactions
+
+**Example in Recoil:**
+```javascript
+import { useRecoilTransaction_UNSTABLE, atom } from 'recoil';
+
+const countAtom = atom({ key: 'count', default: 0 });
+
+const useIncrementBoth = () => {
+  return useRecoilTransaction_UNSTABLE(({ get, set }) => () => {
+    set(countAtom, get(countAtom) + 1);
+    // other state updates here
+  });
+};
+```
+
+Everything inside the transaction function is applied atomically.
+
+**Interview Tip:** React batching ≈ small "transaction" for state updates. `unstable_batchedUpdates` allows batching outside React events. Libraries like Recoil/Zustand/Redux support transactional state for complex cases. Emphasize atomicity: either all state updates succeed in one render, or nothing changes.
+
 ### Interview Explanation:
 "State management in React ranges from local useState for component-specific data to global solutions for app-wide state. I start with local state, lift state up when multiple components need it, use Context for theme/user data, and consider Redux/Zustand for complex apps. The key is choosing the right tool: useState for simple cases, useReducer for complex state logic, Context for global data without prop drilling. I always consider performance implications and avoid unnecessary re-renders."
 
 **Interview Tip:** Local state for component-specific data, global for app-wide. Context for simple cases, Redux for complex. Lifting state up when multiple components need same data.
+
+</details>
+
+<details><summary style="font-size: 1.3em; font-weight: bold;">Redux</summary>
+
+Redux is a predictable state management library commonly used with React to manage global application state.
+
+🧠 Core Concepts
+1. 🏪 Store
+
+Single source of truth for your app's state
+
+Holds the entire state tree
+
+```javascript
+import { createStore } from "redux";
+
+const store = createStore(reducer);
+```
+
+2. 📦 Actions
+
+Plain JavaScript objects describing what happened
+
+```javascript
+const action = {
+  type: "INCREMENT"
+};
+```
+
+3. ⚙️ Reducers
+
+Pure functions that take:
+
+current state
+
+action
+
+and return new state
+
+```javascript
+const initialState = { count: 0 };
+
+function reducer(state = initialState, action) {
+  switch (action.type) {
+    case "INCREMENT":
+      return { count: state.count + 1 };
+    case "DECREMENT":
+      return { count: state.count - 1 };
+    default:
+      return state;
+  }
+}
+```
+
+4. 📣 Dispatch
+
+Sends an action to the store
+
+```javascript
+store.dispatch({ type: "INCREMENT" });
+```
+
+5. 👂 Subscribe
+
+Listen for state changes
+
+```javascript
+store.subscribe(() => {
+  console.log(store.getState());
+});
+```
+
+🔄 Redux Flow (Important!)
+
+UI triggers an action
+
+Action is sent using dispatch()
+
+Reducer processes it
+
+Store updates the state
+
+UI re-renders with new state
+
+👉 One-way data flow makes debugging easier
+
+🧩 Example: Simple Counter
+```javascript
+import { createStore } from "redux";
+
+const reducer = (state = { count: 0 }, action) => {
+  switch (action.type) {
+    case "INC":
+      return { count: state.count + 1 };
+    case "DEC":
+      return { count: state.count - 1 };
+    default:
+      return state;
+  }
+};
+
+const store = createStore(reducer);
+
+store.dispatch({ type: "INC" });
+console.log(store.getState()); // { count: 1 }
+```
+
+🧱 Redux in React
+
+Typically used with:
+
+react-redux (official bindings)
+
+```javascript
+import { useSelector, useDispatch } from "react-redux";
+
+function Counter() {
+  const count = useSelector(state => state.count);
+  const dispatch = useDispatch();
+
+  return (
+    <button onClick={() => dispatch({ type: "INC" })}>
+      {count}
+    </button>
+  );
+}
+```
+
+🧠 Key Principles
+
+🔒 Single source of truth (one store)
+
+🔁 State is read-only (only via actions)
+
+⚙️ Pure reducers (no side effects)
+
+⚡ When to use Redux?
+
+Use Redux when:
+
+Large-scale applications
+
+Complex shared state
+
+Many components need same data
+
+Avoid if:
+
+Small apps
+
+Simple state → use React useState / useContext
+
+🧩 Modern Redux (Redux Toolkit)
+
+Today, most developers use:
+Redux Toolkit
+
+It simplifies:
+
+Boilerplate
+
+Reducers
+
+Async logic
+
+🧠 Quick Summary
+Concept | Role
+--------|------
+Store | Holds app state
+Action | Describes event
+Reducer | Updates state
+Dispatch | Sends action
+Flow | One-way data flow
+
+**Interview Tip:** Redux provides predictable state management with one-way data flow. Use for complex apps with shared state. Modern Redux Toolkit reduces boilerplate significantly.
 
 </details>
 
@@ -628,6 +936,207 @@ function useInfiniteScroll(endpoint) {
 "API integration in React involves fetching data, handling loading/error states, and managing side effects. I use custom hooks to encapsulate API logic, ensuring reusability and clean components. For error handling, I implement global error boundaries and user-friendly messages. I prefer Axios for its interceptors and automatic JSON parsing, but Fetch works for simple cases. I always handle loading states to prevent poor UX and implement proper error boundaries for graceful failures."
 
 **Interview Tip:** Handle loading states, errors, and cleanup in useEffect. Use custom hooks for reusable API logic. Consider optimistic updates for better UX.
+
+</details>
+
+<details><summary style="font-size: 1.3em; font-weight: bold;">Backend Development with Node.js and Express.js</summary>
+
+Node.js and Express.js are essential for building the backend APIs that React applications consume. They provide the server-side logic, data persistence, and API endpoints that power React frontends.
+
+🟢 Node.js
+
+Node.js is a JavaScript runtime that lets you run JS on the server (outside the browser), enabling full-stack JavaScript development.
+
+Key features:
+- Built on V8 engine (same as Chrome)
+- Event-driven, non-blocking I/O (very fast for I/O tasks)
+- Perfect for building APIs that React apps can consume
+- Same language for frontend and backend
+
+Simple Node server for React API:
+```javascript
+const http = require("http");
+
+const server = http.createServer((req, res) => {
+  // Handle CORS for React app
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  
+  if (req.url === '/api/users' && req.method === 'GET') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify([{ id: 1, name: 'John' }]));
+  } else {
+    res.writeHead(404);
+    res.end('Not Found');
+  }
+});
+
+server.listen(5000, () => {
+  console.log("API server running on port 5000");
+});
+```
+
+🚀 Express.js
+
+Express.js is a minimal web framework built on Node.js that simplifies building robust APIs for React applications.
+
+It simplifies:
+- Routing for different API endpoints
+- Middleware for authentication, logging, CORS
+- Request/response handling
+- JSON parsing for React data
+
+Install:
+```bash
+npm install express cors
+```
+
+Basic Express API server for React:
+```javascript
+const express = require("express");
+const cors = require("cors");
+const app = express();
+
+// Enable CORS for React app
+app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(express.json()); // Parse JSON from React requests
+
+app.get("/api/users", (req, res) => {
+  // Return data that React can consume
+  res.json([
+    { id: 1, name: 'John', email: 'john@example.com' },
+    { id: 2, name: 'Jane', email: 'jane@example.com' }
+  ]);
+});
+
+app.post("/api/users", (req, res) => {
+  // Handle data sent from React forms
+  const newUser = req.body;
+  console.log('New user from React:', newUser);
+  res.status(201).json({ message: 'User created', user: newUser });
+});
+
+app.listen(5000, () => {
+  console.log("Express API server running on port 5000");
+});
+```
+
+🧭 Routing in Express for React Apps
+
+Routing defines API endpoints that React components call via fetch or axios.
+
+```javascript
+// GET - Fetch data for React components
+app.get("/api/users", (req, res) => {
+  res.json(usersData); // Data for React to display
+});
+
+// POST - Handle form submissions from React
+app.post("/api/users", (req, res) => {
+  const userData = req.body; // Data from React form
+  // Save to database
+  res.status(201).json({ success: true, user: userData });
+});
+
+// PUT - Update data from React edits
+app.put("/api/users/:id", (req, res) => {
+  const { id } = req.params;
+  const updates = req.body; // Updated data from React
+  // Update in database
+  res.json({ success: true, user: updatedUser });
+});
+
+// DELETE - Handle deletions from React
+app.delete("/api/users/:id", (req, res) => {
+  const { id } = req.params;
+  // Delete from database
+  res.json({ success: true, message: 'User deleted' });
+});
+```
+
+🔁 Middleware for React Integration
+
+Middleware handles cross-cutting concerns between React frontend and Express backend.
+
+```javascript
+// CORS middleware for React app
+const cors = require('cors');
+app.use(cors({ origin: 'http://localhost:3000' }));
+
+// Authentication middleware
+const authenticateToken = (req, res, next) => {
+  const token = req.headers['authorization'];
+  if (!token) return res.status(401).json({ error: 'Access denied' });
+  
+  // Verify JWT token from React login
+  jwt.verify(token, 'secret', (err, user) => {
+    if (err) return res.status(403).json({ error: 'Invalid token' });
+    req.user = user;
+    next();
+  });
+};
+
+// Apply to protected routes
+app.get('/api/profile', authenticateToken, (req, res) => {
+  res.json({ user: req.user });
+});
+
+// Logging middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url} - React request`);
+  next();
+});
+```
+
+🧠 Express + JSON Handling for React Data
+
+Express parses JSON from React fetch/axios requests and sends JSON responses.
+
+```javascript
+app.use(express.json()); // Parse incoming JSON from React
+
+app.post("/api/contact", (req, res) => {
+  const formData = req.body; // JSON from React form
+  console.log('Contact form from React:', formData);
+  
+  // Process form data
+  res.json({ 
+    success: true, 
+    message: 'Message sent successfully',
+    data: formData 
+  });
+});
+
+// Handle React's preflight OPTIONS requests
+app.options('*', cors());
+```
+
+⚡ Node.js vs Express.js for React Development
+Feature | Node.js | Express.js
+--------|---------|-----------
+Type | Runtime | Framework
+Level | Low-level | High-level
+API Building | Manual | Built-in
+React Integration | Basic | Seamless
+Complexity | More verbose | Simplified
+
+🧩 How They Power React Applications
+
+Node.js runs the server that hosts your Express API
+
+Express.js provides the RESTful endpoints that React components consume
+
+React frontend ↔ Express API ↔ Database
+
+Example full-stack flow:
+1. React component calls `fetch('/api/users')`
+2. Express route handles request
+3. Data retrieved from database
+4. JSON response sent back to React
+5. React updates UI with new data
+
+**Interview Tip:** Node.js enables full-stack JS development. Express.js simplifies API creation for React apps. Essential for handling CORS, JSON parsing, and providing data endpoints that React consumes.
 
 </details>
 
