@@ -279,186 +279,14 @@ State management controls how data flows through a React application. Choosing t
 ### Local State (useState)
 Best for component-specific data that doesn't need to be shared.
 
-```javascript
-function TodoItem({ todo }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editText, setEditText] = useState(todo.text);
-
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
-
-  const handleSave = () => {
-    // Update todo logic
-    setIsEditing(false);
-  };
-
-  return (
-    <div>
-      {isEditing ? (
-        <input
-          value={editText}
-          onChange={(e) => setEditText(e.target.value)}
-          onBlur={handleSave}
-        />
-      ) : (
-        <span onClick={handleEdit}>{todo.text}</span>
-      )}
-    </div>
-  );
-}
-```
-
 ### Lifting State Up
 When multiple components need the same state, move it to their common parent.
-
-```javascript
-function TodoApp() {
-  const [todos, setTodos] = useState([]);
-
-  const addTodo = (text) => {
-    setTodos(prev => [...prev, { id: Date.now(), text, completed: false }]);
-  };
-
-  const toggleTodo = (id) => {
-    setTodos(prev =>
-      prev.map(todo =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
-  };
-
-  return (
-    <div>
-      <AddTodo onAdd={addTodo} />
-      <TodoList todos={todos} onToggle={toggleTodo} />
-    </div>
-  );
-}
-```
 
 ### React Context API
 For global state that needs to be accessed by many components without prop drilling.
 
-```javascript
-// Create context
-const UserContext = React.createContext();
-
-// Provider component
-function UserProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Fetch user data
-    fetch('/api/user')
-      .then(res => res.json())
-      .then(data => {
-        setUser(data);
-        setLoading(false);
-      });
-  }, []);
-
-  const login = (credentials) => {
-    // Login logic
-    return fetch('/api/login', {
-      method: 'POST',
-      body: JSON.stringify(credentials)
-    }).then(res => res.json());
-  };
-
-  const logout = () => {
-    setUser(null);
-    // Clear tokens, etc.
-  };
-
-  return (
-    <UserContext.Provider value={{ user, loading, login, logout }}>
-      {children}
-    </UserContext.Provider>
-  );
-}
-
-// Usage
-function Navbar() {
-  const { user, logout } = useContext(UserContext);
-
-  return (
-    <nav>
-      {user ? (
-        <div>
-          <span>Welcome, {user.name}</span>
-          <button onClick={logout}>Logout</button>
-        </div>
-      ) : (
-        <LoginForm />
-      )}
-    </nav>
-  );
-}
-```
-
 ### useReducer for Complex State
 When state logic involves multiple sub-values or complex transitions.
-
-```javascript
-const initialState = {
-  todos: [],
-  filter: 'all', // 'all', 'active', 'completed'
-  loading: false
-};
-
-function todoReducer(state, action) {
-  switch (action.type) {
-    case 'ADD_TODO':
-      return {
-        ...state,
-        todos: [...state.todos, action.payload]
-      };
-    case 'TOGGLE_TODO':
-      return {
-        ...state,
-        todos: state.todos.map(todo =>
-          todo.id === action.payload
-            ? { ...todo, completed: !todo.completed }
-            : todo
-        )
-      };
-    case 'SET_FILTER':
-      return { ...state, filter: action.payload };
-    case 'SET_LOADING':
-      return { ...state, loading: action.payload };
-    default:
-      return state;
-  }
-}
-
-function TodoApp() {
-  const [state, dispatch] = useReducer(todoReducer, initialState);
-
-  const addTodo = (text) => {
-    dispatch({ type: 'ADD_TODO', payload: { id: Date.now(), text, completed: false } });
-  };
-
-  const filteredTodos = state.todos.filter(todo => {
-    if (state.filter === 'active') return !todo.completed;
-    if (state.filter === 'completed') return todo.completed;
-    return true;
-  });
-
-  return (
-    <div>
-      {state.loading && <div>Loading...</div>}
-      <AddTodo onAdd={addTodo} />
-      <FilterButtons
-        currentFilter={state.filter}
-        onFilterChange={(filter) => dispatch({ type: 'SET_FILTER', payload: filter })}
-      />
-      <TodoList todos={filteredTodos} onToggle={(id) => dispatch({ type: 'TOGGLE_TODO', payload: id })} />
-    </div>
-  );
-}
-```
 
 ### React Transactions (Batched Updates)
 Managing atomic state updates or batching multiple operations. React doesn't have a literal transaction API like databases, but concepts like state batching, `unstable_batchedUpdates`, or libraries for transactional state are often referred to as "transactions" in React interviews.
@@ -466,69 +294,11 @@ Managing atomic state updates or batching multiple operations. React doesn't hav
 #### React's Batched Updates (Simple "Transaction" Concept)
 React automatically batches multiple state updates inside event handlers to reduce re-renders. This is conceptually like a transaction: all updates are applied together.
 
-```javascript
-import React, { useState } from 'react';
-
-function Counter() {
-  const [countA, setCountA] = useState(0);
-  const [countB, setCountB] = useState(0);
-
-  const handleClick = () => {
-    // Both state updates are batched
-    setCountA(countA + 1);
-    setCountB(countB + 1);
-  };
-
-  return (
-    <div>
-      <p>Count A: {countA}</p>
-      <p>Count B: {countB}</p>
-      <button onClick={handleClick}>Increment Both</button>
-    </div>
-  );
-}
-```
-
-✅ Both updates happen in one render, like a mini transaction.
-
 #### Using unstable_batchedUpdates (for async / non-React events)
-React normally batches only in React events. For external events (like setTimeout or network responses), you can force batching:
-
-```javascript
-import { unstable_batchedUpdates } from 'react-dom';
-
-function updateBoth(countA, countB, setCountA, setCountB) {
-  unstable_batchedUpdates(() => {
-    setCountA(countA + 1);
-    setCountB(countB + 1);
-  });
-}
-```
-
-Guarantees single render for multiple updates.
+React normally batches only in React events. For external events (like setTimeout or network responses), you can force batching.
 
 #### Transaction-like State Libraries
-Some libraries allow true transactional updates with rollback, especially for complex forms or offline apps:
-
-- Zustand with middleware
-- Redux Toolkit with Immer
-- Recoil transactions
-
-**Example in Recoil:**
-```javascript
-import { useRecoilTransaction_UNSTABLE, atom } from 'recoil';
-
-const countAtom = atom({ key: 'count', default: 0 });
-
-const useIncrementBoth = () => {
-  return useRecoilTransaction_UNSTABLE(({ get, set }) => () => {
-    set(countAtom, get(countAtom) + 1);
-    // other state updates here
-  });
-};
-```
-
-Everything inside the transaction function is applied atomically.
+Some libraries allow true transactional updates with rollback, especially for complex forms or offline apps.
 
 **Interview Tip:** React batching ≈ small "transaction" for state updates. `unstable_batchedUpdates` allows batching outside React events. Libraries like Recoil/Zustand/Redux support transactional state for complex cases. Emphasize atomicity: either all state updates succeed in one render, or nothing changes.
 
