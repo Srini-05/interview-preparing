@@ -181,7 +181,7 @@ x = 5;           // assignment stays here
 <details>
 <summary><b>Q4. What is closure in JavaScript?</b></summary>
 
-> **One-Line Answer:** A closure is a function that remembers and has access to its outer scope's variables even after the outer function has finished executing.
+> **One-Line Answer:** A closure in JavaScript is when a function remembers and can access variables from its outer scope even after the outer function has finished executing. It is mainly used to maintain state and achieve data encapsulation..
 
 ### Code Example
 
