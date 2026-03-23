@@ -623,7 +623,7 @@ function MyComponent() {
 <details>
 <summary><b>Q13. What is useState? How does it work?</b></summary>
 
-> **One-Line Answer:** `useState` is a hook that adds state to a function component — returns the current value and a setter function. Calling the setter triggers a re-render.
+> **One-Line Answer:** 'useState' is a React hook used to manage state in functional components. It returns the current state and a function to update it. Whenever the state is updated, the component re-renders to reflect the changes..
 
 ### Code Example
 
@@ -678,7 +678,7 @@ setItems(items.filter(i => i.id !== id)); // remove item
 <details>
 <summary><b>Q14. What is useEffect? How and when does it run?</b></summary>
 
-> **One-Line Answer:** `useEffect` runs side effects after rendering — API calls, subscriptions, DOM manipulation. The dependency array controls WHEN it re-runs.
+> **One-Line Answer:** useEffect is a React hook used to handle side effects like API calls, subscriptions, or DOM updates in functional components. It runs after the component renders.
 
 ### Dependency Array Controls Execution
 
@@ -743,7 +743,7 @@ useEffect(() => {
 <details>
 <summary><b>Q15. What is useContext? How does it solve prop drilling?</b></summary>
 
-> **One-Line Answer:** `useContext` reads a value from a React Context — allowing any component in the tree to access shared data without passing it through props at every level.
+> **One-Line Answer:** useContext is a React hook used to access data from a context, allowing you to share state across components without passing props manually at every level.
 
 ### The Problem — Prop Drilling
 
