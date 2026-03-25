@@ -1,6 +1,6 @@
 # ☕ Java Backend Interview Questions
 
-> **80 Questions** | Organized by topic | Open/Close Accordions | Comparison Tables | Clear Explanations
+> **70+ Questions** | Organized by topic | Open/Close Accordions | Comparison Tables | Clear Explanations
 
 ---
 
@@ -14,7 +14,6 @@
 - [Java Advanced Concepts](#-java-advanced-concepts)
 - [Exception Handling](#-exception-handling)
 - [Multi-threading & Concurrency](#-multi-threading--concurrency)
-- [Spring Framework](#-spring-framework)
 - [Bonus Questions](#-bonus-questions)
 - [Java Internals & Deep Concepts](#-java-internals--deep-concepts)
 - [Advanced Multi-threading](#-advanced-multi-threading)
@@ -22,7 +21,6 @@
 - [Java 8+ Modern Features](#-java-8-modern-features)
 - [Java Design & Patterns](#-java-design--patterns)
 - [Java Memory & Performance](#-java-memory--performance)
-- [Spring Boot & Backend](#-spring-boot--backend)
 - [Java Best Practices & Miscellaneous](#-java-best-practices--miscellaneous)
 
 ---
@@ -1348,53 +1346,10 @@ public void increment() { count.incrementAndGet(); }
 
 ---
 
-## 🌿 Spring Framework
-
-<details>
-<summary><b>Q36. What is the difference between RestTemplate and WebClient?</b></summary>
-
-> **One-Line Answer:** RestTemplate is the classic blocking HTTP client (deprecated in Spring 6). WebClient is the modern non-blocking reactive HTTP client — supports both sync and async calls.
-
-### Comparison Table
-
-| Feature | RestTemplate | WebClient |
-|---------|-------------|-----------|
-| Introduced in | Spring 3 | Spring 5 (WebFlux) |
-| Blocking? | ✅ Blocking (synchronous) | ❌ Non-blocking (reactive) |
-| Async support | Limited | ✅ Full async/reactive |
-| Status (Spring 6) | Deprecated | Recommended |
-| Return type | Direct objects | `Mono<T>` / `Flux<T>` |
-| Thread model | One thread per request | Event loop — fewer threads |
-
-### Code Example
-
-```java
-// RestTemplate (old way)
-RestTemplate rt = new RestTemplate();
-User user = rt.getForObject("http://api/users/1", User.class);
-
-// WebClient (new way)
-WebClient client = WebClient.create("http://api");
-Mono<User> user = client.get()
-    .uri("/users/1")
-    .retrieve()
-    .bodyToMono(User.class);
-
-// WebClient — blocking (use only when needed)
-User userSync = client.get().uri("/users/1")
-    .retrieve().bodyToMono(User.class).block();
-```
-
-> 💡 **Interview Tip:** Migrate to WebClient for all new projects. RestTemplate is deprecated but still widely found in existing codebases.
-
-</details>
-
----
-
 ## 🎯 Bonus Questions
 
 <details>
-<summary><b>Q37. What is the difference between interface and abstract class?</b></summary>
+<summary><b>Q36. What is the difference between interface and abstract class?</b></summary>
 
 > **One-Line Answer:** Abstract class can have method implementations + state + constructor. Interface defines a pure contract — only abstract methods (+ default/static since Java 8), no constructor.
 
@@ -1416,7 +1371,7 @@ User userSync = client.get().uri("/users/1")
 ---
 
 <details>
-<summary><b>Q38. What is a Functional Interface in Java?</b></summary>
+<summary><b>Q37. What is a Functional Interface in Java?</b></summary>
 
 > **One-Line Answer:** A functional interface has exactly ONE abstract method. It can be used with lambda expressions. Common examples: Runnable, Comparator, Predicate, Function, Consumer, Supplier.
 
@@ -1453,7 +1408,7 @@ System.out.println(multiply.operate(5, 3));  // 15
 ---
 
 <details>
-<summary><b>Q39. What is the Stream API in Java?</b></summary>
+<summary><b>Q38. What is the Stream API in Java?</b></summary>
 
 > **One-Line Answer:** The Stream API (Java 8) provides a functional way to process collections using a pipeline of filter/map/reduce operations — without modifying the original data.
 
@@ -1492,7 +1447,7 @@ Optional<Person> adult = people.stream()
 ---
 
 <details>
-<summary><b>Q40. What are all 4 OOP pillars? (Quick Reference)</b></summary>
+<summary><b>Q39. What are all 4 OOP pillars? (Quick Reference)</b></summary>
 
 > **One-Line Answer:** OOP organizes code around objects. The 4 pillars are: Encapsulation (data hiding), Inheritance (code reuse), Polymorphism (many forms), Abstraction (hiding complexity).
 
@@ -1512,7 +1467,7 @@ Optional<Person> adult = people.stream()
 ---
 
 <details>
-<summary><b>Q41. What is a deadlock? How do you prevent it?</b></summary>
+<summary><b>Q40. What is a deadlock? How do you prevent it?</b></summary>
 
 > **One-Line Answer:** Deadlock is when two or more threads are waiting for each other to release a lock — permanently blocked, neither can proceed.
 
@@ -1552,7 +1507,7 @@ synchronized(lockB) {
 ---
 
 <details>
-<summary><b>Q42. What are wrapper classes in Java?</b></summary>
+<summary><b>Q41. What are wrapper classes in Java?</b></summary>
 
 > **One-Line Answer:** Wrapper classes wrap primitive types into objects — Integer wraps int, Double wraps double, etc. — allowing primitives to be used in collections and APIs that require objects.
 
@@ -1590,7 +1545,7 @@ list.add(5);  // autoboxed to Integer.valueOf(5)
 ---
 
 <details>
-<summary><b>Q43. What is the volatile keyword in Java?</b></summary>
+<summary><b>Q42. What is the volatile keyword in Java?</b></summary>
 
 > **One-Line Answer:** volatile ensures that a variable's value is always read from and written to main memory — not a thread's local cache — making changes visible across all threads.
 
@@ -1624,98 +1579,7 @@ private volatile boolean running = true;  // always in main memory
 ---
 
 <details>
-<summary><b>Q44. What is Dependency Injection? How does Spring use it?</b></summary>
-
-> **One-Line Answer:** Dependency Injection (DI) is a design pattern where an object receives its dependencies from outside (injected) rather than creating them itself — enabling loose coupling and testability.
-
-### Without DI vs With DI
-
-```java
-// WITHOUT DI — tight coupling
-class OrderService {
-    private PaymentService payment = new PaymentService(); // hardcoded!
-}
-
-// WITH DI — loose coupling (Spring)
-@Service
-class OrderService {
-    private final PaymentService payment;
-
-    @Autowired  // Spring injects PaymentService
-    OrderService(PaymentService payment) {
-        this.payment = payment;
-    }
-}
-```
-
-### Three Types of Injection in Spring
-
-| Type | Recommended? | Notes |
-|------|-------------|-------|
-| **Constructor Injection** | ✅ Yes — Best practice | Dependencies immutable, easier to test |
-| **Setter Injection** | ✅ For optional dependencies | Allows re-injection |
-| **Field Injection** (`@Autowired` on field) | ❌ Avoid | Hides dependencies, hard to test |
-
-> 💡 **Interview Tip:** Always prefer constructor injection — it makes dependencies explicit, supports immutability (final fields), and enables unit testing without Spring container.
-
-</details>
-
----
-
-<details>
-<summary><b>Q45. What is the difference between @Component, @Service, @Repository, @Controller?</b></summary>
-
-> **One-Line Answer:** All four are Spring stereotypes that mark a class as a Spring-managed bean. They're functionally equivalent but carry semantic meaning and enable layer-specific behaviour.
-
-### Comparison Table
-
-| Annotation | Layer | Purpose | Extra Behaviour |
-|-----------|-------|---------|----------------|
-| **@Component** | Generic | Any Spring bean | None specific |
-| **@Service** | Business | Business logic | Semantic clarity |
-| **@Repository** | Data Access | DAO / database layer | Auto-translates DB exceptions to `DataAccessException` |
-| **@Controller** | Web | Handles HTTP requests | Works with Spring MVC view resolution |
-| **@RestController** | Web/REST | REST endpoints | = @Controller + @ResponseBody |
-
-> 💡 **Interview Tip:** Always use the semantically correct annotation. `@Repository` especially matters because it enables automatic exception translation for the persistence layer.
-
-</details>
-
----
-
-<details>
-<summary><b>Q46. What is the difference between @RequestParam and @PathVariable?</b></summary>
-
-> **One-Line Answer:** @PathVariable extracts values from the URL path (`/users/{id}`). @RequestParam extracts values from query parameters (`/users?id=5`).
-
-### Code Example
-
-```java
-// @PathVariable — part of the URL path
-@GetMapping("/users/{id}")
-public User getUser(@PathVariable Long id) {
-    return userService.findById(id);
-}
-// Call: GET /users/42
-
-// @RequestParam — query parameter
-@GetMapping("/users")
-public List<User> getUsers(
-    @RequestParam("city") String city,
-    @RequestParam(value = "page", defaultValue = "0") int page) {
-    return userService.findByCity(city, page);
-}
-// Call: GET /users?city=Mumbai&page=1
-```
-
-> 💡 **Interview Tip:** Use @PathVariable for identifying a resource (user ID, product ID). Use @RequestParam for filtering, sorting, or pagination parameters.
-
-</details>
-
----
-
-<details>
-<summary><b>Q47. What is the difference between HashMap, LinkedHashMap, and TreeMap?</b></summary>
+<summary><b>Q43. What is the difference between HashMap, LinkedHashMap, and TreeMap?</b></summary>
 
 > **One-Line Answer:** HashMap is unordered. LinkedHashMap maintains insertion order. TreeMap maintains sorted order by keys.
 
@@ -1734,7 +1598,7 @@ public List<User> getUsers(
 ---
 
 <details>
-<summary><b>Q48. What are design patterns? Name the most common ones.</b></summary>
+<summary><b>Q44. What are design patterns? Name the most common ones.</b></summary>
 
 > **One-Line Answer:** Design patterns are reusable solutions to commonly occurring software design problems. The 23 GoF patterns are grouped into Creational, Structural, and Behavioral categories.
 
@@ -1781,7 +1645,7 @@ public class DatabaseConnection {
 ---
 
 <details>
-<summary><b>Q49. What is the difference between fail-fast and fail-safe iterators?</b></summary>
+<summary><b>Q45. What is the difference between fail-fast and fail-safe iterators?</b></summary>
 
 > **One-Line Answer:** Fail-fast iterators throw ConcurrentModificationException if the collection is modified during iteration. Fail-safe iterators work on a copy so they never throw.
 
@@ -1818,7 +1682,7 @@ for (String s : list) {
 ---
 
 <details>
-<summary><b>Q50. What is the difference between Stack and Heap memory?</b></summary>
+<summary><b>Q46. What is the difference between Stack and Heap memory?</b></summary>
 
 > **One-Line Answer:** Stack stores method calls and primitive local variables (per-thread, auto-managed). Heap stores all objects (shared, managed by GC).
 
@@ -1852,52 +1716,10 @@ public void createPerson() {
 
 ---
 
-## 📊 Quick Comparison Tables Reference
-
-### Collections at a Glance
-
-| Collection | Ordered? | Duplicates? | Null? | Thread-safe? | Performance |
-|-----------|---------|------------|-------|-------------|-------------|
-| ArrayList | ✅ Yes | ✅ Yes | ✅ Yes | ❌ No | O(1) access |
-| LinkedList | ✅ Yes | ✅ Yes | ✅ Yes | ❌ No | O(1) insert/delete at ends |
-| HashSet | ❌ No | ❌ No | ✅ One | ❌ No | O(1) avg |
-| LinkedHashSet | ✅ Insertion | ❌ No | ✅ One | ❌ No | O(1) avg |
-| TreeSet | ✅ Sorted | ❌ No | ❌ No | ❌ No | O(log n) |
-| HashMap | ❌ No | Keys: No | ✅ One key | ❌ No | O(1) avg |
-| LinkedHashMap | ✅ Insertion | Keys: No | ✅ One key | ❌ No | O(1) avg |
-| TreeMap | ✅ Sorted | Keys: No | ❌ No | ❌ No | O(log n) |
-| ConcurrentHashMap | ❌ No | Keys: No | ❌ No | ✅ Yes | O(1) avg |
-
----
-
-### String Classes at a Glance
-
-| Feature | String | StringBuffer | StringBuilder |
-|---------|--------|-------------|--------------|
-| Mutable | ❌ No | ✅ Yes | ✅ Yes |
-| Thread-safe | ✅ Yes | ✅ Yes (sync) | ❌ No |
-| Speed | Slow (new objects) | Medium | Fast |
-| Best for | Constants | Multi-threaded concat | Single-threaded concat |
-
----
-
-### OOP Pillars Summary
-
-| Pillar | Keyword | Purpose | Violation Example |
-|--------|---------|---------|------------------|
-| Encapsulation | `private` + getters | Hide internal state | Public fields |
-| Inheritance | `extends` | Code reuse | Copy-pasting code |
-| Polymorphism | `@Override` | Flexibility | Hard-coded type checks |
-| Abstraction | `abstract`/`interface` | Hide complexity | Exposing implementation |
-
----
-
----
-
 ## 🔬 Java Internals & Deep Concepts
 
 <details>
-<summary><b>Q51. What is the difference between shallow copy and deep copy?</b></summary>
+<summary><b>Q47. What is the difference between shallow copy and deep copy?</b></summary>
 
 > **One-Line Answer:** Shallow copy copies the object reference — both copies point to the same nested objects. Deep copy creates a fully independent clone — changes in one do NOT affect the other.
 
@@ -1968,7 +1790,7 @@ System.out.println(deep.address.city);     // "Mumbai" ← NOT affected
 ---
 
 <details>
-<summary><b>Q52. What is the difference between instance initializer block, static initializer block, and constructor?</b></summary>
+<summary><b>Q48. What is the difference between instance initializer block, static initializer block, and constructor?</b></summary>
 
 > **One-Line Answer:** Static block runs once when class loads. Instance block runs every time an object is created (before constructor). Constructor initializes the specific object.
 
@@ -2020,7 +1842,7 @@ new Demo();
 ---
 
 <details>
-<summary><b>Q53. What is covariant return type in Java?</b></summary>
+<summary><b>Q49. What is covariant return type in Java?</b></summary>
 
 > **One-Line Answer:** Covariant return type allows an overriding method to return a more specific (subclass) type than the return type declared in the parent method.
 
@@ -2055,7 +1877,7 @@ Dog d = new Dog().create();  // no cast needed!
 ---
 
 <details>
-<summary><b>Q54. What is the difference between abstract class and interface with default methods (Java 8+)?</b></summary>
+<summary><b>Q50. What is the difference between abstract class and interface with default methods (Java 8+)?</b></summary>
 
 > **One-Line Answer:** After Java 8, interfaces can have default and static methods — making the line thinner. But abstract classes still support state (instance fields), constructors, and non-public methods.
 
@@ -2098,7 +1920,7 @@ interface Auditable {
 ---
 
 <details>
-<summary><b>Q55. What is method hiding in Java?</b></summary>
+<summary><b>Q51. What is method hiding in Java?</b></summary>
 
 > **One-Line Answer:** Method hiding happens when a subclass defines a static method with the same name as a static method in the parent class. Unlike overriding, the method called depends on the reference type, not the actual object.
 
@@ -2138,7 +1960,7 @@ obj.hello();   // "Child hello"   ← actual object decides (overriding)
 ---
 
 <details>
-<summary><b>Q56. What is the instanceof operator?</b></summary>
+<summary><b>Q52. What is the instanceof operator?</b></summary>
 
 > **One-Line Answer:** instanceof checks if an object is an instance of a specific class or implements a specific interface — returns true or false. Java 16+ introduced pattern matching with instanceof.
 
@@ -2175,7 +1997,7 @@ System.out.println(d instanceof Object); // true (everything is Object)
 ---
 
 <details>
-<summary><b>Q57. What is var (local variable type inference) in Java 10+?</b></summary>
+<summary><b>Q53. What is var (local variable type inference) in Java 10+?</b></summary>
 
 > **One-Line Answer:** var lets the compiler infer the type of a local variable automatically — reducing boilerplate while keeping Java statically typed. It only works for local variables, not fields or method parameters.
 
@@ -2215,7 +2037,7 @@ for (var name : list) {
 ## 🧵 Advanced Multi-threading
 
 <details>
-<summary><b>Q58. What is the difference between synchronized and ReentrantLock?</b></summary>
+<summary><b>Q54. What is the difference between synchronized and ReentrantLock?</b></summary>
 
 > **One-Line Answer:** synchronized is simple and automatic. ReentrantLock is more flexible — supports tryLock, fairness policy, multiple conditions, and interruptible locking.
 
@@ -2270,7 +2092,7 @@ class SafeCounter {
 ---
 
 <details>
-<summary><b>Q59. What is ExecutorService and thread pool?</b></summary>
+<summary><b>Q55. What is ExecutorService and thread pool?</b></summary>
 
 > **One-Line Answer:** ExecutorService manages a pool of threads — reusing them for tasks instead of creating/destroying threads for each task, which is expensive.
 
@@ -2318,7 +2140,7 @@ pool.awaitTermination(10, TimeUnit.SECONDS);
 ---
 
 <details>
-<summary><b>Q60. What is the difference between Callable and Runnable?</b></summary>
+<summary><b>Q56. What is the difference between Callable and Runnable?</b></summary>
 
 > **One-Line Answer:** Runnable represents a task with no return value and cannot throw checked exceptions. Callable can return a result (via Future) and can throw checked exceptions.
 
@@ -2362,7 +2184,7 @@ pool.shutdown();
 ---
 
 <details>
-<summary><b>Q61. What is CompletableFuture in Java?</b></summary>
+<summary><b>Q57. What is CompletableFuture in Java?</b></summary>
 
 > **One-Line Answer:** CompletableFuture (Java 8) provides a fully non-blocking, chainable way to write async code — like a Promise in JavaScript. It eliminates callback hell and blocking Future.get() calls.
 
@@ -2422,7 +2244,7 @@ System.out.println(safe.get());  // "Default value"
 ## 🗂️ Java Data Structures & Algorithms
 
 <details>
-<summary><b>Q62. What is a Stack in Java? How to implement it?</b></summary>
+<summary><b>Q58. What is a Stack in Java? How to implement it?</b></summary>
 
 > **One-Line Answer:** Stack is a LIFO (Last In, First Out) data structure. Java provides the Stack class (legacy) and ArrayDeque (recommended modern alternative).
 
@@ -2463,7 +2285,7 @@ deque.pop();     // removeFirst
 ---
 
 <details>
-<summary><b>Q63. What is a Queue in Java? What are its implementations?</b></summary>
+<summary><b>Q59. What is a Queue in Java? What are its implementations?</b></summary>
 
 > **One-Line Answer:** Queue is a FIFO (First In, First Out) data structure. Java offers LinkedList, ArrayDeque, PriorityQueue as implementations, and BlockingQueue variants for thread-safe operations.
 
@@ -2510,7 +2332,7 @@ String task = bq.take();     // blocks if empty
 ---
 
 <details>
-<summary><b>Q64. What is the difference between Iterator and ListIterator?</b></summary>
+<summary><b>Q60. What is the difference between Iterator and ListIterator?</b></summary>
 
 > **One-Line Answer:** Iterator can traverse any Collection in one direction (forward only). ListIterator is specific to List and supports bidirectional traversal, plus add/set operations during iteration.
 
@@ -2559,7 +2381,7 @@ while (lit.hasPrevious()) {
 ## 🌐 Java 8+ Modern Features
 
 <details>
-<summary><b>Q65. What are Method References in Java 8?</b></summary>
+<summary><b>Q61. What are Method References in Java 8?</b></summary>
 
 > **One-Line Answer:** Method references are a shorthand for lambdas that call an existing method — cleaner and more readable. Syntax: `ClassName::methodName`.
 
@@ -2605,7 +2427,7 @@ List<String> strings = nums.stream()
 ---
 
 <details>
-<summary><b>Q66. What are default and static methods in Java 8 interfaces?</b></summary>
+<summary><b>Q62. What are default and static methods in Java 8 interfaces?</b></summary>
 
 > **One-Line Answer:** Default methods allow interfaces to have method implementations without breaking existing implementing classes. Static methods in interfaces are utility methods called on the interface itself.
 
@@ -2665,7 +2487,7 @@ class C implements A, B {
 ---
 
 <details>
-<summary><b>Q67. What is the new Date and Time API in Java 8?</b></summary>
+<summary><b>Q63. What is the new Date and Time API in Java 8?</b></summary>
 
 > **One-Line Answer:** Java 8 introduced java.time package — immutable, thread-safe date/time classes (LocalDate, LocalTime, LocalDateTime, ZonedDateTime) that replace the buggy, mutable Calendar and Date classes.
 
@@ -2709,7 +2531,7 @@ LocalDate parsed = LocalDate.parse("25/12/2025", formatter);
 ---
 
 <details>
-<summary><b>Q68. What are Streams — parallel streams vs sequential streams?</b></summary>
+<summary><b>Q64. What are Streams — parallel streams vs sequential streams?</b></summary>
 
 > **One-Line Answer:** Sequential streams process elements one at a time in order. Parallel streams split the work across multiple CPU cores using the ForkJoinPool — faster for large datasets, but has ordering and thread-safety caveats.
 
@@ -2764,7 +2586,7 @@ List<Integer> result = numbers.parallelStream()
 ## 🏗️ Java Design & Patterns
 
 <details>
-<summary><b>Q69. What is the Builder Pattern? When to use it?</b></summary>
+<summary><b>Q65. What is the Builder Pattern? When to use it?</b></summary>
 
 > **One-Line Answer:** Builder Pattern constructs complex objects step-by-step with a fluent API — avoiding telescoping constructors and making object creation readable and flexible.
 
@@ -2827,7 +2649,7 @@ public class Person {
 ---
 
 <details>
-<summary><b>Q70. What is the Singleton Pattern? How to make it thread-safe?</b></summary>
+<summary><b>Q66. What is the Singleton Pattern? How to make it thread-safe?</b></summary>
 
 > **One-Line Answer:** Singleton ensures only ONE instance of a class exists in the JVM. Thread-safe implementation requires double-checked locking with volatile, or the enum-based approach.
 
@@ -2888,7 +2710,7 @@ Without `volatile`, the JVM can reorder instructions — another thread might se
 ---
 
 <details>
-<summary><b>Q71. What is the Observer Pattern in Java?</b></summary>
+<summary><b>Q67. What is the Observer Pattern in Java?</b></summary>
 
 > **One-Line Answer:** Observer Pattern defines a one-to-many dependency — when the subject (publisher) changes state, all registered observers (subscribers) are automatically notified.
 
@@ -2945,7 +2767,7 @@ es.triggerEvent("New Order");
 // SMS sent for: New Order
 ```
 
-> 💡 **Interview Tip:** Java's `java.util.Observable` class and `Observer` interface are deprecated (Java 9+). In Spring, this pattern is implemented through `ApplicationEvent` and `@EventListener`. In modern Java, use reactive streams (RxJava, Reactor) for event-driven programming.
+> 💡 **Interview Tip:** Java's `java.util.Observable` class and `Observer` interface are deprecated (Java 9+). In modern Java, use reactive streams (RxJava, Reactor) for event-driven programming.
 
 </details>
 
@@ -2954,7 +2776,7 @@ es.triggerEvent("New Order");
 ## 🔐 Java Memory & Performance
 
 <details>
-<summary><b>Q72. What is memory leak in Java? How to prevent it?</b></summary>
+<summary><b>Q68. What is memory leak in Java? How to prevent it?</b></summary>
 
 > **One-Line Answer:** A memory leak in Java happens when objects are no longer needed but still referenced — preventing GC from reclaiming that memory. Java's GC doesn't prevent memory leaks, it only collects unreachable objects.
 
@@ -3014,7 +2836,7 @@ try {
 ---
 
 <details>
-<summary><b>Q73. What is String interning in Java?</b></summary>
+<summary><b>Q69. What is String interning in Java?</b></summary>
 
 > **One-Line Answer:** String interning places a String into the String Pool — so that identical strings share the same memory. Calling `intern()` on a String returns the pooled version.
 
@@ -3050,196 +2872,10 @@ System.out.println(s5 == s1);     // false! (s1 still points to heap object)
 
 ---
 
-## 🌿 Spring Boot & Backend
-
-<details>
-<summary><b>Q74. What is Spring Boot Auto-configuration?</b></summary>
-
-> **One-Line Answer:** Auto-configuration automatically configures Spring beans based on the JARs present on the classpath — so you get a working app with minimal setup. No XML needed.
-
-### How It Works
-
-```java
-// You add this dependency to pom.xml:
-// spring-boot-starter-web
-
-// Spring Boot detects Spring MVC on classpath and automatically configures:
-// — DispatcherServlet
-// — Tomcat embedded server
-// — Jackson for JSON
-// — Error handlers
-// All without you writing any configuration!
-
-// Just write your controller:
-@RestController
-public class HelloController {
-    @GetMapping("/hello")
-    public String hello() { return "Hello World!"; }
-}
-// And run! It just works.
-```
-
-### @SpringBootApplication = 3 Annotations
-
-```java
-@SpringBootApplication
-// is equivalent to:
-@SpringBootConfiguration  // marks as config class (like @Configuration)
-@EnableAutoConfiguration  // triggers auto-configuration
-@ComponentScan            // scans for @Component, @Service, @Repository, etc.
-public class MyApp {
-    public static void main(String[] args) {
-        SpringApplication.run(MyApp.class, args);
-    }
-}
-```
-
-### How to Disable Specific Auto-configuration
-
-```java
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-public class MyApp { }  // won't auto-configure database
-```
-
-> 💡 **Interview Tip:** Auto-configuration follows "Convention over Configuration" — it makes smart defaults but allows you to override anything. Check `spring.factories` or `AutoConfiguration.imports` file to see all auto-configurations.
-
-</details>
-
----
-
-<details>
-<summary><b>Q75. What are Spring Boot Actuator endpoints?</b></summary>
-
-> **One-Line Answer:** Spring Boot Actuator exposes production-ready monitoring endpoints — health checks, metrics, environment info, thread dumps, and more — over HTTP or JMX.
-
-### Common Actuator Endpoints
-
-| Endpoint | URL | Purpose |
-|----------|-----|---------|
-| Health | `/actuator/health` | App health status |
-| Info | `/actuator/info` | App info (version, build) |
-| Metrics | `/actuator/metrics` | JVM, HTTP, DB metrics |
-| Env | `/actuator/env` | Environment properties |
-| Beans | `/actuator/beans` | All Spring beans |
-| Mappings | `/actuator/mappings` | All URL mappings |
-| Threaddump | `/actuator/threaddump` | Current thread states |
-| Loggers | `/actuator/loggers` | Change log levels at runtime |
-| Shutdown | `/actuator/shutdown` | Graceful app shutdown |
-
-### Setup
-
-```yaml
-# application.yml
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics  # expose only these
-  endpoint:
-    health:
-      show-details: always  # show full health details
-```
-
-> 💡 **Interview Tip:** In production, NEVER expose all actuator endpoints publicly — especially `/actuator/env` and `/actuator/shutdown`. Secure them with Spring Security or expose only `/health` externally.
-
-</details>
-
----
-
-<details>
-<summary><b>Q76. What is the difference between @Bean and @Component?</b></summary>
-
-> **One-Line Answer:** @Component is a class-level annotation for auto-detection via classpath scanning. @Bean is a method-level annotation inside @Configuration classes for explicit bean creation — used when you need fine-grained control or the class isn't yours to annotate.
-
-### Comparison Table
-
-| Feature | @Component | @Bean |
-|---------|-----------|-------|
-| Applied to | Class | Method inside @Configuration class |
-| Detection | Classpath scan (auto) | Explicit method call |
-| Use when | You own the class | Third-party class or need control |
-| Stereotype variants | @Service, @Repository, @Controller | N/A |
-
-### Code Example
-
-```java
-// @Component — applied to your own class
-@Component
-public class EmailService {
-    public void send(String msg) { /* ... */ }
-}
-
-// @Bean — used for third-party or complex bean creation
-@Configuration
-public class AppConfig {
-
-    // You can't annotate ObjectMapper class with @Component (it's from Jackson)
-    // So you create a @Bean method instead:
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-}
-```
-
-> 💡 **Interview Tip:** Use @Component when you own the class. Use @Bean when you need to configure a bean from a third-party library or when the bean creation logic is complex.
-
-</details>
-
----
-
-<details>
-<summary><b>Q77. What is Spring Bean Scope?</b></summary>
-
-> **One-Line Answer:** Bean scope defines how many instances of a bean Spring creates and how long they live. Default is Singleton — one instance per Spring container.
-
-### Bean Scopes
-
-| Scope | Instances | Lifetime | Use Case |
-|-------|-----------|----------|----------|
-| **singleton** (default) | 1 per ApplicationContext | Application lifetime | Services, Repositories |
-| **prototype** | New for every request | Caller manages it | Stateful beans |
-| **request** | 1 per HTTP request | Request lifetime | Web: request-specific data |
-| **session** | 1 per HTTP session | Session lifetime | Web: user session data |
-| **application** | 1 per ServletContext | App lifetime | Web: application-wide config |
-
-### Code Example
-
-```java
-// Singleton — default, no annotation needed, but explicit for clarity
-@Service
-@Scope("singleton")  // or just @Service — same thing
-public class UserService { }
-
-// Prototype — new instance every time it's injected/requested
-@Component
-@Scope("prototype")
-public class ShoppingCart {  // stateful — each user needs their own
-    private List<Item> items = new ArrayList<>();
-}
-
-// Request scope — one per HTTP request
-@Component
-@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class RequestContext { }
-```
-
-> 💡 **Interview Tip:** Injecting a prototype bean into a singleton is tricky — the singleton gets just one prototype instance (at creation time). Use `@Lookup` annotation or `ApplicationContext.getBean()` to get a new prototype instance each time.
-
-</details>
-
----
-
 ## 📝 Java Best Practices & Miscellaneous
 
 <details>
-<summary><b>Q78. What is the difference between checked and runtime exceptions? When to use which?</b></summary>
+<summary><b>Q70. What is the difference between checked and runtime exceptions? When to use which?</b></summary>
 
 > **One-Line Answer:** Use checked exceptions for recoverable external failures (file not found, network timeout). Use unchecked (runtime) exceptions for programming errors and unrecoverable conditions.
 
@@ -3289,7 +2925,7 @@ public class OrderNotFoundException extends RuntimeException {
 ---
 
 <details>
-<summary><b>Q79. What is the difference between mutable and immutable objects? How to create an immutable class?</b></summary>
+<summary><b>Q71. What is the difference between mutable and immutable objects? How to create an immutable class?</b></summary>
 
 > **One-Line Answer:** Mutable objects can be changed after creation. Immutable objects cannot — every "modification" returns a new object. Immutable objects are thread-safe by nature.
 
@@ -3340,7 +2976,7 @@ public final class ImmutablePerson {
 ---
 
 <details>
-<summary><b>Q80. What is the difference between transient, volatile, and synchronized?</b></summary>
+<summary><b>Q72. What is the difference between transient, volatile, and synchronized?</b></summary>
 
 > **One-Line Answer:** transient = skip this field during serialization. volatile = ensure field is read/written to main memory (visibility). synchronized = ensure only one thread enters a block at a time (atomicity + visibility).
 
@@ -3375,7 +3011,45 @@ class UserSession implements Serializable {
 
 ---
 
-## 📊 Additional Comparison Tables
+## 📊 Quick Comparison Tables Reference
+
+### Collections at a Glance
+
+| Collection | Ordered? | Duplicates? | Null? | Thread-safe? | Performance |
+|-----------|---------|------------|-------|-------------|-------------|
+| ArrayList | ✅ Yes | ✅ Yes | ✅ Yes | ❌ No | O(1) access |
+| LinkedList | ✅ Yes | ✅ Yes | ✅ Yes | ❌ No | O(1) insert/delete at ends |
+| HashSet | ❌ No | ❌ No | ✅ One | ❌ No | O(1) avg |
+| LinkedHashSet | ✅ Insertion | ❌ No | ✅ One | ❌ No | O(1) avg |
+| TreeSet | ✅ Sorted | ❌ No | ❌ No | ❌ No | O(log n) |
+| HashMap | ❌ No | Keys: No | ✅ One key | ❌ No | O(1) avg |
+| LinkedHashMap | ✅ Insertion | Keys: No | ✅ One key | ❌ No | O(1) avg |
+| TreeMap | ✅ Sorted | Keys: No | ❌ No | ❌ No | O(log n) |
+| ConcurrentHashMap | ❌ No | Keys: No | ❌ No | ✅ Yes | O(1) avg |
+
+---
+
+### String Classes at a Glance
+
+| Feature | String | StringBuffer | StringBuilder |
+|---------|--------|-------------|--------------|
+| Mutable | ❌ No | ✅ Yes | ✅ Yes |
+| Thread-safe | ✅ Yes | ✅ Yes (sync) | ❌ No |
+| Speed | Slow (new objects) | Medium | Fast |
+| Best for | Constants | Multi-threaded concat | Single-threaded concat |
+
+---
+
+### OOP Pillars Summary
+
+| Pillar | Keyword | Purpose | Violation Example |
+|--------|---------|---------|------------------|
+| Encapsulation | `private` + getters | Hide internal state | Public fields |
+| Inheritance | `extends` | Code reuse | Copy-pasting code |
+| Polymorphism | `@Override` | Flexibility | Hard-coded type checks |
+| Abstraction | `abstract`/`interface` | Hide complexity | Exposing implementation |
+
+---
 
 ### Exception Types at a Glance
 
@@ -3409,29 +3083,6 @@ class UserSession implements Serializable {
 | **Java 16** | Records (standard), `instanceof` pattern matching |
 | **Java 17** | Sealed classes, Pattern matching for switch (preview) |
 | **Java 21** | Virtual threads (Project Loom), Pattern matching finalized |
-
----
-
-### Spring Annotations Quick Reference
-
-| Annotation | Purpose | Layer |
-|-----------|---------|-------|
-| `@SpringBootApplication` | Entry point + auto-config | Application |
-| `@Component` | Generic Spring bean | Any |
-| `@Service` | Business logic bean | Service |
-| `@Repository` | Data access bean + exception translation | Repository |
-| `@Controller` | MVC web controller | Web |
-| `@RestController` | REST API controller (@Controller + @ResponseBody) | Web |
-| `@Autowired` | Dependency injection | Any |
-| `@Bean` | Explicit bean declaration | Config |
-| `@Configuration` | Configuration class | Config |
-| `@Value` | Inject property value | Any |
-| `@Transactional` | Database transaction management | Service |
-| `@GetMapping` / `@PostMapping` | HTTP method mapping | Web |
-| `@RequestBody` | Deserialize request body to object | Web |
-| `@ResponseBody` | Serialize return value to response body | Web |
-| `@PathVariable` | Extract URL path variable | Web |
-| `@RequestParam` | Extract query parameter | Web |
 
 ---
 
