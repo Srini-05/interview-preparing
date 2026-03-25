@@ -825,6 +825,116 @@ stack.pop();
 
 </details>
 
+<details>
+<summary><b>What is DSA?</b></summary>
+
+**Data Structures** = How data is stored  
+**Algorithms** = How data is processed
+
+**Interview line:** "Data Structures organize data efficiently, and Algorithms define how to process it. In Java, we commonly use arrays, lists, sets, maps, and trees along with algorithms like searching, sorting, and recursion."
+
+</details>
+
+<details>
+<summary><b>Data Structures Overview</b></summary>
+
+| Structure | Key Point | Use Case |
+|-----------|-----------|----------|
+| Array | Fixed size, fast access O(1) | Simple storage |
+| ArrayList | Fast read, slow insert/delete | Dynamic list |
+| LinkedList | Fast insert/delete, slow access | Frequent modifications |
+| Stack | LIFO (Last In First Out) | Undo, recursion |
+| Queue | FIFO (First In First Out) | Scheduling, BFS |
+| HashSet | No duplicates, fastest | Unique elements |
+| TreeSet | No duplicates, sorted | Sorted unique elements |
+| HashMap | Key-value, fast O(1) | Data mapping |
+| TreeMap | Key-value, sorted | Sorted key-value |
+| Tree | Hierarchical structure | Binary Tree, BST |
+| Graph | Nodes + edges | Routing, social networks |
+
+</details>
+
+<details>
+<summary><b>Common Algorithms</b></summary>
+
+#### Searching Algorithms
+
+| Algorithm | How it works | Complexity |
+|-----------|--------------|------------|
+| Linear Search | Check one by one | O(n) |
+| Binary Search | Sorted array, divide in half | O(log n) |
+
+#### Sorting Algorithms
+
+| Algorithm | Complexity | Notes |
+|-----------|------------|-------|
+| Bubble Sort | O(n²) | Simple but slow |
+| Selection Sort | O(n²) | Simple but slow |
+| Insertion Sort | O(n²) | Good for small data |
+| Merge Sort | O(n log n) | Stable, divide & conquer |
+| Quick Sort | O(n log n) | Fast, in-place |
+
+#### Key Techniques
+
+| Technique | Use Case |
+|-----------|----------|
+| Recursion | Function calling itself (factorial, fibonacci) |
+| Sliding Window | Subarray/substring problems |
+| Two Pointer | Sorted array problems |
+| Hashing | Fast lookup with HashMap |
+
+**Recursion sample:**
+```java
+int factorial(int n) {
+    if (n == 1) return 1;
+    return n * factorial(n - 1);
+}
+```
+
+</details>
+
+<details>
+<summary><b>Time Complexity (Must Know)</b></summary>
+
+| Operation | Complexity |
+|-----------|------------|
+| Array access | O(1) |
+| Array search | O(n) |
+| Binary search | O(log n) |
+| HashMap get/put | O(1) |
+| TreeMap get/put | O(log n) |
+| ArrayList add | O(1) amortized |
+| LinkedList add | O(1) |
+
+</details>
+
+<details>
+<summary><b>Important Problems (Must Prepare)</b></summary>
+
+- Reverse string
+- Find duplicates
+- 2nd largest number
+- Two sum
+- Palindrome check
+- Merge two arrays
+- Remove duplicates
+
+</details>
+
+<details>
+<summary><b>Quick DSA Revision</b></summary>
+
+| Structure | One-liner |
+|-----------|-----------|
+| Array | Fast access, fixed size |
+| List | Dynamic, ordered |
+| Set | Unique elements |
+| Map | Key-value pairs |
+| Stack | LIFO |
+| Queue | FIFO |
+
+</details>
+
 ---
 
 ## Java 8+ Modern Features
@@ -1051,7 +1161,8 @@ names.forEach(System.out::println);
 
 Use these answers as spoken interview answers first. If the interviewer asks for more detail, then add one example or one real-world use case.
 
-### ArrayList vs LinkedList summary
+<details>
+<summary><b>ArrayList vs LinkedList summary</b></summary>
 
 | Feature        | ArrayList               | LinkedList            |
 | -------------- | ----------------------- | --------------------- |
@@ -1062,7 +1173,10 @@ Use these answers as spoken interview answers first. If the interviewer asks for
 | Memory         | Less                    | More (extra pointers) |
 | Traversal      | Faster                  | Slower                |
 
-### HashMap vs HashSet summary
+</details>
+
+<details>
+<summary><b>HashMap vs HashSet summary</b></summary>
 
 | Feature        | HashMap                            | HashSet              |
 | -------------- | ---------------------------------- | -------------------- |
@@ -1072,7 +1186,10 @@ Use these answers as spoken interview answers first. If the interviewer asks for
 | Null allowed   | 1 null key + multiple null values  | 1 null value         |
 | Use case       | Data mapping                       | Unique elements      |
 
-### ArrayList vs Vector summary
+</details>
+
+<details>
+<summary><b>ArrayList vs Vector summary</b></summary>
 
 | Feature         | ArrayList          | Vector                 |
 | --------------- | ------------------ | ---------------------- |
@@ -1083,7 +1200,10 @@ Use these answers as spoken interview answers first. If the interviewer asks for
 
 **Interview line:** "ArrayList is not synchronized and faster, whereas Vector is synchronized and thread-safe but slower. Vector is mostly considered legacy."
 
-### HashSet vs LinkedHashSet vs TreeSet summary
+</details>
+
+<details>
+<summary><b>HashSet vs LinkedHashSet vs TreeSet summary</b></summary>
 
 | Feature     | HashSet       | LinkedHashSet      | TreeSet             |
 | ----------- | ------------- | ------------------ | ------------------- |
@@ -1094,7 +1214,10 @@ Use these answers as spoken interview answers first. If the interviewer asks for
 
 **Interview line:** "HashSet stores unique elements without order, LinkedHashSet maintains insertion order, and TreeSet stores elements in sorted order."
 
-### HashMap vs TreeMap summary
+</details>
+
+<details>
+<summary><b>HashMap vs TreeMap summary</b></summary>
 
 | Feature     | HashMap        | TreeMap            |
 | ----------- | -------------- | ------------------ |
@@ -1105,7 +1228,10 @@ Use these answers as spoken interview answers first. If the interviewer asks for
 
 **Interview line:** "HashMap is faster and does not maintain order, while TreeMap stores keys in sorted order but is slower."
 
-### HashMap vs LinkedHashMap summary
+</details>
+
+<details>
+<summary><b>HashMap vs LinkedHashMap summary</b></summary>
 
 | Feature     | HashMap    | LinkedHashMap      |
 | ----------- | ---------- | ------------------ |
@@ -1114,3 +1240,5 @@ Use these answers as spoken interview answers first. If the interviewer asks for
 | Structure   | Hash table | Hash + Linked list |
 
 **Interview line:** "HashMap does not maintain order, whereas LinkedHashMap maintains insertion order using a linked list."
+
+</details>
