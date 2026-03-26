@@ -492,6 +492,25 @@ synchronized void increment() {
 
 </details>
 
+<details>
+<summary><b>Q35A. What is the difference between Concurrency and Parallelism?</b></summary>
+
+**Interview answer:** Concurrency means multiple tasks are in progress at the same time, but not necessarily running simultaneously. Parallelism means multiple tasks are actually executed at the same time, usually on multiple CPU cores.
+
+**One-line answer:** Concurrency is about managing multiple tasks together. Parallelism is about executing multiple tasks simultaneously.
+
+**Simple analogy:** Concurrency is one person handling multiple tasks by switching between them. Parallelism is multiple people doing different tasks at the same time.
+
+**Real-time examples:**
+- **Concurrency:** In a mobile app or web app, one request is loading data while another is fetching notifications. The system keeps multiple tasks in progress by switching between them.
+- **Practical example:** Typing in WhatsApp while new messages are being received.
+- **Parallelism:** In video rendering or heavy data processing, different parts of the workload are processed at the same time on different CPU cores.
+- **Practical example:** Downloading multiple large files simultaneously on a machine that can process them in parallel.
+
+**Interview point:** Concurrency improves responsiveness and task coordination. Parallelism improves raw execution speed when hardware can run work side by side.
+
+</details>
+
 ---
 
 ## Spring Framework
