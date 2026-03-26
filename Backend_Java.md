@@ -440,6 +440,23 @@ try (BufferedReader br = new BufferedReader(new FileReader("a.txt"))) {
 
 **Interview point:** Checked exceptions must be handled or declared. Unchecked exceptions usually represent programming mistakes.
 
+**Exception handling keywords:**
+
+| Keyword | Purpose | Description |
+|---------|---------|-------------|
+| `try` | Define risky code | Block that contains code which may cause an exception |
+| `catch` | Handle exception | Catches and handles the exception from the `try` block |
+| `finally` | Cleanup code | Always executes and is commonly used for cleanup or closing resources |
+| `throw` | Manually throw exception | Used to explicitly throw an exception |
+| `throws` | Declare exception | Declares exceptions in the method signature |
+
+**Exception types:**
+
+| Type | When Checked | Handling Required | Examples |
+|------|--------------|-------------------|----------|
+| Checked (Compile-time) | At compile time | Yes (mandatory) | `IOException`, `SQLException` |
+| Unchecked (Runtime) | At runtime | No (optional) | `NullPointerException`, `ArithmeticException` |
+
 </details>
 
 ---
