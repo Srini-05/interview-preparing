@@ -5,7 +5,8 @@ This guide covers essential algorithms and concepts for software developers with
 
 ---
 
-## 🎯 1. Searching Algorithms (VERY IMPORTANT)
+<details>
+<summary><h2>🎯 1. Searching Algorithms (VERY IMPORTANT)</h2></summary>
 
 ### ✅ Linear Search
 **Concept**: Check each element one by one  
@@ -43,9 +44,12 @@ public int binarySearch(int[] arr, int target) {
 }
 ```
 
+</details>
+
 ---
 
-## 🔢 2. Sorting Algorithms (MUST KNOW)
+<details>
+<summary><h2>🔢 2. Sorting Algorithms (MUST KNOW)</h2></summary>
 
 ### ✅ Bubble Sort
 **Concept**: Simple, but inefficient  
@@ -67,9 +71,9 @@ public int binarySearch(int[] arr, int target) {
 **Concept**: Fast in practice  
 **Time Complexity**: Average O(n log n)
 
----
-
-## 🔁 3. Recursion & Backtracking
+</details>
+<details>
+<summary><h2>🔁 3. Recursion & Backtracking</h2></summary>
 
 ### ✅ Recursion
 **Concept**: Function calling itself
@@ -92,9 +96,12 @@ public int factorial(int n) {
 - Permutations
 - Subsets
 
----
-
-## 📦 4. Hashing (VERY IMPORTANT)
+</details>
+**Examples**:
+- Permutations
+- Subsets
+<details>
+<summary><h2>📦 4. Hashing (VERY IMPORTANT)</h2></summary>
 
 **Concept**: Used in HashMap/HashSet for fast lookup
 
@@ -110,9 +117,9 @@ map.put("key", 42); // O(1) average
 int value = map.get("key"); // O(1) average
 ```
 
----
-
-## 🔗 5. Two Pointer & Sliding Window
+</details><String, Integer> map = new HashMap<>();
+<details>
+<summary><h2>🔗 5. Two Pointer & Sliding Window</h2></summary>
 
 ### ✅ Two Pointer
 **Use Case**: Used in arrays  
@@ -135,9 +142,12 @@ public boolean twoSum(int[] arr, int target) {
 **Use Case**: Used for subarrays  
 **Very common in interviews**
 
----
+</details>
+}
+```
 
-## 🌳 6. Basic Tree Algorithms
+<details>
+<summary><h2>🌳 6. Basic Tree Algorithms</h2></summary>
 
 ### ✅ Traversals
 - **Inorder**: Left → Root → Right
@@ -148,9 +158,9 @@ public boolean twoSum(int[] arr, int target) {
 - **Breadth First Search**: Level by level
 - **Depth First Search**: Deep first
 
----
-
-## 🧮 7. Greedy Algorithms (Basic Idea)
+</details>
+<details>
+<summary><h2>🧮 7. Greedy Algorithms (Basic Idea)</h2></summary>
 
 **Concept**: Make best choice at each step
 
@@ -158,9 +168,12 @@ public boolean twoSum(int[] arr, int target) {
 - Activity selection
 - Minimum coins
 
+</details>
 ---
 
-## 🔥 8. Dynamic Programming (Basic Level)
+## 🧮 7. Greedy Algorithms (Basic Idea)
+<details>
+<summary><h2>🔥 8. Dynamic Programming (Basic Level)</h2></summary>
 
 **Key Concepts**:
 - Overlapping subproblems
@@ -179,9 +192,9 @@ public int fibonacciDP(int n) {
 }
 ```
 
----
-
-## ⚙️ 9. Java Built-in Algorithms (VERY IMPORTANT)
+</details>lic int fibonacciDP(int n) {
+<details>
+<summary><h2>⚙️ 9. Java Built-in Algorithms (VERY IMPORTANT)</h2></summary>
 
 **In real projects, you use**:
 - `Collections.sort()`
@@ -190,9 +203,12 @@ public int fibonacciDP(int n) {
 
 **Know**: They use optimized algorithms internally
 
----
+</details>
+```
 
-## 🎯 What Interviewers Expect (3 Years Experience)
+---
+<details>
+<summary><h2>🎯 What Interviewers Expect (3 Years Experience)</h2></summary>
 
 ### MUST KNOW:
 - Binary Search
@@ -206,9 +222,9 @@ public int fibonacciDP(int n) {
 - BFS/DFS
 - Basic DP
 
----
-
-## 🧠 Perfect Interview Answer
+</details> Interviewers Expect (3 Years Experience)
+<details>
+<summary><h2>🧠 Perfect Interview Answer</h2></summary>
 
 **If asked: "What algorithms do you know?"**
 
@@ -226,11 +242,14 @@ public int fibonacciDP(int n) {
 ✅ Give 1–2 examples  
 ✅ Stop and let them ask
 
----
+</details>
+**If asked: "What algorithms do you know?"**
 
-## 📊 Big O Notation Guide
+**Say**:
+> "I'm familiar with common searching and sorting algorithms like binary search, merge sort, and quick sort. I also understand hashing concepts used in HashMap, recursion, and basic techniques like sliding window and two pointers. I focus on choosing efficient algorithms based on time complexity."
 
-## 🧠 What is O(1)?
+<details>
+<summary><h2>🧠 What is O(1)?</h2></summary>
 
 **Definition**: Constant time complexity
 
@@ -254,8 +273,8 @@ Think of a book with page numbers:
 map.get(key); // O(1) average time
 ```
 HashMap calculates hash and finds index directly.
-
-## 🧠 What is O(n)?
+<details>
+<summary><h2>🧠 What is O(n)?</h2></summary>
 
 **Definition**: Linear time complexity
 
@@ -275,10 +294,33 @@ Searching for a name in an unsorted list:
 - Worst case → check all names
 - **That's O(n)**
 
-## ⚖️ Time Complexity Comparison
+</details>)?
 
-| Complexity | Meaning | Speed |
-|------------|---------|--------|
+**Definition**: Linear time complexity
+
+**Simple Meaning**: The time taken increases linearly with input size.
+
+### 📦 Example
+```java
+// Loop through an array
+for (int i = 0; i < n; i++) {
+    System.out.println(arr[i]); // O(n) - visit each element once
+}
+```
+<details>
+<summary><h2>🎯 Interview Answers for Big O</h2></summary>
+
+**If asked: "What is O(1)?"**
+> "O(1) means constant time complexity, where the execution time does not depend on input size. For example, accessing an element in an array or retrieving a value from a HashMap is typically O(1)."
+
+**If asked: "What is O(n)?"**
+> "O(n) is linear time complexity where the execution time increases proportionally with the input size. For example, iterating through an array requires O(n) time because each element is processed once."
+
+### ⚠️ Common Mistake
+❌ Saying "O(n) is slow"  
+✅ It's not slow—it's just dependent on input size
+
+</details>
 | O(1) | Constant | Fastest |
 | O(log n) | Logarithmic | Fast |
 | O(n) | Linear | Moderate |
