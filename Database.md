@@ -1235,6 +1235,66 @@ PRIMARY KEY (order_id, product_id)
 
 </details>
 
+<details><summary>🔹 21. What are JPA Methods?</summary>
+
+**📝 Easy Answer:**
+> "JPA methods like save, findById, findAll, deleteById provide standard CRUD operations with different behaviors for performance and safety."
+
+**📊 JPA Methods – Usage & Differences**
+| Method | Usage | Return Type | When to Use | Difference / Notes |
+|--------|-------|-------------|-------------|-------------------|
+| save(entity) | Insert or update a record | Entity | When creating or updating data | Works for both insert & update based on ID |
+| saveAll(list) | Save multiple entities | List<Entity> | Bulk insert/update | Faster than multiple save() calls |
+| findById(id) | Get record by ID | Optional<Entity> | Fetch single record safely | Returns Optional (avoids null errors) |
+| findAll() | Get all records | List<Entity> | Fetch entire table | Can be slow for large data |
+| findAll(Pageable) | Get paginated data | Page<Entity> | Large datasets | Supports pagination |
+| findAll(Sort) | Get sorted data | List<Entity> | Sorting results | Uses Sort object |
+| existsById(id) | Check if record exists | boolean | Validation before operations | Faster than fetching full entity |
+| count() | Count total records | long | Metrics / analytics | Lightweight query |
+| deleteById(id) | Delete by ID | void | Remove specific record | No need to fetch entity first |
+| delete(entity) | Delete using object | void | When entity already available | Requires entity instance |
+| deleteAll() | Delete all records | void | Clear table | Dangerous in production ⚠️ |
+| deleteAll(list) | Delete multiple | void | Bulk delete | Safer than deleteAll() |
+| flush() | Sync with DB immediately | void | Force DB write | Used inside transactions |
+| saveAndFlush(entity) | Save + immediate DB write | Entity | When instant persistence needed | Combines save + flush |
+| getById(id) / getReferenceById(id) | Lazy fetch | Entity | When proxy is enough | Does NOT hit DB immediately |
+| findOne(Example) | Query by example | Optional<Entity> | Dynamic search | Uses Example matcher |
+
+**🔥 Key Differences (Interview Focus)**
+1. **save() vs saveAndFlush()**
+   - **save()**: Delayed DB write, Faster (batched)
+   - **saveAndFlush()**: Immediate DB write, Slower (instant)
+
+2. **findById() vs getById()**
+   - **findById()**: Hits DB immediately, Returns Optional
+   - **getById()**: Lazy loading (proxy), Returns entity directly
+
+3. **deleteById() vs delete()**
+   - **deleteById()**: Only ID needed, Direct delete
+   - **delete()**: Full object needed, Requires fetch first
+
+4. **findAll() vs findAll(Pageable)**
+   - **findAll()**: Loads all data, Not scalable
+   - **findAll(Pageable)**: Loads limited data, Scalable
+
+**💬 Best Interview Summary Answer**
+
+If they ask:
+👉 "Explain JPA methods"
+
+Say:
+
+"JPA provides methods like save, findById, findAll, deleteById, existsById, and count for basic CRUD operations. For large datasets, I use pagination with findAll(Pageable). I also use custom query methods like findByName. Additionally, I understand differences like save vs saveAndFlush and findById vs lazy loading methods."
+
+**⚡ Quick Tip**
+
+👉 Mention this to stand out:
+
+"I prefer pagination for large data"
+"I use Optional properly to avoid null issues"
+
+</details>
+
 </details>
 
 <details><summary style="font-size: 1.3em; font-weight: bold;">Interview Questions</summary>
