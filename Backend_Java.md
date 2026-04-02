@@ -1280,7 +1280,7 @@ Use these answers as spoken interview answers first. If the interviewer asks for
 
 <details>
 <summary><b>HashMap vs TreeMap summary</b></summary>
-
+ 
 | Feature     | HashMap        | TreeMap            |
 | ----------- | -------------- | ------------------ |
 | Order       | No order       | Sorted by key      |
