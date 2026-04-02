@@ -20,6 +20,7 @@
 - [Advanced Multi-threading](#advanced-multi-threading)
 - [Java Data Structures & Algorithms](#java-data-structures--algorithms)
 - [Java 8+ Modern Features](#java-8-modern-features)
+- [Java Versions Comparison](#java-versions-comparison)
 - [Java Design & Patterns](#java-design--patterns)
 - [Java Memory & Performance](#java-memory--performance)
 - [Spring Boot & Backend](#spring-boot--backend)
@@ -1013,6 +1014,31 @@ names.forEach(System.out::println);
 **Interview answer:** Sequential streams process data in a single thread. Parallel streams split work across multiple threads. Parallel streams can improve performance for large CPU-bound tasks, but they add overhead and need thread-safe operations.
 
 **Interview point:** Do not use parallel streams blindly. Benchmark and verify the workload first.
+
+</details>
+
+---
+
+## Java Versions Comparison
+
+<details>
+<summary><b>📊 Java 8 vs 17 vs 21 Comparison</b></summary>
+
+Understanding different Java versions is crucial for backend development, as newer versions offer better performance, cleaner code, and modern features. Here's a quick comparison of major LTS versions:
+
+📊 Java 8 vs 17 vs 21 (Easy Version)
+
+| Category       | Java 8                     | Java 17                    | Java 21                          |
+|----------------|----------------------------|----------------------------|----------------------------------|
+| Main Focus     | Functional programming     | Modern Java features       | High performance & concurrency   |
+| Key Feature 1  | Lambda (→)                 | Records (data class)       | Virtual Threads 🚀               |
+| Key Feature 2  | Streams (filter/map)       | Sealed Classes             | Structured Concurrency          |
+| Key Feature 3  | Functional Interfaces      | Pattern Matching           | Scoped Values                    |
+| Code Style     | More boilerplate           | Cleaner code               | More scalable                    |
+| Performance    | Normal                     | Better                     | Very High                        |
+| Use Case       | Old/legacy apps            | Most current projects      | Future / high-scale apps         |
+
+**Interview tip:** Java 17 is the current LTS for most production systems. Java 21 introduces virtual threads for better concurrency, making it ideal for high-throughput backend services.
 
 </details>
 
